@@ -196,17 +196,23 @@ export default function FinancialDashboard() {
             Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
           </p>
         </div>
-        <div className="grid grid-cols-2 gap-2 text-[0.55rem] uppercase tracking-[0.14em] sm:text-right">
-          <div className="rounded-xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-2.5 sm:min-w-[9rem]">
-            <p className="font-bold text-[#555]">Presupuesto</p>
-            <p className="mt-1 text-sm font-semibold tracking-normal text-[#0a0a0a]">
-              ${budgetMillions.toFixed(2)}M
+        <div className="grid w-full grid-cols-2 gap-3 sm:max-w-md sm:w-auto">
+          <div className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem]">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[#555]">
+              Presupuesto
+            </p>
+            <p className="mt-2 font-editorial text-3xl font-semibold tracking-tight text-[#0a0a0a] sm:text-4xl">
+              ${budgetMillions.toFixed(2)}
+              <span className="ml-0.5 text-xl text-[#555]">M</span>
             </p>
           </div>
-          <div className="rounded-xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-2.5 sm:min-w-[9rem]">
-            <p className="font-bold text-[#555]">Ejercido</p>
-            <p className="mt-1 text-sm font-semibold tracking-normal text-[#ff6b2c]">
-              ${spentMillions.toFixed(2)}M
+          <div className="rounded-2xl border-[3px] border-[#ff6b2c]/50 bg-[#e9e9e9] px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem]">
+            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[#ff6b2c]">
+              Ejercido
+            </p>
+            <p className="mt-2 font-editorial text-3xl font-semibold tracking-tight text-[#ff6b2c] sm:text-4xl">
+              ${spentMillions.toFixed(2)}
+              <span className="ml-0.5 text-xl opacity-70">M</span>
             </p>
           </div>
         </div>
