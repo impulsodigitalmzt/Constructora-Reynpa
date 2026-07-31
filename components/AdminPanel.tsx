@@ -15,8 +15,7 @@ import { ADMIN_DEMO, isAdminSessionActive, setAdminSession } from "@/lib/obra-st
 
 function readVisualMode(): AdminVisualMode {
   if (typeof window === "undefined") return "sun";
-  const stored = window.localStorage.getItem(ADMIN_VISUAL_MODE_KEY);
-  return stored === "dark" ? "dark" : "sun";
+  return window.localStorage.getItem(ADMIN_VISUAL_MODE_KEY) === "dark" ? "dark" : "sun";
 }
 
 export default function AdminPanel() {
@@ -47,7 +46,6 @@ export default function AdminPanel() {
       setError("");
       return;
     }
-
     setError("Credenciales incorrectas. Usa las de demostración internas.");
   };
 
@@ -59,7 +57,7 @@ export default function AdminPanel() {
   const flashStatus = (message: string) => {
     setStatus(message);
     setError("");
-    window.setTimeout(() => setStatus(""), 3500);
+    window.setTimeout(() => setStatus(""), 3200);
   };
 
   const flashError = (message: string) => {
@@ -69,8 +67,8 @@ export default function AdminPanel() {
 
   if (!ready) {
     return (
-      <div className={`rounded-2xl p-10 text-center text-base font-semibold ${theme.shell}`}>
-        Cargando panel de obra…
+      <div className={`rounded-2xl p-10 text-center text-sm ${theme.surface} ${theme.muted}`}>
+        Cargando panel…
       </div>
     );
   }
@@ -78,48 +76,39 @@ export default function AdminPanel() {
   return (
     <AdminThemeProvider theme={theme}>
       <div
-        className={`relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 px-4 py-5 sm:left-0 sm:w-auto sm:max-w-none sm:translate-x-0 sm:rounded-2xl sm:px-5 ${theme.page}`}
+        className={`relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 px-4 py-5 sm:left-0 sm:w-auto sm:max-w-none sm:translate-x-0 sm:rounded-3xl sm:px-6 sm:py-6 ${theme.page}`}
       >
-        <div className="mb-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <div className="mb-5 flex items-start justify-between gap-3">
           <div>
-            <p className={`text-[0.7rem] font-bold uppercase tracking-[0.14em] ${theme.accent}`}>
-              Uso interno · campo
+            <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.12em] ${theme.accent}`}>
+              Residentes · campo
             </p>
-            <h1 className={`font-editorial mt-1 text-2xl font-bold sm:text-3xl ${theme.title}`}>
-              Panel de residentes
+            <h1 className={`mt-1 text-2xl font-semibold tracking-tight sm:text-3xl ${theme.title}`}>
+              Panel de obra
             </h1>
           </div>
           <button
             type="button"
             onClick={toggleMode}
-            className={`inline-flex min-h-12 items-center justify-center gap-2 rounded-xl px-4 text-[0.68rem] font-bold uppercase tracking-[0.12em] ${
-              mode === "sun"
-                ? "border-2 border-[#111] bg-[#111] text-white"
-                : "border-2 border-[#d4b28c] bg-[#d4b28c] text-black"
-            }`}
-            aria-label={mode === "sun" ? "Cambiar a modo oscuro" : "Cambiar a modo sol"}
+            className={theme.btnGhost}
+            aria-label={mode === "sun" ? "Modo oscuro" : "Modo sol"}
           >
-            {mode === "sun" ? <Moon size={16} /> : <Sun size={16} />}
-            {mode === "sun" ? "Modo oscuro" : "Modo sol"}
+            {mode === "sun" ? <Moon size={15} /> : <Sun size={15} />}
+            <span className="hidden sm:inline">{mode === "sun" ? "Oscuro" : "Sol"}</span>
           </button>
         </div>
 
         {!authenticated ? (
-          <div className={`mx-auto max-w-md overflow-hidden rounded-2xl shadow-xl ${theme.shell}`}>
-            <div className={`border-b-2 px-5 py-5 ${theme.divider}`}>
-              <p className={`text-[0.7rem] font-bold uppercase tracking-[0.16em] ${theme.accent}`}>
-                Acceso interno · campo
-              </p>
-              <h1 className={`font-editorial mt-2 text-3xl font-bold ${theme.title}`}>
-                Panel de obra
-              </h1>
-              <p className={`mt-2 text-sm font-semibold ${theme.muted}`}>
-                Optimizado para uso móvil a la luz del día.
+          <div className={`mx-auto max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
+            <div className={`border-b px-5 py-5 ${theme.hairline}`}>
+              <h2 className={`text-xl font-semibold ${theme.title}`}>Acceso interno</h2>
+              <p className={`mt-1 text-sm ${theme.muted}`}>
+                Interfaz clara para operar a la luz del día.
               </p>
             </div>
-            <form onSubmit={login} className="space-y-4 p-5">
+            <form onSubmit={login} className="space-y-3.5 p-5">
               <label className="block">
-                <span className={theme.label}>Usuario interno</span>
+                <span className={theme.label}>Usuario</span>
                 <input
                   name="user"
                   type="email"
@@ -139,47 +128,51 @@ export default function AdminPanel() {
                 />
               </label>
               {error ? (
-                <p className={`rounded-xl px-3 py-2 text-sm font-semibold ${theme.statusErr}`}>
+                <p className={`rounded-xl px-3 py-2 text-sm font-medium ${theme.statusErr}`}>
                   {error}
                 </p>
               ) : null}
-              <button type="submit" className={theme.btnPrimary}>
-                <LockKeyhole size={16} /> Entrar al panel
+              <button type="submit" className={`${theme.btnPrimary} w-full`}>
+                <LockKeyhole size={15} /> Entrar
               </button>
-              <p className={`text-center text-xs font-medium ${theme.muted}`}>
-                Demo: {ADMIN_DEMO.user} / {ADMIN_DEMO.password}
+              <p className={`text-center text-xs ${theme.muted}`}>
+                {ADMIN_DEMO.user} · {ADMIN_DEMO.password}
               </p>
             </form>
           </div>
         ) : (
           <div className="space-y-4">
-            <header className={`rounded-2xl p-4 sm:p-5 ${theme.shell}`}>
-              <p className={`text-[0.7rem] font-bold uppercase tracking-[0.14em] ${theme.accent}`}>
-                Operación de obra · residentes
-              </p>
-              <h1 className={`font-editorial mt-2 text-3xl font-bold leading-tight sm:text-4xl ${theme.title}`}>
-                {state.projectName}
-              </h1>
-              <p className={`mt-1 text-sm font-semibold ${theme.muted}`}>
-                {state.projectCode} · Uso a pie de obra
-              </p>
-              <div className="mt-4 flex flex-wrap gap-2">
-                <Link href="/portal-cliente" className={theme.btnSecondary}>
-                  Ver portal cliente
-                </Link>
-                <button type="button" onClick={logout} className={theme.btnGhost}>
-                  <LogOut size={15} /> Salir
-                </button>
+            <header className={`rounded-2xl p-5 ${theme.elevated}`}>
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                <div>
+                  <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${theme.accent}`}>
+                    {state.projectCode}
+                  </p>
+                  <h2 className={`mt-1 font-editorial text-3xl tracking-tight sm:text-4xl ${theme.title}`}>
+                    {state.projectName}
+                  </h2>
+                  <p className={`mt-1 text-sm ${theme.muted}`}>Actualización desde campo</p>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <Link href="/portal-cliente" className={theme.btnSecondary}>
+                    Portal cliente
+                  </Link>
+                  <button type="button" onClick={logout} className={theme.btnGhost}>
+                    <LogOut size={14} /> Salir
+                  </button>
+                </div>
               </div>
             </header>
 
             {status ? (
-              <div className={`flex items-center gap-3 rounded-xl px-4 py-3.5 text-sm font-bold ${theme.statusOk}`}>
-                <CheckCircle2 size={18} /> {status}
+              <div
+                className={`flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium ${theme.statusOk}`}
+              >
+                <CheckCircle2 size={16} /> {status}
               </div>
             ) : null}
             {error ? (
-              <div className={`rounded-xl px-4 py-3.5 text-sm font-bold ${theme.statusErr}`}>
+              <div className={`rounded-xl px-4 py-3 text-sm font-medium ${theme.statusErr}`}>
                 {error}
               </div>
             ) : null}

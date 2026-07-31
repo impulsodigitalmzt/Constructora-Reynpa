@@ -87,12 +87,12 @@ export default function PortalOverviewCharts() {
   return (
     <div className="mt-5 grid gap-5 lg:grid-cols-2">
       {/* A) Donut — Avance por Etapas */}
-      <section className="rounded-xl border border-white/8 bg-gradient-to-b from-white/[0.04] to-white/[0.015] p-5 md:p-6">
+      <section className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] md:p-6">
         <div className="mb-2">
-          <h3 className="text-base font-semibold tracking-tight text-white md:text-lg">
+          <h3 className="text-base font-bold tracking-tight text-[#0a0a0a] md:text-lg">
             Avance por Etapas
           </h3>
-          <p className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/30">
+          <p className="mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-[#555]">
             Distribución del avance físico
           </p>
         </div>
@@ -100,21 +100,6 @@ export default function PortalOverviewCharts() {
         <div className="relative mx-auto mt-2 h-[15.5rem] w-full max-w-[17rem] sm:h-[17rem] sm:max-w-[18.5rem]">
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
-              <defs>
-                {stageData.map((item) => (
-                  <linearGradient
-                    key={`grad-${item.name}`}
-                    id={`stage-${item.name}`}
-                    x1="0"
-                    y1="0"
-                    x2="1"
-                    y2="1"
-                  >
-                    <stop offset="0%" stopColor={item.color} stopOpacity={0.75} />
-                    <stop offset="100%" stopColor={item.color} stopOpacity={1} />
-                  </linearGradient>
-                ))}
-              </defs>
               <Pie
                 data={stageData}
                 dataKey="value"
@@ -122,7 +107,7 @@ export default function PortalOverviewCharts() {
                 innerRadius="58%"
                 outerRadius="86%"
                 paddingAngle={3.5}
-                stroke="rgba(10,10,10,0.85)"
+                stroke="#e9e9e9"
                 strokeWidth={3}
                 isAnimationActive
                 animationDuration={1100}
@@ -131,8 +116,8 @@ export default function PortalOverviewCharts() {
                 {stageData.map((item) => (
                   <Cell
                     key={item.name}
-                    fill={`url(#stage-${item.name})`}
-                    style={{ filter: `drop-shadow(0 0 10px ${item.color}55)` }}
+                    fill={item.color}
+                    style={{ filter: `drop-shadow(0 0 8px ${item.color}66)` }}
                   />
                 ))}
               </Pie>
@@ -142,15 +127,15 @@ export default function PortalOverviewCharts() {
                   if (!active || !payload?.length) return null;
                   const item = payload[0]?.payload as (typeof stageData)[number];
                   return (
-                    <div className="rounded-xl border border-white/15 bg-[#0d0d0d]/95 px-3.5 py-2.5 shadow-2xl backdrop-blur-md">
-                      <p className="flex items-center gap-2 text-xs font-medium text-white">
+                    <div className="rounded-xl border-2 border-[#b8b8b8] bg-white px-3.5 py-2.5 shadow-xl">
+                      <p className="flex items-center gap-2 text-xs font-semibold text-[#0a0a0a]">
                         <i
                           className="size-2.5 rounded-full"
                           style={{ background: item.color, boxShadow: `0 0 8px ${item.color}` }}
                         />
                         {item.name}
                       </p>
-                      <p className="mt-1.5 text-sm tabular-nums text-[#d4b28c]">
+                      <p className="mt-1.5 text-sm font-bold tabular-nums" style={{ color: item.color }}>
                         {item.complete}% completado
                       </p>
                     </div>
@@ -161,8 +146,8 @@ export default function PortalOverviewCharts() {
           </ResponsiveContainer>
 
           <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-            <p className="text-[0.52rem] uppercase tracking-[0.2em] text-white/35">Global</p>
-            <p className="font-editorial mt-1 text-4xl tabular-nums text-[#d4b28c] sm:text-5xl">
+            <p className="text-[0.52rem] font-bold uppercase tracking-[0.18em] text-[#555]">Global</p>
+            <p className="font-editorial mt-1 text-4xl tabular-nums text-[#0a0a0a] sm:text-5xl">
               {state.progress}%
             </p>
           </div>
@@ -170,60 +155,60 @@ export default function PortalOverviewCharts() {
 
         <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
           {stageData.map((item) => (
-            <li key={item.name} className="flex items-center gap-2 text-[0.7rem] text-white/60">
+            <li key={item.name} className="flex items-center gap-2 text-[0.7rem] font-semibold text-[#1a1a1a]">
               <i
                 className="size-2.5 shrink-0 rounded-full"
                 style={{ background: item.color, boxShadow: `0 0 8px ${item.color}88` }}
               />
               <span className="truncate">{item.name}</span>
-              <span className="ml-auto tabular-nums text-white/85">{item.complete}%</span>
+              <span className="ml-auto tabular-nums">{item.complete}%</span>
             </li>
           ))}
         </ul>
       </section>
 
       {/* B) Barras horizontales — Desglose Presupuestario */}
-      <section className="rounded-xl border border-white/8 bg-gradient-to-b from-white/[0.04] to-white/[0.015] p-5 md:p-6">
+      <section className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] md:p-6">
         <div className="mb-6">
-          <h3 className="text-base font-semibold tracking-tight text-white md:text-lg">
+          <h3 className="text-base font-bold tracking-tight text-[#0a0a0a] md:text-lg">
             Desglose Presupuestario
           </h3>
-          <p className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/30">
-            Ejercido por rubro · con gradiente
+          <p className="mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.14em] text-[#555]">
+            Ejercido por rubro
           </p>
         </div>
 
         <div className="space-y-5">
           {financeRows.map((row, index) => (
             <div key={row.id} className="group">
-              <p className="mb-2 text-sm font-medium text-white/85">{row.label}</p>
+              <p className="mb-2 text-sm font-bold text-[#0a0a0a]">{row.label}</p>
 
               <div className="flex items-center gap-3">
-                <div className="relative h-11 min-w-0 flex-1 overflow-hidden rounded-xl bg-white/[0.06] ring-1 ring-white/5">
+                <div className="relative h-11 min-w-0 flex-1 overflow-hidden rounded-xl border-2 border-[#cfcfcf] bg-[#d8d8d8]">
                   <div
-                    className="absolute inset-y-0 left-0 flex items-center overflow-hidden rounded-xl transition-[width] duration-1000 ease-out"
+                    className="absolute inset-y-0 left-0 flex items-center overflow-hidden rounded-[10px] transition-[width] duration-1000 ease-out"
                     style={{
                       width: animated ? `${Math.max(row.percent, 10)}%` : "0%",
                       background: row.gradient,
-                      boxShadow: `0 0 24px ${row.glow}`,
+                      boxShadow: `0 0 18px ${row.glow}`,
                       transitionDelay: `${index * 90}ms`,
                     }}
                   >
                     <span
-                      className="pointer-events-none absolute inset-0 opacity-40"
+                      className="pointer-events-none absolute inset-0 opacity-35"
                       style={{
                         background:
-                          "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, transparent 42%, rgba(0,0,0,0.22) 100%)",
+                          "linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 42%, rgba(0,0,0,0.18) 100%)",
                       }}
                     />
                     {row.percent >= 28 || animated ? (
-                      <span className="relative z-[1] whitespace-nowrap px-3 text-[0.7rem] font-semibold tabular-nums tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:text-[0.72rem]">
+                      <span className="relative z-[1] whitespace-nowrap px-3 text-[0.7rem] font-bold tabular-nums tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:text-[0.72rem]">
                         {currency.format(row.amount)}
                       </span>
                     ) : null}
                   </div>
                 </div>
-                <span className="w-11 shrink-0 text-right text-[0.78rem] font-semibold tabular-nums text-white/80">
+                <span className="w-11 shrink-0 text-right text-[0.78rem] font-bold tabular-nums text-[#0a0a0a]">
                   {row.percent}%
                 </span>
               </div>

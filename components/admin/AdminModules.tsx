@@ -3,17 +3,16 @@
 import {
   BookOpen,
   Camera,
+  ChevronDown,
   ClipboardList,
   HardHat,
   ImagePlus,
-  Minus,
   Package,
-  Plus,
   Save,
   Trash2,
   Video,
 } from "lucide-react";
-import { FormEvent, useMemo, useRef, useState } from "react";
+import { FormEvent, useRef, useState } from "react";
 import { useAdminTheme } from "@/components/admin/admin-theme";
 import {
   BITACORA_TIPOS,
@@ -34,6 +33,8 @@ const currency = new Intl.NumberFormat("es-MX", {
   currency: "MXN",
   maximumFractionDigits: 0,
 });
+
+const STAGE_ACCENTS = ["#12b76a", "#2e90fa", "#f5a524", "#f79009", "#9e77ed"];
 
 type TabId = "metricas" | "evidencias" | "bitacora" | "extras" | "materiales";
 
@@ -60,18 +61,18 @@ export function AdminTabs({
   const [tab, setTab] = useState<TabId>("metricas");
 
   return (
-    <div className="space-y-4">
-      <nav className="-mx-1 flex gap-2 overflow-x-auto pb-1">
+    <div className="space-y-5 pb-24">
+      <nav className="flex gap-2 overflow-x-auto pb-0.5">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`inline-flex min-h-12 shrink-0 items-center gap-2 rounded-xl px-4 text-[0.68rem] font-bold uppercase tracking-[0.12em] transition ${
+            className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.08em] transition ${
               tab === id ? t.tabActive : t.tabIdle
             }`}
           >
-            <Icon size={16} />
+            <Icon size={14} />
             {label}
           </button>
         ))}
@@ -90,62 +91,6 @@ export function AdminTabs({
   );
 }
 
-function Stepper({
-  value,
-  onChange,
-  step = 1,
-  min,
-  max,
-  suffix = "",
-}: {
-  value: number;
-  onChange: (value: number) => void;
-  step?: number;
-  min?: number;
-  max?: number;
-  suffix?: string;
-}) {
-  const t = useAdminTheme();
-
-  const clamp = (next: number) => {
-    let v = next;
-    if (typeof min === "number") v = Math.max(min, v);
-    if (typeof max === "number") v = Math.min(max, v);
-    return Number(v.toFixed(step < 1 ? 2 : 0));
-  };
-
-  return (
-    <div className="flex items-center gap-2">
-      <button
-        type="button"
-        aria-label="Disminuir"
-        className={t.stepperBtn}
-        onClick={() => onChange(clamp(value - step))}
-      >
-        <Minus size={22} strokeWidth={3} />
-      </button>
-      <input
-        type="number"
-        inputMode="decimal"
-        value={value}
-        onChange={(event) => onChange(clamp(Number(event.target.value) || 0))}
-        className={`${t.input} text-center text-xl tabular-nums`}
-      />
-      {suffix ? (
-        <span className={`w-8 shrink-0 text-center text-lg font-bold ${t.title}`}>{suffix}</span>
-      ) : null}
-      <button
-        type="button"
-        aria-label="Aumentar"
-        className={t.stepperBtn}
-        onClick={() => onChange(clamp(value + step))}
-      >
-        <Plus size={22} strokeWidth={3} />
-      </button>
-    </div>
-  );
-}
-
 function MetricsTab({
   state,
   save,
@@ -156,137 +101,279 @@ function MetricsTab({
   onStatus: (message: string) => void;
 }) {
   const t = useAdminTheme();
-  const spent = useMemo(() => getSpentTotal(state), [state]);
+  const spent = getSpentTotal(state);
+  const [costsOpen, setCostsOpen] = useState(true);
 
   return (
-    <div className="space-y-4">
-      <section className={`rounded-2xl p-4 sm:p-5 ${t.card}`}>
-        <h2 className={`text-xl font-bold ${t.title}`}>Control de avance</h2>
-        <p className={`mt-1 text-sm font-medium ${t.muted}`}>
-          Ajusta con + / − o escribe el número directo
-        </p>
-
-        <div className={`mt-5 rounded-xl p-4 ${t.form}`}>
-          <div className="mb-3 flex items-center justify-between">
-            <span className={t.label + " !mb-0"}>Avance general</span>
-            <span className={`font-editorial text-4xl font-bold ${t.accent}`}>{state.progress}%</span>
+    <div className="space-y-5">
+      {/* Hero métricas */}
+      <section className={`overflow-hidden rounded-2xl ${t.elevated}`}>
+        <div
+          className={`px-5 py-5 sm:px-6 ${
+            t.mode === "sun"
+              ? "bg-gradient-to-br from-[#101828] via-[#1d2939] to-[#344054] text-white"
+              : "bg-gradient-to-br from-[#2a241c] via-[#1a1a1a] to-[#121212] text-white"
+          }`}
+        >
+          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#d4b28c]">
+            Métricas rápidas
+          </p>
+          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
+            <div>
+              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">Avance</p>
+              <p className="mt-1 font-editorial text-4xl tracking-tight text-[#d4b28c]">
+                {state.progress}%
+              </p>
+            </div>
+            <div>
+              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">SPI</p>
+              <p className="mt-1 font-editorial text-4xl tracking-tight">{state.spi.toFixed(2)}</p>
+            </div>
+            <div>
+              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">CPI</p>
+              <p className="mt-1 font-editorial text-4xl tracking-tight">{state.cpi.toFixed(2)}</p>
+            </div>
+            <div>
+              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">Ejercido</p>
+              <p className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
+                {currency.format(spent)}
+              </p>
+            </div>
           </div>
-          <Stepper
-            value={state.progress}
-            min={0}
-            max={100}
-            step={1}
-            suffix="%"
-            onChange={(progress) => save({ ...state, progress })}
-          />
-          <input
-            type="range"
-            min={0}
-            max={100}
-            value={state.progress}
-            onChange={(event) => save({ ...state, progress: Number(event.target.value) })}
-            className="mt-4 h-4 w-full cursor-pointer appearance-none rounded-full accent-[#8a6a3d]"
-            style={{ background: t.mode === "sun" ? "#d6d0c4" : "#555" }}
-          />
         </div>
 
-        <div className="mt-4 grid gap-3">
-          <div className={`rounded-xl p-4 ${t.form}`}>
+        <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-6">
+          <label className="block sm:col-span-2">
+            <span className={t.label}>Avance general (%)</span>
+            <div className="flex items-center gap-3">
+              <input
+                type="range"
+                min={0}
+                max={100}
+                value={state.progress}
+                onChange={(event) => save({ ...state, progress: Number(event.target.value) })}
+                className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-[#eaecf0] accent-[#b8925f]"
+              />
+              <input
+                type="number"
+                inputMode="numeric"
+                min={0}
+                max={100}
+                value={state.progress}
+                onChange={(event) =>
+                  save({
+                    ...state,
+                    progress: Math.min(100, Math.max(0, Number(event.target.value) || 0)),
+                  })
+                }
+                className={`${t.input} w-[4.5rem] shrink-0 text-center text-lg font-semibold`}
+              />
+            </div>
+          </label>
+          <label className="block">
             <span className={t.label}>SPI</span>
-            <Stepper
+            <input
+              type="number"
+              inputMode="decimal"
+              step={0.01}
               value={state.spi}
-              step={0.01}
-              min={0}
-              max={2}
-              onChange={(spi) => save({ ...state, spi })}
+              onChange={(event) => save({ ...state, spi: Number(event.target.value) || 0 })}
+              className={t.input}
             />
-          </div>
-          <div className={`rounded-xl p-4 ${t.form}`}>
+          </label>
+          <label className="block">
             <span className={t.label}>CPI</span>
-            <Stepper
-              value={state.cpi}
+            <input
+              type="number"
+              inputMode="decimal"
               step={0.01}
-              min={0}
-              max={2}
-              onChange={(cpi) => save({ ...state, cpi })}
+              value={state.cpi}
+              onChange={(event) => save({ ...state, cpi: Number(event.target.value) || 0 })}
+              className={t.input}
             />
-          </div>
-          <div className={`rounded-xl p-4 ${t.form}`}>
+          </label>
+          <label className="block sm:col-span-2">
             <span className={t.label}>Presupuesto total (MXN)</span>
-            <Stepper
+            <input
+              type="number"
+              inputMode="numeric"
               value={state.budgetTotal}
-              step={10000}
-              min={0}
-              onChange={(budgetTotal) => save({ ...state, budgetTotal })}
+              onChange={(event) =>
+                save({ ...state, budgetTotal: Number(event.target.value) || 0 })
+              }
+              className={t.input}
             />
-            <p className={`mt-3 text-sm font-bold ${t.muted}`}>
-              Ejercido: <span className={t.accent}>{currency.format(spent)}</span>
+          </label>
+        </div>
+      </section>
+
+      {/* Etapas */}
+      <section className={`rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+        <div className="mb-4 flex items-end justify-between gap-3">
+          <div>
+            <h2 className={`text-lg font-semibold tracking-tight ${t.title}`}>Avance por etapa</h2>
+            <p className={`mt-1 text-sm ${t.muted}`}>Alimenta el donut del portal</p>
+          </div>
+        </div>
+        <div className="grid grid-cols-2 gap-3">
+          {state.stages.map((stage, index) => {
+            const accent = STAGE_ACCENTS[index % STAGE_ACCENTS.length];
+            return (
+              <label
+                key={stage.label}
+                className={`rounded-xl p-3.5 ${
+                  t.mode === "sun" ? "bg-[#f9fafb] ring-1 ring-black/[0.04]" : "bg-white/[0.03] ring-1 ring-white/8"
+                }`}
+              >
+                <span className="mb-2 flex items-center gap-2 text-[0.78rem] font-semibold" style={{ color: accent }}>
+                  <i className="size-2 rounded-full" style={{ background: accent }} />
+                  {stage.label}
+                </span>
+                <div className="flex items-center gap-2">
+                  <input
+                    type="number"
+                    inputMode="numeric"
+                    min={0}
+                    max={100}
+                    value={stage.value}
+                    onChange={(event) => {
+                      const value = Math.min(100, Math.max(0, Number(event.target.value) || 0));
+                      save({
+                        ...state,
+                        stages: state.stages.map((item, i) =>
+                          i === index ? { ...item, value } : item,
+                        ),
+                      });
+                    }}
+                    className={`${t.input} text-center text-lg font-semibold`}
+                  />
+                  <span className={`text-sm font-medium ${t.muted}`}>%</span>
+                </div>
+              </label>
+            );
+          })}
+        </div>
+      </section>
+
+      {/* Costos colapsable + grid */}
+      <section className={`rounded-2xl ${t.surface}`}>
+        <button
+          type="button"
+          onClick={() => setCostsOpen((open) => !open)}
+          className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left sm:px-6"
+        >
+          <div>
+            <h2 className={`text-lg font-semibold tracking-tight ${t.title}`}>
+              Costos por categoría
+            </h2>
+            <p className={`mt-1 text-sm ${t.muted}`}>
+              {state.costs.length} rubros · toca para {costsOpen ? "ocultar" : "editar"}
             </p>
           </div>
-        </div>
+          <ChevronDown
+            size={20}
+            className={`shrink-0 transition-transform ${t.muted} ${costsOpen ? "rotate-180" : ""}`}
+          />
+        </button>
 
-        <div className={`mt-5 border-t pt-5 ${t.divider}`}>
-          <h3 className={`text-lg font-bold ${t.title}`}>Avance por etapa</h3>
-          <div className="mt-3 space-y-3">
-            {state.stages.map((stage, index) => (
-              <div key={stage.label} className={`rounded-xl p-4 ${t.form}`}>
-                <div className="mb-3 flex items-center gap-2">
-                  <i className="size-3 rounded-full" style={{ background: stage.color }} />
-                  <span className={`text-base font-bold ${t.title}`}>{stage.label}</span>
-                </div>
-                <Stepper
-                  value={stage.value}
-                  min={0}
-                  max={100}
-                  step={1}
-                  suffix="%"
-                  onChange={(value) =>
+        {costsOpen ? (
+          <div className={`border-t px-5 pb-5 pt-4 sm:px-6 ${t.hairline}`}>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+              {state.costs.map((cost) => (
+                <CostCard
+                  key={cost.id}
+                  cost={cost}
+                  onChange={(patch) =>
                     save({
                       ...state,
-                      stages: state.stages.map((item, i) =>
-                        i === index ? { ...item, value } : item,
+                      costs: state.costs.map((item) =>
+                        item.id === cost.id ? { ...item, ...patch } : item,
                       ),
                     })
                   }
                 />
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
-        </div>
+        ) : null}
       </section>
 
-      <section className={`rounded-2xl p-4 sm:p-5 ${t.card}`}>
-        <h2 className={`text-xl font-bold ${t.title}`}>Costos por categoría</h2>
-        <p className={`mt-1 text-sm font-medium ${t.muted}`}>
-          Presupuesto y ejercido · botones + / − de $10,000
-        </p>
-        <div className="mt-4 space-y-3">
-          {state.costs.map((cost) => (
-            <CostField
-              key={cost.id}
-              cost={cost}
-              onChange={(patch) =>
-                save({
-                  ...state,
-                  costs: state.costs.map((item) =>
-                    item.id === cost.id ? { ...item, ...patch } : item,
-                  ),
-                })
-              }
-            />
-          ))}
-        </div>
-        <button
-          type="button"
-          onClick={() => {
-            save({ ...state });
-            onStatus("Avance y costos publicados. El Portal de Clientes ya los refleja.");
-          }}
-          className={`mt-5 ${t.btnPrimary}`}
+      {/* CTA fijo */}
+      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-8 sm:static sm:pointer-events-auto sm:bg-transparent sm:p-0 sm:pt-0">
+        <div
+          className={`pointer-events-auto mx-auto max-w-3xl sm:max-w-none ${
+            t.mode === "sun"
+              ? "bg-gradient-to-t from-[#f4f5f7] via-[#f4f5f7]/95 to-transparent sm:bg-none"
+              : "bg-gradient-to-t from-[#121212] via-[#121212]/95 to-transparent sm:bg-none"
+          } pb-1 pt-6 sm:p-0`}
         >
-          <Save size={18} /> Guardar y publicar métricas
-        </button>
-      </section>
+          <button
+            type="button"
+            onClick={() => {
+              save({ ...state });
+              onStatus("Métricas publicadas. El Portal de Clientes ya las refleja.");
+            }}
+            className={`${t.btnPrimary} w-full shadow-lg shadow-black/10 sm:w-auto`}
+          >
+            <Save size={16} /> Guardar y publicar
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function CostCard({
+  cost,
+  onChange,
+}: {
+  cost: CostCategory;
+  onChange: (patch: Partial<Pick<CostCategory, "amount" | "budget">>) => void;
+}) {
+  const t = useAdminTheme();
+  const pct = Math.min(100, Math.round((cost.amount / Math.max(cost.budget, 1)) * 100));
+
+  return (
+    <div
+      className={`rounded-xl p-4 ${
+        t.mode === "sun" ? "bg-[#f9fafb] ring-1 ring-black/[0.04]" : "bg-white/[0.03] ring-1 ring-white/8"
+      }`}
+    >
+      <div className="mb-3 flex items-center justify-between gap-2">
+        <span className={`flex items-center gap-2 text-sm font-semibold ${t.title}`}>
+          <i className="size-2.5 rounded-full" style={{ background: cost.color }} />
+          {cost.name}
+        </span>
+        <span
+          className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${
+            t.mode === "sun" ? "bg-[#ecfdf3] text-[#027a48]" : "bg-emerald-500/15 text-emerald-300"
+          }`}
+        >
+          {pct}%
+        </span>
+      </div>
+      <div className="grid grid-cols-2 gap-2.5">
+        <label className="block">
+          <span className={t.label}>Presupuesto</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            value={cost.budget}
+            onChange={(event) => onChange({ budget: Number(event.target.value) || 0 })}
+            className={t.input}
+          />
+        </label>
+        <label className="block">
+          <span className={t.label}>Ejercido</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            value={cost.amount}
+            onChange={(event) => onChange({ amount: Number(event.target.value) || 0 })}
+            className={t.input}
+          />
+        </label>
+      </div>
     </div>
   );
 }
@@ -305,9 +392,7 @@ function EvidenceTab({
   const t = useAdminTheme();
   const [publishing, setPublishing] = useState(false);
   const [description, setDescription] = useState("");
-  const [preview, setPreview] = useState<{ type: "image" | "video"; dataUrl: string } | null>(
-    null,
-  );
+  const [preview, setPreview] = useState<{ type: "image" | "video"; dataUrl: string } | null>(null);
   const fileRef = useRef<HTMLInputElement>(null);
 
   const onFileChange = async (fileList: FileList | null) => {
@@ -328,10 +413,9 @@ function EvidenceTab({
       return;
     }
     if (!description.trim()) {
-      onError("Agrega una breve bitácora o descripción.");
+      onError("Agrega una breve descripción.");
       return;
     }
-
     setPublishing(true);
     const item: EvidenceItem = {
       id: `ev-${Date.now()}`,
@@ -341,23 +425,22 @@ function EvidenceTab({
       createdAt: new Date().toISOString(),
       author: "Residente de obra",
     };
-
     save({ ...state, evidences: [item, ...state.evidences].slice(0, 12) });
     setDescription("");
     setPreview(null);
     if (fileRef.current) fileRef.current.value = "";
-    onStatus("Evidencia publicada. Ya aparece en el Portal de Clientes.");
+    onStatus("Evidencia publicada.");
     setPublishing(false);
   };
 
   return (
-    <section className={`space-y-4 rounded-2xl p-4 sm:p-5 ${t.card}`}>
+    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-xl font-bold ${t.title}`}>Evidencias desde campo</h2>
-        <p className={`mt-1 text-sm font-medium ${t.muted}`}>Cámara del celular o archivo</p>
+        <h2 className={`text-lg font-semibold ${t.title}`}>Evidencias desde campo</h2>
+        <p className={`mt-1 text-sm ${t.muted}`}>Foto o video con bitácora breve</p>
       </div>
 
-      <div className={`space-y-4 rounded-xl p-4 ${t.form}`}>
+      <div className="space-y-3">
         <input
           ref={fileRef}
           type="file"
@@ -367,11 +450,11 @@ function EvidenceTab({
           className={t.file}
         />
         <label className="block">
-          <span className={t.label}>Bitácora / descripción</span>
+          <span className={t.label}>Descripción</span>
           <textarea
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            rows={4}
+            rows={3}
             placeholder="Ej. Avance en colado de losa planta alta"
             className={t.textarea}
           />
@@ -380,14 +463,18 @@ function EvidenceTab({
           type="button"
           disabled={publishing}
           onClick={publishEvidence}
-          className={`${t.btnPrimary} disabled:opacity-60`}
+          className={`${t.btnPrimary} w-full disabled:opacity-60`}
         >
-          <ImagePlus size={18} />
-          {publishing ? "Publicando…" : "Guardar / Publicar evidencia"}
+          <ImagePlus size={16} />
+          {publishing ? "Publicando…" : "Publicar evidencia"}
         </button>
       </div>
 
-      <div className={`overflow-hidden rounded-xl border-2 ${t.mode === "sun" ? "border-[#111] bg-[#ddd]" : "border-[#d4b28c] bg-[#1f1f1f]"}`}>
+      <div
+        className={`overflow-hidden rounded-xl ${
+          t.mode === "sun" ? "bg-[#f2f4f7]" : "bg-black/30"
+        }`}
+      >
         {preview ? (
           preview.type === "image" ? (
             // eslint-disable-next-line @next/next/no-img-element
@@ -396,53 +483,43 @@ function EvidenceTab({
             <video src={preview.dataUrl} controls className="aspect-[4/3] w-full object-cover" />
           )
         ) : (
-          <div className={`flex aspect-[4/3] flex-col items-center justify-center gap-3 ${t.muted}`}>
-            <Video size={32} />
-            <p className="text-base font-semibold">Vista previa de captura</p>
+          <div className={`flex aspect-[4/3] flex-col items-center justify-center gap-2 ${t.muted}`}>
+            <Video size={28} />
+            <p className="text-sm">Vista previa</p>
           </div>
         )}
       </div>
 
-      <div className="space-y-3">
-        <p className={`text-sm font-bold ${t.title}`}>Publicadas ({state.evidences.length})</p>
-        {state.evidences.length === 0 ? (
-          <p className={`text-sm font-medium ${t.muted}`}>Aún no hay evidencias publicadas.</p>
-        ) : (
-          <ul className="space-y-3">
-            {state.evidences.map((item) => (
-              <li key={item.id} className={`overflow-hidden rounded-xl ${t.listItem}`}>
-                {item.type === "image" ? (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={item.dataUrl} alt={item.description} className="aspect-video w-full object-cover" />
-                ) : (
-                  <video src={item.dataUrl} className="aspect-video w-full object-cover" muted />
-                )}
-                <div className="flex items-start justify-between gap-2 p-3">
-                  <div>
-                    <p className={`text-base font-bold ${t.title}`}>{item.description}</p>
-                    <p className={`mt-1 text-xs font-medium ${t.muted}`}>
-                      {new Date(item.createdAt).toLocaleString("es-MX")}
-                    </p>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() =>
-                      save({
-                        ...state,
-                        evidences: state.evidences.filter((entry) => entry.id !== item.id),
-                      })
-                    }
-                    className="grid size-12 place-items-center rounded-xl border-2 border-current"
-                    aria-label="Eliminar evidencia"
-                  >
-                    <Trash2 size={18} />
-                  </button>
-                </div>
-              </li>
-            ))}
-          </ul>
-        )}
-      </div>
+      {state.evidences.length > 0 ? (
+        <ul className="grid grid-cols-2 gap-3">
+          {state.evidences.map((item) => (
+            <li key={item.id} className={`overflow-hidden rounded-xl ${t.elevated}`}>
+              {item.type === "image" ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img src={item.dataUrl} alt={item.description} className="aspect-video w-full object-cover" />
+              ) : (
+                <video src={item.dataUrl} className="aspect-video w-full object-cover" muted />
+              )}
+              <div className="flex items-start justify-between gap-2 p-2.5">
+                <p className={`line-clamp-2 text-xs font-medium ${t.title}`}>{item.description}</p>
+                <button
+                  type="button"
+                  onClick={() =>
+                    save({
+                      ...state,
+                      evidences: state.evidences.filter((entry) => entry.id !== item.id),
+                    })
+                  }
+                  className={`grid size-8 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
+                  aria-label="Eliminar"
+                >
+                  <Trash2 size={14} />
+                </button>
+              </div>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </section>
   );
 }
@@ -474,66 +551,67 @@ function BitacoraTab({
     };
     save({ ...state, bitacora: [entry, ...state.bitacora].slice(0, 40) });
     setNotes("");
-    onStatus("Entrada de bitácora registrada.");
+    onStatus("Entrada registrada en bitácora.");
   };
 
   const tipoLabel = (id: BitacoraTipo) =>
     BITACORA_TIPOS.find((item) => item.id === id)?.label ?? id;
 
   return (
-    <section className={`space-y-4 rounded-2xl p-4 sm:p-5 ${t.card}`}>
+    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-xl font-bold ${t.title}`}>Bitácora de obra oficial</h2>
-        <p className={`mt-1 text-sm font-medium ${t.muted}`}>Diario de campo</p>
+        <h2 className={`text-lg font-semibold ${t.title}`}>Bitácora de obra</h2>
+        <p className={`mt-1 text-sm ${t.muted}`}>Registro rápido de incidencias</p>
       </div>
 
-      <form onSubmit={submit} className={`space-y-4 rounded-xl p-4 ${t.form}`}>
-        <label className="block">
-          <span className={t.label}>Fecha</span>
-          <input
-            type="date"
-            value={date}
-            onChange={(event) => setDate(event.target.value)}
-            className={t.input}
-            required
-          />
-        </label>
-        <label className="block">
-          <span className={t.label}>Tipo de incidencia</span>
-          <select
-            value={tipo}
-            onChange={(event) => setTipo(event.target.value as BitacoraTipo)}
-            className={t.input}
-          >
-            {BITACORA_TIPOS.map((item) => (
-              <option key={item.id} value={item.id}>
-                {item.label}
-              </option>
-            ))}
-          </select>
-        </label>
+      <form onSubmit={submit} className="space-y-3">
+        <div className="grid grid-cols-2 gap-3">
+          <label className="block">
+            <span className={t.label}>Fecha</span>
+            <input
+              type="date"
+              value={date}
+              onChange={(event) => setDate(event.target.value)}
+              className={t.input}
+              required
+            />
+          </label>
+          <label className="block">
+            <span className={t.label}>Tipo</span>
+            <select
+              value={tipo}
+              onChange={(event) => setTipo(event.target.value as BitacoraTipo)}
+              className={t.input}
+            >
+              {BITACORA_TIPOS.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {item.label}
+                </option>
+              ))}
+            </select>
+          </label>
+        </div>
         <label className="block">
           <span className={t.label}>Notas</span>
           <textarea
             value={notes}
             onChange={(event) => setNotes(event.target.value)}
-            rows={4}
-            placeholder="Describe lo ocurrido en campo…"
+            rows={3}
+            placeholder="Describe lo ocurrido…"
             className={t.textarea}
             required
           />
         </label>
-        <button type="submit" className={t.btnPrimary}>
-          <Save size={18} /> Registrar en bitácora
+        <button type="submit" className={`${t.btnPrimary} w-full`}>
+          <Save size={16} /> Registrar
         </button>
       </form>
 
-      <div className="space-y-3">
-        <p className={`text-sm font-bold ${t.title}`}>Historial ({state.bitacora.length})</p>
+      <ul className="space-y-2.5">
         {state.bitacora.map((entry) => (
-          <article key={entry.id} className={`rounded-xl p-4 ${t.listItem}`}>
+          <li key={entry.id} className={`rounded-xl p-4 ${t.elevated}`}>
             <div className="flex items-start justify-between gap-2">
-              <span className={`rounded-lg px-3 py-1.5 text-xs font-bold uppercase ${t.tabActive}`}>
+              <span className="rounded-full bg-[#eff8ff] px-2.5 py-1 text-[0.65rem] font-semibold text-[#175cd3]">
                 {tipoLabel(entry.tipo)}
               </span>
               <button
@@ -544,19 +622,19 @@ function BitacoraTab({
                     bitacora: state.bitacora.filter((item) => item.id !== entry.id),
                   })
                 }
-                className="grid size-12 place-items-center rounded-xl border-2 border-current"
-                aria-label="Eliminar entrada"
+                className={`grid size-8 place-items-center rounded-lg ${t.btnGhost}`}
+                aria-label="Eliminar"
               >
-                <Trash2 size={18} />
+                <Trash2 size={14} />
               </button>
             </div>
-            <p className={`mt-3 text-base font-semibold leading-6 ${t.title}`}>{entry.notes}</p>
-            <p className={`mt-2 text-xs font-medium ${t.muted}`}>
-              {new Date(`${entry.date}T12:00:00`).toLocaleDateString("es-MX")} · {entry.author}
+            <p className={`mt-2.5 text-sm leading-6 ${t.title}`}>{entry.notes}</p>
+            <p className={`mt-2 text-xs ${t.muted}`}>
+              {new Date(`${entry.date}T12:00:00`).toLocaleDateString("es-MX")}
             </p>
-          </article>
+          </li>
         ))}
-      </div>
+      </ul>
     </section>
   );
 }
@@ -572,7 +650,7 @@ function ChangeOrdersTab({
 }) {
   const t = useAdminTheme();
   const [description, setDescription] = useState("");
-  const [cost, setCost] = useState(0);
+  const [cost, setCost] = useState("");
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -580,13 +658,13 @@ function ChangeOrdersTab({
     const order: ChangeOrder = {
       id: `oc-${Date.now()}`,
       description: description.trim(),
-      cost,
+      cost: Number(cost) || 0,
       status: "pendiente",
       createdAt: new Date().toISOString(),
     };
     save({ ...state, changeOrders: [order, ...state.changeOrders] });
     setDescription("");
-    setCost(0);
+    setCost("");
     onStatus("Orden de cambio registrada.");
   };
 
@@ -595,44 +673,56 @@ function ChangeOrdersTab({
     .reduce((sum, item) => sum + item.cost, 0);
 
   return (
-    <section className={`space-y-4 rounded-2xl p-4 sm:p-5 ${t.card}`}>
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+      <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className={`text-xl font-bold ${t.title}`}>Órdenes de cambio / extras</h2>
-          <p className={`mt-1 text-sm font-medium ${t.muted}`}>Fuera del contrato original</p>
+          <h2 className={`text-lg font-semibold ${t.title}`}>Órdenes de cambio</h2>
+          <p className={`mt-1 text-sm ${t.muted}`}>Extras fuera de contrato</p>
         </div>
-        <div className={`rounded-xl px-4 py-3 text-right ${t.form}`}>
-          <p className={`text-xs font-bold uppercase ${t.muted}`}>Aprobados</p>
-          <p className={`text-lg font-bold ${t.accent}`}>{currency.format(totalExtras)}</p>
+        <div className="rounded-xl bg-[#ecfdf3] px-3 py-2 text-right">
+          <p className="text-[0.6rem] font-semibold uppercase tracking-[0.08em] text-[#027a48]">
+            Aprobados
+          </p>
+          <p className="text-sm font-semibold text-[#027a48]">{currency.format(totalExtras)}</p>
         </div>
       </div>
 
-      <form onSubmit={submit} className={`space-y-4 rounded-xl p-4 ${t.form}`}>
+      <form onSubmit={submit} className="space-y-3">
         <label className="block">
           <span className={t.label}>Descripción</span>
           <input
             value={description}
             onChange={(event) => setDescription(event.target.value)}
-            placeholder="Ej. Ampliación de terraza posterior"
+            placeholder="Ej. Ampliación de terraza"
             className={t.input}
             required
           />
         </label>
         <label className="block">
           <span className={t.label}>Costo extra (MXN)</span>
-          <Stepper value={cost} step={1000} min={0} onChange={setCost} />
+          <input
+            type="number"
+            inputMode="numeric"
+            value={cost}
+            onChange={(event) => setCost(event.target.value)}
+            placeholder="48500"
+            className={t.input}
+            required
+          />
         </label>
-        <button type="submit" className={t.btnPrimary}>
-          <Save size={18} /> Registrar solicitud
+        <button type="submit" className={`${t.btnPrimary} w-full`}>
+          <Save size={16} /> Registrar solicitud
         </button>
       </form>
 
-      <ul className="space-y-3">
+      <ul className="space-y-2.5">
         {state.changeOrders.map((order) => (
-          <li key={order.id} className={`rounded-xl p-4 ${t.listItem}`}>
-            <p className={`text-base font-bold ${t.title}`}>{order.description}</p>
-            <p className={`mt-1 text-lg font-bold ${t.accent}`}>{currency.format(order.cost)}</p>
-            <div className="mt-3 flex flex-wrap gap-2">
+          <li key={order.id} className={`rounded-xl p-4 ${t.elevated}`}>
+            <p className={`text-sm font-semibold ${t.title}`}>{order.description}</p>
+            <p className={`mt-1 text-base font-semibold ${t.accent}`}>
+              {currency.format(order.cost)}
+            </p>
+            <div className="mt-3 flex flex-wrap items-center gap-2">
               {(["pendiente", "aprobado"] as ChangeOrderStatus[]).map((status) => (
                 <button
                   key={status}
@@ -645,8 +735,14 @@ function ChangeOrdersTab({
                       ),
                     })
                   }
-                  className={`min-h-12 rounded-xl px-4 text-xs font-bold uppercase tracking-[0.1em] ${
-                    order.status === status ? t.tabActive : t.tabIdle
+                  className={`rounded-full px-3 py-1.5 text-[0.65rem] font-semibold uppercase tracking-[0.06em] ${
+                    order.status === status
+                      ? status === "aprobado"
+                        ? "bg-[#ecfdf3] text-[#027a48]"
+                        : "bg-[#f2f4f7] text-[#344054]"
+                      : t.mode === "sun"
+                        ? "text-[#98a2b3] ring-1 ring-[#eaecf0]"
+                        : "text-white/35 ring-1 ring-white/10"
                   }`}
                 >
                   {status}
@@ -660,10 +756,10 @@ function ChangeOrdersTab({
                     changeOrders: state.changeOrders.filter((item) => item.id !== order.id),
                   })
                 }
-                className="ml-auto grid size-12 place-items-center rounded-xl border-2 border-current"
-                aria-label="Eliminar orden"
+                className={`ml-auto grid size-8 place-items-center rounded-lg ${t.btnGhost}`}
+                aria-label="Eliminar"
               >
-                <Trash2 size={18} />
+                <Trash2 size={14} />
               </button>
             </div>
           </li>
@@ -715,17 +811,17 @@ function MaterialsTab({
     setMaterial("");
     setTicketPreview(null);
     if (fileRef.current) fileRef.current.value = "";
-    onStatus("Recepción de material registrada.");
+    onStatus("Recepción registrada.");
   };
 
   return (
-    <section className={`space-y-4 rounded-2xl p-4 sm:p-5 ${t.card}`}>
+    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-xl font-bold ${t.title}`}>Recepción de materiales</h2>
-        <p className={`mt-1 text-sm font-medium ${t.muted}`}>Remisiones y tickets de entrega</p>
+        <h2 className={`text-lg font-semibold ${t.title}`}>Recepción de materiales</h2>
+        <p className={`mt-1 text-sm ${t.muted}`}>Remisiones y tickets</p>
       </div>
 
-      <form onSubmit={submit} className={`space-y-4 rounded-xl p-4 ${t.form}`}>
+      <form onSubmit={submit} className="space-y-3">
         <label className="block">
           <span className={t.label}>Proveedor</span>
           <input
@@ -741,13 +837,13 @@ function MaterialsTab({
           <input
             value={material}
             onChange={(event) => setMaterial(event.target.value)}
-            placeholder="Ej. Varilla 3/8 · 2 toneladas"
+            placeholder="Ej. Varilla 3/8 · 2 ton"
             className={t.input}
             required
           />
         </label>
         <label className="block">
-          <span className={t.label}>Foto del ticket / remisión</span>
+          <span className={t.label}>Foto del ticket</span>
           <input
             ref={fileRef}
             type="file"
@@ -759,28 +855,28 @@ function MaterialsTab({
         </label>
         {ticketPreview ? (
           // eslint-disable-next-line @next/next/no-img-element
-          <img src={ticketPreview} alt="Ticket" className="max-h-48 w-full rounded-xl object-cover" />
+          <img src={ticketPreview} alt="Ticket" className="max-h-40 w-full rounded-xl object-cover" />
         ) : null}
-        <button type="submit" className={t.btnPrimary}>
-          <Save size={18} /> Registrar recepción
+        <button type="submit" className={`${t.btnPrimary} w-full`}>
+          <Save size={16} /> Registrar recepción
         </button>
       </form>
 
-      <ul className="space-y-3">
+      <ul className="grid grid-cols-2 gap-3">
         {state.materials.map((item) => (
-          <li key={item.id} className={`overflow-hidden rounded-xl ${t.listItem}`}>
+          <li key={item.id} className={`overflow-hidden rounded-xl ${t.elevated}`}>
             {item.ticketDataUrl ? (
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={item.ticketDataUrl}
-                alt={`Ticket ${item.material}`}
+                alt={item.material}
                 className="aspect-video w-full object-cover"
               />
             ) : null}
-            <div className="flex items-start justify-between gap-2 p-4">
+            <div className="flex items-start justify-between gap-2 p-3">
               <div>
-                <p className={`text-base font-bold ${t.title}`}>{item.material}</p>
-                <p className={`mt-1 text-sm font-medium ${t.muted}`}>{item.provider}</p>
+                <p className={`text-sm font-semibold ${t.title}`}>{item.material}</p>
+                <p className={`mt-0.5 text-xs ${t.muted}`}>{item.provider}</p>
               </div>
               <button
                 type="button"
@@ -790,54 +886,15 @@ function MaterialsTab({
                     materials: state.materials.filter((entry) => entry.id !== item.id),
                   })
                 }
-                className="grid size-12 place-items-center rounded-xl border-2 border-current"
-                aria-label="Eliminar recepción"
+                className={`grid size-8 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
+                aria-label="Eliminar"
               >
-                <Trash2 size={18} />
+                <Trash2 size={14} />
               </button>
             </div>
           </li>
         ))}
       </ul>
     </section>
-  );
-}
-
-function CostField({
-  cost,
-  onChange,
-}: {
-  cost: CostCategory;
-  onChange: (patch: Partial<Pick<CostCategory, "amount" | "budget">>) => void;
-}) {
-  const t = useAdminTheme();
-
-  return (
-    <div className={`rounded-xl p-4 ${t.form}`}>
-      <div className="mb-3 flex items-center gap-2">
-        <i className="size-3 rounded-full" style={{ background: cost.color }} />
-        <span className={`text-base font-bold ${t.title}`}>{cost.name}</span>
-      </div>
-      <div className="space-y-3">
-        <div>
-          <span className={t.label}>Presupuesto</span>
-          <Stepper
-            value={cost.budget}
-            step={10000}
-            min={0}
-            onChange={(budget) => onChange({ budget })}
-          />
-        </div>
-        <div>
-          <span className={t.label}>Ejercido</span>
-          <Stepper
-            value={cost.amount}
-            step={10000}
-            min={0}
-            onChange={(amount) => onChange({ amount })}
-          />
-        </div>
-      </div>
-    </div>
   );
 }

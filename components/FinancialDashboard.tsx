@@ -17,10 +17,27 @@ import {
 import { useObraStore } from "@/hooks/useObraStore";
 import { getSpentTotal, withCostPercents } from "@/lib/obra-store";
 
-const GOLD = "#d4b28c";
-const GOLD_SOFT = "#e4c9a8";
-const GOLD_DEEP = "#b8925f";
-const STEEL = "#8fa3b5";
+/** Colores brillantes para gráficas (alta visibilidad) */
+const CHART = {
+  avance: "#00e5a8",
+  spi: "#3b82ff",
+  cpi: "#ff6b2c",
+  programado: "#ff4d6d",
+  ejecutado: "#22c55e",
+  costos: "#38bdf8",
+  track: "#cfcfcf",
+} as const;
+
+const COST_BRIGHT: Record<string, string> = {
+  materiales: "#2f6bff",
+  manoObra: "#12b76a",
+  equipos: "#ff7a1a",
+  subcontratistas: "#a855f7",
+  manoObraForanea: "#f43f5e",
+};
+
+const cardClass =
+  "rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)]";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -48,16 +65,18 @@ function ChartTooltip({
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-xl border border-white/15 bg-[#121212]/95 px-3 py-2.5 shadow-2xl backdrop-blur-md">
+    <div className="rounded-xl border-2 border-[#b8b8b8] bg-white px-3 py-2.5 shadow-xl">
       {label ? (
-        <p className="mb-2 text-[0.55rem] uppercase tracking-[0.16em] text-[#d4b28c]">{label}</p>
+        <p className="mb-2 text-[0.55rem] font-bold uppercase tracking-[0.14em] text-[#8a6a3d]">
+          {label}
+        </p>
       ) : null}
       <div className="space-y-1.5">
         {payload.map((entry) => (
-          <p key={String(entry.name)} className="flex items-center gap-2 text-xs text-white/80">
-            <span className="size-2 rounded-full" style={{ background: entry.color }} />
-            <span className="text-white/50">{entry.name}:</span>
-            <span>
+          <p key={String(entry.name)} className="flex items-center gap-2 text-xs text-[#1a1a1a]">
+            <span className="size-2.5 rounded-full" style={{ background: entry.color }} />
+            <span className="text-[#555]">{entry.name}:</span>
+            <span className="font-semibold">
               {typeof entry.value === "number"
                 ? suffix === "m"
                   ? `$${entry.value.toFixed(2)}M`
@@ -93,10 +112,14 @@ function DonutGauge({
   ];
 
   return (
-    <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-      <div className="mb-2 flex items-center justify-between">
-        <p className="text-[0.56rem] uppercase tracking-[0.18em] text-white/40">{label}</p>
-        <span className="text-[0.52rem] uppercase tracking-[0.14em] text-[#d4b28c]">{note}</span>
+    <article className={cardClass}>
+      <div className="mb-2 flex items-center justify-between gap-2">
+        <p className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[#1a1a1a]">
+          {label}
+        </p>
+        <span className="text-[0.55rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
+          {note}
+        </span>
       </div>
       <div className="relative mx-auto h-40 w-full max-w-[11rem]">
         <ResponsiveContainer width="100%" height="100%">
@@ -112,12 +135,12 @@ function DonutGauge({
               paddingAngle={1}
             >
               <Cell fill={color} />
-              <Cell fill="rgba(255,255,255,0.08)" />
+              <Cell fill={CHART.track} />
             </Pie>
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <p className="text-3xl font-light tracking-tight text-white">
+          <p className="text-3xl font-semibold tracking-tight text-[#0a0a0a]">
             {displayValue ?? `${value}%`}
           </p>
         </div>
@@ -129,7 +152,10 @@ function DonutGauge({
 export default function FinancialDashboard() {
   const { state } = useObraStore();
   const totalCost = getSpentTotal(state);
-  const costBreakdown = withCostPercents(state);
+  const costBreakdown = withCostPercents(state).map((item) => ({
+    ...item,
+    color: COST_BRIGHT[item.id] ?? item.color,
+  }));
   const budgetMillions = state.budgetTotal / 1_000_000;
   const spentMillions = totalCost / 1_000_000;
 
@@ -137,21 +163,21 @@ export default function FinancialDashboard() {
     {
       label: "Avance general",
       value: state.progress,
-      color: GOLD,
+      color: CHART.avance,
       note: "Obra ejecutada",
     },
     {
       label: "SPI",
       value: Math.round(state.spi * 100),
       displayValue: state.spi.toFixed(2),
-      color: GOLD_SOFT,
+      color: CHART.spi,
       note: "Desempeño de tiempo",
     },
     {
       label: "CPI",
       value: Math.round(state.cpi * 100),
       displayValue: state.cpi.toFixed(2),
-      color: GOLD_DEEP,
+      color: CHART.cpi,
       note: "Desempeño de costo",
     },
   ];
@@ -166,59 +192,59 @@ export default function FinancialDashboard() {
           <h3 className="font-editorial mt-2 text-3xl text-white md:text-4xl">
             Dashboard de obra
           </h3>
-          <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/40">
+          <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
             Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2 text-[0.55rem] uppercase tracking-[0.14em] sm:text-right">
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 sm:min-w-[9rem]">
-            <p className="text-white/35">Presupuesto</p>
-            <p className="mt-1 text-sm tracking-normal text-white">
+          <div className="rounded-xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-2.5 sm:min-w-[9rem]">
+            <p className="font-bold text-[#555]">Presupuesto</p>
+            <p className="mt-1 text-sm font-semibold tracking-normal text-[#0a0a0a]">
               ${budgetMillions.toFixed(2)}M
             </p>
           </div>
-          <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 sm:min-w-[9rem]">
-            <p className="text-white/35">Ejercido</p>
-            <p className="mt-1 text-sm tracking-normal text-[#d4b28c]">
+          <div className="rounded-xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-2.5 sm:min-w-[9rem]">
+            <p className="font-bold text-[#555]">Ejercido</p>
+            <p className="mt-1 text-sm font-semibold tracking-normal text-[#ff6b2c]">
               ${spentMillions.toFixed(2)}M
             </p>
           </div>
         </div>
       </div>
 
-      <div className="grid gap-3 sm:grid-cols-3">
+      <div className="grid gap-4 sm:grid-cols-3">
         {kpiGauges.map((gauge) => (
           <DonutGauge key={gauge.label} {...gauge} />
         ))}
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1.35fr_0.85fr]">
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-6">
+        <article className={`${cardClass} md:p-6`}>
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h4 className="text-sm font-semibold text-white">Curva de avance y costos</h4>
-              <p className="mt-1 text-[0.58rem] text-white/35">
+              <h4 className="text-sm font-bold text-[#0a0a0a]">Curva de avance y costos</h4>
+              <p className="mt-1 text-[0.62rem] font-medium text-[#555]">
                 Comparativa mensual · Enero a Diciembre
               </p>
             </div>
-            <div className="flex flex-wrap gap-3 text-[0.55rem] uppercase tracking-[0.12em]">
-              <LegendDot color={GOLD} label="Programado" />
-              <LegendDot color="#f4f4f5" label="Ejecutado" />
-              <LegendDot color={STEEL} label="Costos reales" />
+            <div className="flex flex-wrap gap-3 text-[0.58rem] font-bold uppercase tracking-[0.1em]">
+              <LegendDot color={CHART.programado} label="Programado" />
+              <LegendDot color={CHART.ejecutado} label="Ejecutado" />
+              <LegendDot color={CHART.costos} label="Costos reales" />
             </div>
           </div>
           <div className="h-64 w-full sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={state.monthly} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
+                <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
                 <XAxis
                   dataKey="month"
-                  tick={{ fill: "rgba(255,255,255,0.45)", fontSize: 11 }}
+                  tick={{ fill: "#444", fontSize: 11, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 11 }}
+                  tick={{ fill: "#666", fontSize: 11 }}
                   axisLine={false}
                   tickLine={false}
                   tickFormatter={(value: number) => `$${value}M`}
@@ -228,40 +254,40 @@ export default function FinancialDashboard() {
                   type="monotone"
                   dataKey="programado"
                   name="Trabajo programado"
-                  stroke={GOLD}
-                  strokeWidth={2.4}
-                  dot={{ r: 3, fill: GOLD, strokeWidth: 0 }}
-                  activeDot={{ r: 5 }}
+                  stroke={CHART.programado}
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: CHART.programado, strokeWidth: 0 }}
+                  activeDot={{ r: 6 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="ejecutado"
                   name="Trabajo ejecutado"
-                  stroke="#f4f4f5"
-                  strokeWidth={2.2}
-                  dot={{ r: 3, fill: "#f4f4f5", strokeWidth: 0 }}
-                  activeDot={{ r: 5 }}
+                  stroke={CHART.ejecutado}
+                  strokeWidth={3}
+                  dot={{ r: 4, fill: CHART.ejecutado, strokeWidth: 0 }}
+                  activeDot={{ r: 6 }}
                 />
                 <Line
                   type="monotone"
                   dataKey="costos"
                   name="Costos reales"
-                  stroke={STEEL}
-                  strokeWidth={2.2}
-                  strokeDasharray="5 4"
-                  dot={{ r: 3, fill: STEEL, strokeWidth: 0 }}
-                  activeDot={{ r: 5 }}
+                  stroke={CHART.costos}
+                  strokeWidth={3}
+                  strokeDasharray="6 4"
+                  dot={{ r: 4, fill: CHART.costos, strokeWidth: 0 }}
+                  activeDot={{ r: 6 }}
                 />
               </LineChart>
             </ResponsiveContainer>
           </div>
         </article>
 
-        <article className="rounded-2xl border border-white/10 bg-white/[0.03] p-4 md:p-6">
+        <article className={`${cardClass} md:p-6`}>
           <div className="mb-5 flex items-start justify-between gap-3">
             <div>
-              <h4 className="text-sm font-semibold text-white">Desglose de costos</h4>
-              <p className="mt-1 text-[0.58rem] text-white/35">
+              <h4 className="text-sm font-bold text-[#0a0a0a]">Desglose de costos</h4>
+              <p className="mt-1 text-[0.62rem] font-medium text-[#555]">
                 Total acumulado · {currency.format(totalCost)}
               </p>
             </div>
@@ -274,7 +300,8 @@ export default function FinancialDashboard() {
                     innerRadius="58%"
                     outerRadius="88%"
                     paddingAngle={2}
-                    stroke="none"
+                    stroke="#e9e9e9"
+                    strokeWidth={2}
                   >
                     {costBreakdown.map((item) => (
                       <Cell key={item.name} fill={item.color} />
@@ -292,11 +319,11 @@ export default function FinancialDashboard() {
                 data={costBreakdown}
                 margin={{ top: 0, right: 18, left: 8, bottom: 0 }}
               >
-                <CartesianGrid stroke="rgba(255,255,255,0.05)" horizontal={false} />
+                <CartesianGrid stroke="rgba(0,0,0,0.06)" horizontal={false} />
                 <XAxis
                   type="number"
                   domain={[0, Math.max(...costBreakdown.map((item) => item.percent), 50)]}
-                  tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 10 }}
+                  tick={{ fill: "#555", fontSize: 10, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                   tickFormatter={(value: number) => `${value}%`}
@@ -305,7 +332,7 @@ export default function FinancialDashboard() {
                   type="category"
                   dataKey="name"
                   width={108}
-                  tick={{ fill: "rgba(255,255,255,0.55)", fontSize: 11 }}
+                  tick={{ fill: "#1a1a1a", fontSize: 11, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />
@@ -314,10 +341,14 @@ export default function FinancialDashboard() {
                     if (!active || !payload?.length) return null;
                     const item = payload[0]?.payload as (typeof costBreakdown)[number];
                     return (
-                      <div className="rounded-xl border border-white/15 bg-[#121212]/95 px-3 py-2.5 text-xs text-white shadow-2xl">
-                        <p className="text-[#d4b28c]">{item.name}</p>
-                        <p className="mt-1 text-white/80">{currency.format(item.amount)}</p>
-                        <p className="mt-1 text-white/45">{item.percent}% del ejercido</p>
+                      <div className="rounded-xl border-2 border-[#b8b8b8] bg-white px-3 py-2.5 text-xs shadow-xl">
+                        <p className="font-bold" style={{ color: item.color }}>
+                          {item.name}
+                        </p>
+                        <p className="mt-1 font-semibold text-[#0a0a0a]">
+                          {currency.format(item.amount)}
+                        </p>
+                        <p className="mt-1 text-[#555]">{item.percent}% del ejercido</p>
                       </div>
                     );
                   }}
@@ -331,16 +362,16 @@ export default function FinancialDashboard() {
             </ResponsiveContainer>
           </div>
 
-          <ul className="mt-4 space-y-2.5 border-t border-white/10 pt-4">
+          <ul className="mt-4 space-y-2.5 border-t-2 border-[#cfcfcf] pt-4">
             {costBreakdown.map((item) => (
               <li key={item.name} className="flex items-center justify-between gap-3 text-xs">
-                <span className="flex items-center gap-2 text-white/55">
-                  <i className="size-2 rounded-full" style={{ background: item.color }} />
+                <span className="flex items-center gap-2 font-semibold text-[#1a1a1a]">
+                  <i className="size-2.5 rounded-full" style={{ background: item.color }} />
                   {item.name}
                 </span>
-                <span className="text-right text-white/80">
+                <span className="text-right font-semibold text-[#0a0a0a]">
                   {currency.format(item.amount)}
-                  <span className="ml-2 text-white/35">{item.percent}%</span>
+                  <span className="ml-2 text-[#555]">{item.percent}%</span>
                 </span>
               </li>
             ))}
@@ -353,8 +384,8 @@ export default function FinancialDashboard() {
 
 function LegendDot({ color, label }: { color: string; label: string }) {
   return (
-    <span className="inline-flex items-center gap-2 text-white/45">
-      <i className="size-2 rounded-full" style={{ background: color }} />
+    <span className="inline-flex items-center gap-2 text-[#1a1a1a]">
+      <i className="size-2.5 rounded-full" style={{ background: color }} />
       {label}
     </span>
   );

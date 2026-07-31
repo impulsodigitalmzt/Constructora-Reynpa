@@ -231,7 +231,7 @@ export default function PortalDashboard() {
                 {state.evidences.map((item) => (
                   <article
                     key={item.id}
-                    className="group overflow-hidden rounded-xl border border-[#d4b28c]/25 bg-white/[.025]"
+                    className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
                   >
                     <div className="relative aspect-[4/5] bg-neutral-900">
                       {item.type === "image" ? (
@@ -254,8 +254,8 @@ export default function PortalDashboard() {
                       </span>
                     </div>
                     <div className="p-4">
-                      <p className="text-sm font-medium">{item.description}</p>
-                      <p className="mt-1 text-[0.58rem] text-white/25">
+                      <p className="text-sm font-semibold text-[#0a0a0a]">{item.description}</p>
+                      <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
                         {new Date(item.createdAt).toLocaleString("es-MX")} · {item.author}
                       </p>
                     </div>
@@ -267,7 +267,7 @@ export default function PortalDashboard() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {videos.map((video, index) => (
-              <article key={video} className="group overflow-hidden rounded-xl border border-white/8 bg-white/[.025]">
+              <article key={video} className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
                 <div className="group relative aspect-[4/5] bg-neutral-900">
                   <video
                     src={`/video/${video}`}
@@ -284,10 +284,10 @@ export default function PortalDashboard() {
                   </span>
                 </div>
                 <div className="p-4">
-                  <p className="text-sm font-medium">
+                  <p className="text-sm font-semibold text-[#0a0a0a]">
                     {index < 2 ? "Supervisión de estructura" : index < 5 ? "Avance de instalaciones" : "Recorrido de obra"}
                   </p>
-                  <p className="mt-1 text-[0.58rem] text-white/25">{28 - index * 2} Jul 2026 · Equipo REYPA</p>
+                  <p className="mt-1 text-[0.58rem] font-medium text-[#555]">{28 - index * 2} Jul 2026 · Equipo REYPA</p>
                 </div>
               </article>
             ))}
@@ -310,13 +310,15 @@ function Metric({
   note: string;
 }) {
   return (
-    <article className="rounded-xl border border-white/8 bg-white/[.025] p-5">
+    <article className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
       <div className="flex items-center justify-between">
-        <span className="text-[0.58rem] uppercase tracking-[0.15em] text-white/25">{label}</span>
-        <Icon size={17} className="text-[#d4b28c]" />
+        <span className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[#555]">
+          {label}
+        </span>
+        <Icon size={17} className="text-[#ff6b2c]" />
       </div>
-      <p className="mt-6 text-3xl font-light tracking-tight">{value}</p>
-      <p className="mt-2 text-[0.6rem] text-white/28">{note}</p>
+      <p className="mt-6 text-3xl font-semibold tracking-tight text-[#0a0a0a]">{value}</p>
+      <p className="mt-2 text-[0.68rem] font-semibold text-[#027a48]">{note}</p>
     </article>
   );
 }

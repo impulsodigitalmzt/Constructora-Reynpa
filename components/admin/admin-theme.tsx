@@ -9,9 +9,8 @@ export const ADMIN_VISUAL_MODE_KEY = "reypa-admin-visual-mode";
 export type AdminTheme = {
   mode: AdminVisualMode;
   page: string;
-  shell: string;
-  card: string;
-  form: string;
+  surface: string;
+  elevated: string;
   title: string;
   muted: string;
   label: string;
@@ -23,79 +22,70 @@ export type AdminTheme = {
   btnPrimary: string;
   btnSecondary: string;
   btnGhost: string;
-  stepperBtn: string;
   statusOk: string;
   statusErr: string;
   accent: string;
-  divider: string;
-  listItem: string;
+  hairline: string;
 };
 
 export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
   if (mode === "sun") {
     return {
       mode,
-      page: "bg-[#e6e2d8]",
-      shell: "border-2 border-[#111] bg-[#f5f2ea] text-[#0a0a0a]",
-      card: "border-2 border-[#111] bg-white text-[#0a0a0a]",
-      form: "border-2 border-[#111] bg-[#fffdf8] text-[#0a0a0a]",
-      title: "text-[#0a0a0a]",
-      muted: "text-[#1f1f1f]",
-      label: "mb-2 block text-[0.7rem] font-bold uppercase tracking-[0.14em] text-[#0a0a0a]",
+      page: "bg-[#f4f5f7]",
+      surface: "border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
+      elevated:
+        "border border-black/[0.06] bg-white shadow-[0_8px_30px_rgba(16,24,40,0.06)]",
+      title: "text-[#101828]",
+      muted: "text-[#667085]",
+      label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#667085]",
       input:
-        "h-14 w-full rounded-xl border-2 border-[#111] bg-white px-4 text-base font-semibold text-[#0a0a0a] outline-none placeholder:text-[#0a0a0a]/40 focus:border-[#8a6a3d] focus:ring-4 focus:ring-[#d4b28c]/45",
+        "h-12 w-full rounded-xl border border-[#d0d5dd] bg-[#f9fafb] px-3.5 text-[0.95rem] font-medium text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25",
       textarea:
-        "w-full resize-none rounded-xl border-2 border-[#111] bg-white px-4 py-3.5 text-base font-semibold text-[#0a0a0a] outline-none placeholder:text-[#0a0a0a]/40 focus:border-[#8a6a3d] focus:ring-4 focus:ring-[#d4b28c]/45",
+        "w-full resize-none rounded-xl border border-[#d0d5dd] bg-[#f9fafb] px-3.5 py-3 text-[0.95rem] font-medium text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25",
       file:
-        "block w-full rounded-xl border-2 border-dashed border-[#111] bg-white px-4 py-7 text-sm font-semibold text-[#0a0a0a] file:mr-4 file:rounded-xl file:border-0 file:bg-[#d4b28c] file:px-4 file:py-3 file:text-[0.65rem] file:font-bold file:uppercase file:tracking-[0.12em] file:text-black",
-      tabActive: "bg-[#111] text-white shadow-md",
-      tabIdle: "border-2 border-[#111] bg-white text-[#0a0a0a]",
+        "block w-full rounded-xl border border-dashed border-[#d0d5dd] bg-[#f9fafb] px-4 py-6 text-sm font-medium text-[#344054] file:mr-3 file:rounded-lg file:border-0 file:bg-[#101828] file:px-3.5 file:py-2 file:text-[0.65rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-white",
+      tabActive: "bg-[#101828] text-white shadow-sm",
+      tabIdle: "bg-white text-[#667085] ring-1 ring-black/[0.06] hover:text-[#101828]",
       btnPrimary:
-        "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-[#d4b28c] px-5 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-black sm:w-auto",
+        "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#101828] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#1d2939]",
       btnSecondary:
-        "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-[#111] bg-white px-4 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-[#0a0a0a]",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#344054] ring-1 ring-black/[0.08]",
       btnGhost:
-        "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#111] px-4 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white",
-      stepperBtn:
-        "grid size-14 shrink-0 place-items-center rounded-xl border-2 border-[#111] bg-[#111] text-2xl font-bold leading-none text-white active:scale-95",
-      statusOk: "border-2 border-[#166534] bg-[#dcfce7] text-[#14532d]",
-      statusErr: "border-2 border-[#991b1b] bg-[#fee2e2] text-[#7f1d1d]",
-      accent: "text-[#8a6a3d]",
-      divider: "border-[#111]/20",
-      listItem: "border-2 border-[#111] bg-white",
+        "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#f2f4f7] px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#344054]",
+      statusOk: "border border-emerald-200 bg-emerald-50 text-emerald-800",
+      statusErr: "border border-rose-200 bg-rose-50 text-rose-800",
+      accent: "text-[#b8925f]",
+      hairline: "border-black/[0.06]",
     };
   }
 
   return {
     mode,
-    page: "bg-[#1c1c1c]",
-    shell: "border-2 border-[#d4b28c] bg-[#2a2a2a] text-white",
-    card: "border-2 border-[#d4b28c]/70 bg-[#333] text-white",
-    form: "border-2 border-[#d4b28c] bg-[#3a3a3a] text-white",
+    page: "bg-[#121212]",
+    surface: "border border-white/10 bg-[#1a1a1a]",
+    elevated: "border border-white/10 bg-[#1f1f1f] shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
     title: "text-white",
-    muted: "text-white/90",
-    label: "mb-2 block text-[0.7rem] font-bold uppercase tracking-[0.14em] text-white",
+    muted: "text-white/55",
+    label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/45",
     input:
-      "h-14 w-full rounded-xl border-2 border-[#d4b28c] bg-[#1f1f1f] px-4 text-base font-semibold text-white outline-none placeholder:text-white/40 focus:ring-4 focus:ring-[#d4b28c]/35",
+      "h-12 w-full rounded-xl border border-white/12 bg-white/[0.04] px-3.5 text-[0.95rem] font-medium text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15",
     textarea:
-      "w-full resize-none rounded-xl border-2 border-[#d4b28c] bg-[#1f1f1f] px-4 py-3.5 text-base font-semibold text-white outline-none placeholder:text-white/40 focus:ring-4 focus:ring-[#d4b28c]/35",
+      "w-full resize-none rounded-xl border border-white/12 bg-white/[0.04] px-3.5 py-3 text-[0.95rem] font-medium text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15",
     file:
-      "block w-full rounded-xl border-2 border-dashed border-[#d4b28c] bg-[#1f1f1f] px-4 py-7 text-sm font-semibold text-white file:mr-4 file:rounded-xl file:border-0 file:bg-[#d4b28c] file:px-4 file:py-3 file:text-[0.65rem] file:font-bold file:uppercase file:tracking-[0.12em] file:text-black",
-    tabActive: "bg-[#d4b28c] text-black shadow-md",
-    tabIdle: "border-2 border-[#d4b28c]/60 bg-[#1f1f1f] text-white",
+      "block w-full rounded-xl border border-dashed border-white/15 bg-white/[0.04] px-4 py-6 text-sm font-medium text-white/70 file:mr-3 file:rounded-lg file:border-0 file:bg-[#d4b28c] file:px-3.5 file:py-2 file:text-[0.65rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-black",
+    tabActive: "bg-[#d4b28c] text-black shadow-sm",
+    tabIdle: "bg-white/[0.04] text-white/50 ring-1 ring-white/10 hover:text-white",
     btnPrimary:
-      "inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-xl bg-[#d4b28c] px-5 text-[0.72rem] font-bold uppercase tracking-[0.14em] text-black sm:w-auto",
+      "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#d4b28c] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-black",
     btnSecondary:
-      "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border-2 border-[#d4b28c] bg-transparent px-4 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-white",
+      "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-transparent px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/70 ring-1 ring-white/15",
     btnGhost:
-      "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-white px-4 text-[0.65rem] font-bold uppercase tracking-[0.12em] text-black",
-    stepperBtn:
-      "grid size-14 shrink-0 place-items-center rounded-xl border-2 border-[#d4b28c] bg-[#d4b28c] text-2xl font-bold leading-none text-black active:scale-95",
-    statusOk: "border-2 border-[#d4b28c] bg-[#d4b28c]/20 text-[#f5e6d0]",
-    statusErr: "border-2 border-red-400 bg-red-500/25 text-red-100",
+      "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white/10 px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white",
+    statusOk: "border border-emerald-500/30 bg-emerald-500/10 text-emerald-200",
+    statusErr: "border border-rose-500/30 bg-rose-500/10 text-rose-200",
     accent: "text-[#d4b28c]",
-    divider: "border-white/25",
-    listItem: "border-2 border-[#d4b28c]/50 bg-[#2f2f2f]",
+    hairline: "border-white/10",
   };
 }
 
