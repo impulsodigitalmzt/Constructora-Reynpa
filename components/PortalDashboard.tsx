@@ -14,6 +14,9 @@ import {
 } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import FinancialDashboard from "@/components/FinancialDashboard";
+import PortalOverviewCharts from "@/components/PortalOverviewCharts";
+import { useObraStore } from "@/hooks/useObraStore";
+import { getSpentTotal } from "@/lib/obra-store";
 
 const videos = [
   "AQM05lq19CEQAvO4u2f8rC41EUII7qBdO-2dZBUCDgUKXkEYPhpb3opA-pzwK6n2QzoUNUR7oau5crS2i1cJAt2FBg5zwxrtxkM8Icasnw.mp4",
@@ -25,17 +28,14 @@ const videos = [
   "AQOZndZd9yYINsDdvZXc09UpsWxEPwi77ZNP2_mxY5sVItMdzHnrtkHU4aLE25b9d8dTwPZoGVvbErQu3Gs6AV6SPiGBYwSiZaU.mp4",
 ];
 
-const stages = [
-  { label: "Preliminares", value: 100 },
-  { label: "Cimentación", value: 100 },
-  { label: "Estructura", value: 82 },
-  { label: "Instalaciones", value: 46 },
-  { label: "Acabados", value: 12 },
-];
-
 export default function PortalDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [view, setView] = useState<"overview" | "finance" | "updates">("overview");
+  const { state } = useObraStore();
+  const spent = getSpentTotal(state);
+  const spentMillions = (spent / 1_000_000).toFixed(2);
+  const budgetMillions = (state.budgetTotal / 1_000_000).toFixed(1);
+  const progressShare = Math.round((spent / Math.max(state.budgetTotal, 1)) * 100);
 
   const enterDemo = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -132,8 +132,10 @@ export default function PortalDashboard() {
         <div className="flex items-center gap-3">
           <div className="grid size-9 place-items-center rounded-lg bg-[#d4b28c] text-xs font-bold text-black">R</div>
           <div>
-            <p className="text-sm font-semibold">Residencia Lomas</p>
-            <p className="mt-0.5 text-[0.56rem] uppercase tracking-[0.15em] text-white/25">REY-024 · Mazatlán, Sin.</p>
+            <p className="text-sm font-semibold">{state.projectName}</p>
+            <p className="mt-0.5 text-[0.56rem] uppercase tracking-[0.15em] text-white/25">
+              {state.projectCode} · Mazatlán, Sin.
+            </p>
           </div>
         </div>
         <div className="flex items-center gap-2">
@@ -190,29 +192,50 @@ export default function PortalDashboard() {
           </div>
 
           <div className="grid gap-3 md:grid-cols-3">
-            <Metric icon={TrendingUp} label="Avance general" value="68%" note="+7% este mes" />
-            <Metric icon={CircleDollarSign} label="Presupuesto ejercido" value="61%" note="$1.83M de $3.0M" />
+            <Metric icon={TrendingUp} label="Avance general" value={`${state.progress}%`} note="Actualizado desde campo" />
+            <Metric
+              icon={CircleDollarSign}
+              label="Presupuesto ejercido"
+              value={`${progressShare}%`}
+              note={`$${spentMillions}M de $${budgetMillions}M`}
+            />
             <Metric icon={CalendarDays} label="Entrega estimada" value="18 Oct" note="En tiempo" />
           </div>
 
+          <PortalOverviewCharts />
+
           <div className="mt-5 grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
             <section className="rounded-xl border border-white/8 bg-white/[.025] p-5 md:p-6">
-              <div className="mb-7 flex items-start justify-between">
+              <div className="mb-5 flex items-start justify-between">
                 <div>
-                  <h3 className="font-semibold">Progreso por etapa</h3>
-                  <p className="mt-1 text-[0.58rem] text-white/25">Actualizado hoy, 16:40</p>
+                  <h3 className="font-semibold">Detalle por etapa</h3>
+                  <p className="mt-1 text-[0.58rem] text-white/25">
+                    Actualizado {new Date(state.updatedAt).toLocaleString("es-MX")}
+                  </p>
                 </div>
                 <HardHat size={20} className="text-[#d4b28c]" />
               </div>
-              <div className="space-y-5">
-                {stages.map((stage) => (
+              <div className="space-y-4">
+                {state.stages.map((stage) => (
                   <div key={stage.label}>
                     <div className="mb-2 flex justify-between text-[0.65rem]">
-                      <span className="text-white/45">{stage.label}</span>
+                      <span className="flex items-center gap-2 text-white/45">
+                        <i
+                          className="size-2 rounded-full"
+                          style={{ background: stage.color || "#d4b28c" }}
+                        />
+                        {stage.label}
+                      </span>
                       <span className="text-white/65">{stage.value}%</span>
                     </div>
-                    <div className="h-px overflow-hidden bg-white/10">
-                      <div className="h-full bg-[#d4b28c]" style={{ width: `${stage.value}%` }} />
+                    <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
+                      <div
+                        className="h-full rounded-full transition-all duration-500"
+                        style={{
+                          width: `${stage.value}%`,
+                          background: stage.color || "#d4b28c",
+                        }}
+                      />
                     </div>
                   </div>
                 ))}
@@ -231,11 +254,17 @@ export default function PortalDashboard() {
                   ["06 AGO", "Revisión con cliente", "Seguimiento"],
                 ].map(([date, task, area], index) => (
                   <div key={task} className="flex gap-4">
-                    <div className={`mt-1 grid size-5 shrink-0 place-items-center rounded-full ${index === 0 ? "bg-[#d4b28c] text-black" : "border border-white/20"}`}>
+                    <div
+                      className={`mt-1 grid size-5 shrink-0 place-items-center rounded-full ${
+                        index === 0 ? "bg-[#d4b28c] text-black" : "border border-white/20"
+                      }`}
+                    >
                       {index === 0 && <Check size={12} />}
                     </div>
                     <div>
-                      <p className="text-[0.6rem] font-bold tracking-[0.15em] text-white/35">{date}</p>
+                      <p className="text-[0.6rem] font-bold tracking-[0.15em] text-white/35">
+                        {date}
+                      </p>
                       <p className="mt-1 text-sm">{task}</p>
                       <p className="mt-1 text-xs text-white/40">{area}</p>
                     </div>
@@ -256,8 +285,54 @@ export default function PortalDashboard() {
               <p className="text-[0.58rem] uppercase tracking-[0.18em] text-white/25">Bitácora audiovisual</p>
               <h2 className="font-editorial mt-2 text-3xl">Avances recientes</h2>
             </div>
-            <p className="text-[0.58rem] uppercase tracking-[0.16em] text-[#d4b28c]">7 evidencias verificadas</p>
+            <p className="text-[0.58rem] uppercase tracking-[0.16em] text-[#d4b28c]">
+              {state.evidences.length + videos.length} evidencias
+            </p>
           </div>
+
+          {state.evidences.length > 0 ? (
+            <div className="mb-8">
+              <p className="mb-4 text-[0.56rem] uppercase tracking-[0.18em] text-[#d4b28c]">
+                Publicadas desde campo
+              </p>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                {state.evidences.map((item) => (
+                  <article
+                    key={item.id}
+                    className="group overflow-hidden rounded-xl border border-[#d4b28c]/25 bg-white/[.025]"
+                  >
+                    <div className="relative aspect-[4/5] bg-neutral-900">
+                      {item.type === "image" ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img
+                          src={item.dataUrl}
+                          alt={item.description}
+                          className="size-full object-cover"
+                        />
+                      ) : (
+                        <video
+                          src={item.dataUrl}
+                          controls
+                          playsInline
+                          className="size-full object-cover"
+                        />
+                      )}
+                      <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-[#d4b28c] px-3 py-2 text-[0.58rem] font-bold uppercase tracking-[0.12em] text-black">
+                        Nueva
+                      </span>
+                    </div>
+                    <div className="p-4">
+                      <p className="text-sm font-medium">{item.description}</p>
+                      <p className="mt-1 text-[0.58rem] text-white/25">
+                        {new Date(item.createdAt).toLocaleString("es-MX")} · {item.author}
+                      </p>
+                    </div>
+                  </article>
+                ))}
+              </div>
+            </div>
+          ) : null}
+
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {videos.map((video, index) => (
               <article key={video} className="group overflow-hidden rounded-xl border border-white/8 bg-white/[.025]">

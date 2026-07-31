@@ -41,6 +41,12 @@ export default function PortalClientePage() {
               <div className="mt-7 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/[.025] px-4 py-2 text-[0.55rem] uppercase tracking-[0.18em] text-[#d4b28c]">
                 <LockKeyhole size={13} /> Vista demostrativa
               </div>
+              <p className="mt-5 text-xs text-white/35">
+                ¿Eres residente de obra?{" "}
+                <a href="/admin" className="text-[#d4b28c] underline-offset-2 hover:underline">
+                  Entra al panel de administración
+                </a>
+              </p>
             </div>
           </div>
         </div>

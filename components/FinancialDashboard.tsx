@@ -14,41 +14,13 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import { useObraStore } from "@/hooks/useObraStore";
+import { getSpentTotal, withCostPercents } from "@/lib/obra-store";
 
 const GOLD = "#d4b28c";
 const GOLD_SOFT = "#e4c9a8";
 const GOLD_DEEP = "#b8925f";
-const CHARCOAL = "#3a3a3a";
 const STEEL = "#8fa3b5";
-
-const kpiGauges = [
-  { label: "Avance general", value: 68, color: GOLD, note: "Obra ejecutada" },
-  { label: "SPI", value: 96, displayValue: "0.96", color: GOLD_SOFT, note: "Desempeño de tiempo" },
-  { label: "CPI", value: 104, displayValue: "1.04", color: GOLD_DEEP, note: "Desempeño de costo" },
-];
-
-const monthlySeries = [
-  { month: "Ene", programado: 0.18, ejecutado: 0.16, costos: 0.2 },
-  { month: "Feb", programado: 0.35, ejecutado: 0.32, costos: 0.38 },
-  { month: "Mar", programado: 0.55, ejecutado: 0.52, costos: 0.62 },
-  { month: "Abr", programado: 0.78, ejecutado: 0.74, costos: 0.88 },
-  { month: "May", programado: 1.05, ejecutado: 1.02, costos: 1.18 },
-  { month: "Jun", programado: 1.32, ejecutado: 1.28, costos: 1.55 },
-  { month: "Jul", programado: 1.58, ejecutado: 1.55, costos: 1.83 },
-  { month: "Ago", programado: 1.85, ejecutado: 1.72, costos: 2.05 },
-  { month: "Sep", programado: 2.15, ejecutado: 1.95, costos: 2.28 },
-  { month: "Oct", programado: 2.45, ejecutado: 2.2, costos: 2.5 },
-  { month: "Nov", programado: 2.75, ejecutado: 2.45, costos: 2.7 },
-  { month: "Dic", programado: 3.0, ejecutado: 2.75, costos: 2.95 },
-];
-
-const costBreakdown = [
-  { name: "Materiales", amount: 985262, percent: 42, color: GOLD },
-  { name: "Mano de obra", amount: 721050, percent: 31, color: GOLD_DEEP },
-  { name: "Equipos", amount: 278420, percent: 12, color: GOLD_SOFT },
-  { name: "Subcontratistas", amount: 214210, percent: 9, color: STEEL },
-  { name: "Mano de obra foránea", amount: 140180, percent: 6, color: CHARCOAL },
-];
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -60,7 +32,6 @@ type TooltipPayload = {
   name?: string;
   value?: number | string;
   color?: string;
-  payload?: Record<string, unknown>;
 };
 
 function ChartTooltip({
@@ -156,7 +127,34 @@ function DonutGauge({
 }
 
 export default function FinancialDashboard() {
-  const totalCost = costBreakdown.reduce((sum, item) => sum + item.amount, 0);
+  const { state } = useObraStore();
+  const totalCost = getSpentTotal(state);
+  const costBreakdown = withCostPercents(state);
+  const budgetMillions = state.budgetTotal / 1_000_000;
+  const spentMillions = totalCost / 1_000_000;
+
+  const kpiGauges = [
+    {
+      label: "Avance general",
+      value: state.progress,
+      color: GOLD,
+      note: "Obra ejecutada",
+    },
+    {
+      label: "SPI",
+      value: Math.round(state.spi * 100),
+      displayValue: state.spi.toFixed(2),
+      color: GOLD_SOFT,
+      note: "Desempeño de tiempo",
+    },
+    {
+      label: "CPI",
+      value: Math.round(state.cpi * 100),
+      displayValue: state.cpi.toFixed(2),
+      color: GOLD_DEEP,
+      note: "Desempeño de costo",
+    },
+  ];
 
   return (
     <section className="space-y-5">
@@ -169,18 +167,21 @@ export default function FinancialDashboard() {
             Dashboard de obra
           </h3>
           <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/40">
-            Indicadores clave, curva de avance mensual y desglose de costos con datos
-            demostrativos coherentes para Residencia Lomas · REY-024.
+            Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
           </p>
         </div>
         <div className="grid grid-cols-2 gap-2 text-[0.55rem] uppercase tracking-[0.14em] sm:text-right">
           <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 sm:min-w-[9rem]">
             <p className="text-white/35">Presupuesto</p>
-            <p className="mt-1 text-sm tracking-normal text-white">$3.00M</p>
+            <p className="mt-1 text-sm tracking-normal text-white">
+              ${budgetMillions.toFixed(2)}M
+            </p>
           </div>
           <div className="rounded-xl border border-white/10 bg-white/[0.03] px-3 py-2 sm:min-w-[9rem]">
             <p className="text-white/35">Ejercido</p>
-            <p className="mt-1 text-sm tracking-normal text-[#d4b28c]">$1.83M</p>
+            <p className="mt-1 text-sm tracking-normal text-[#d4b28c]">
+              ${spentMillions.toFixed(2)}M
+            </p>
           </div>
         </div>
       </div>
@@ -196,7 +197,9 @@ export default function FinancialDashboard() {
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <h4 className="text-sm font-semibold text-white">Curva de avance y costos</h4>
-              <p className="mt-1 text-[0.58rem] text-white/35">Comparativa mensual · Enero a Diciembre</p>
+              <p className="mt-1 text-[0.58rem] text-white/35">
+                Comparativa mensual · Enero a Diciembre
+              </p>
             </div>
             <div className="flex flex-wrap gap-3 text-[0.55rem] uppercase tracking-[0.12em]">
               <LegendDot color={GOLD} label="Programado" />
@@ -206,7 +209,7 @@ export default function FinancialDashboard() {
           </div>
           <div className="h-64 w-full sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={monthlySeries} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
+              <LineChart data={state.monthly} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
                 <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
                 <XAxis
                   dataKey="month"
@@ -292,7 +295,7 @@ export default function FinancialDashboard() {
                 <CartesianGrid stroke="rgba(255,255,255,0.05)" horizontal={false} />
                 <XAxis
                   type="number"
-                  domain={[0, 50]}
+                  domain={[0, Math.max(...costBreakdown.map((item) => item.percent), 50)]}
                   tick={{ fill: "rgba(255,255,255,0.35)", fontSize: 10 }}
                   axisLine={false}
                   tickLine={false}
@@ -314,7 +317,7 @@ export default function FinancialDashboard() {
                       <div className="rounded-xl border border-white/15 bg-[#121212]/95 px-3 py-2.5 text-xs text-white shadow-2xl">
                         <p className="text-[#d4b28c]">{item.name}</p>
                         <p className="mt-1 text-white/80">{currency.format(item.amount)}</p>
-                        <p className="mt-1 text-white/45">{item.percent}% del presupuesto</p>
+                        <p className="mt-1 text-white/45">{item.percent}% del ejercido</p>
                       </div>
                     );
                   }}
