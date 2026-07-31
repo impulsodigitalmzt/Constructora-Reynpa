@@ -16,14 +16,35 @@ import { useObraStore } from "@/hooks/useObraStore";
 import { getSpentTotal } from "@/lib/obra-store";
 
 const videos = [
-  "AQM05lq19CEQAvO4u2f8rC41EUII7qBdO-2dZBUCDgUKXkEYPhpb3opA-pzwK6n2QzoUNUR7oau5crS2i1cJAt2FBg5zwxrtxkM8Icasnw.mp4",
-  "AQMRwYR-7odwkxuYptMByjkRZWbhnebEIrITEk84RQF9k2Kd8fQdChU1QrQNBz-NDlT5lo40UQt48MyrpZTBlpJvlvHf3k89g6YXrRS6QQ.mp4",
-  "AQNdaEgBPA6NKJD444IZJB76Lxxd6hvCkMaVJV93gZEcjOqfMr25jJW3ggnRl1rWNFnDte-YhIeD5KY0mEMIkpoijQpKK_qssSUZLk0TPA.mp4",
-  "AQNJvG8irY7dXJ94Fz_Ztzk6EhZMVqTNHUPmwfc1JZSSEcOOAX5Yly1RCACaZQqDy-90VLS6bcThb4z6N7vRTYOPsgNrNY0mDxQ.mp4",
-  "AQNqbltK9dOzw36bGq4UwslAuEgVBj-foQVdQcjwSctD1qLVirdoN7pTV42SxUK1sikK4M_s4vpaMAMEu_nyHoxXr1avNI3SdVYEEXyszw.mp4",
-  "AQO7zqrBLunM_-AAN4WHpaT1zqtzOue-UyF083Xg_8pnZBty30YZ4REP1WPcnEbZYBYjx9yqOd_ewWPKXVA22ezJJLSGrEq8nkj_8pSneA.mp4",
-  "AQOZndZd9yYINsDdvZXc09UpsWxEPwi77ZNP2_mxY5sVItMdzHnrtkHU4aLE25b9d8dTwPZoGVvbErQu3Gs6AV6SPiGBYwSiZaU.mp4",
+  {
+    file: "AQM05lq19CEQAvO4u2f8rC41EUII7qBdO-2dZBUCDgUKXkEYPhpb3opA-pzwK6n2QzoUNUR7oau5crS2i1cJAt2FBg5zwxrtxkM8Icasnw.mp4",
+    title: "Supervisión de estructura",
+  },
+  {
+    file: "AQMRwYR-7odwkxuYptMByjkRZWbhnebEIrITEk84RQF9k2Kd8fQdChU1QrQNBz-NDlT5lo40UQt48MyrpZTBlpJvlvHf3k89g6YXrRS6QQ.mp4",
+    title: "Supervisión de estructura",
+  },
+  {
+    file: "AQNdaEgBPA6NKJD444IZJB76Lxxd6hvCkMaVJV93gZEcjOqfMr25jJW3ggnRl1rWNFnDte-YhIeD5KY0mEMIkpoijQpKK_qssSUZLk0TPA.mp4",
+    title: "Avance de instalaciones",
+  },
+  {
+    file: "AQNqbltK9dOzw36bGq4UwslAuEgVBj-foQVdQcjwSctD1qLVirdoN7pTV42SxUK1sikK4M_s4vpaMAMEu_nyHoxXr1avNI3SdVYEEXyszw.mp4",
+    title: "Avance de instalaciones",
+  },
+  {
+    file: "AQO7zqrBLunM_-AAN4WHpaT1zqtzOue-UyF083Xg_8pnZBty30YZ4REP1WPcnEbZYBYjx9yqOd_ewWPKXVA22ezJJLSGrEq8nkj_8pSneA.mp4",
+    title: "Recorrido de obra",
+  },
+  {
+    file: "GENERA_UN_LOGO_METALICO_TIPO_B (online-video-cutter.com).mp4",
+    title: "Identidad de obra REYPA",
+  },
 ];
+
+function videoSrc(file: string) {
+  return `/video/${encodeURIComponent(file).replace(/%2F/gi, "/")}`;
+}
 
 export default function PortalDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
@@ -45,7 +66,7 @@ export default function PortalDashboard() {
         <div className="grid min-h-[42rem] lg:grid-cols-[1.05fr_.95fr]">
           <div className="noise relative hidden overflow-hidden border-r border-white/10 lg:block">
             <video
-              src={`/video/${videos[0]}`}
+              src={videoSrc(videos[0].file)}
               autoPlay
               muted
               loop
@@ -267,16 +288,16 @@ export default function PortalDashboard() {
 
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {videos.map((video, index) => (
-              <article key={video} className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
+              <article key={video.file} className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
                 <div className="group relative aspect-[4/5] bg-neutral-900">
                   <video
-                    src={`/video/${video}`}
+                    src={videoSrc(video.file)}
                     autoPlay
                     muted
                     loop
                     controls
                     playsInline
-                    preload="auto"
+                    preload="metadata"
                     className="size-full object-cover grayscale-[15%] transition duration-500 group-hover:grayscale-0"
                   />
                   <span className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full bg-black/65 px-3 py-2 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur">
@@ -284,10 +305,10 @@ export default function PortalDashboard() {
                   </span>
                 </div>
                 <div className="p-4">
-                  <p className="text-sm font-semibold text-[#0a0a0a]">
-                    {index < 2 ? "Supervisión de estructura" : index < 5 ? "Avance de instalaciones" : "Recorrido de obra"}
+                  <p className="text-sm font-semibold text-[#0a0a0a]">{video.title}</p>
+                  <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
+                    {28 - index * 2} Jul 2026 · Equipo REYPA
                   </p>
-                  <p className="mt-1 text-[0.58rem] font-medium text-[#555]">{28 - index * 2} Jul 2026 · Equipo REYPA</p>
                 </div>
               </article>
             ))}
