@@ -10,6 +10,11 @@ export const metadata: Metadata = {
   },
   description:
     "Arquitectura, diseño interior, proyectos ejecutivos y construcción con seguimiento transparente en Mazatlán, Sinaloa.",
+  icons: {
+    icon: [{ url: "/logo/LOGO.png", type: "image/png" }],
+    shortcut: "/logo/LOGO.png",
+    apple: "/logo/LOGO.png",
+  },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
