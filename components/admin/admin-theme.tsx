@@ -49,12 +49,12 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
       muted: "text-[#667085]",
       label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#667085]",
       input: `${inputBaseSun} w-full px-3.5`,
-      inputPct: `${inputBaseSun} w-[4.25rem] shrink-0 px-2 text-center tabular-nums`,
-      inputAmt: `${inputBaseSun} w-[10.5rem] max-w-full shrink-0 px-3 text-right tabular-nums`,
+      inputPct: `${inputBaseSun} w-[4.25rem] max-w-full shrink-0 px-2 text-center tabular-nums`,
+      inputAmt: `${inputBaseSun} w-full max-w-[10.5rem] shrink-0 px-3 text-right tabular-nums`,
       textarea:
         "w-full resize-none rounded-xl border border-[#d0d5dd] bg-[#f9fafb] px-3.5 py-3 text-[0.95rem] font-medium text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25",
       file:
-        "block w-full rounded-xl border border-dashed border-[#d0d5dd] bg-[#f9fafb] px-4 py-6 text-sm font-medium text-[#344054] file:mr-3 file:rounded-lg file:border-0 file:bg-[#101828] file:px-3.5 file:py-2 file:text-[0.65rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-white",
+        "block w-full max-w-full overflow-hidden rounded-xl border border-dashed border-[#d0d5dd] bg-[#f9fafb] px-3 py-5 text-sm font-medium text-[#344054] file:mr-2 file:rounded-lg file:border-0 file:bg-[#101828] file:px-3 file:py-2 file:text-[0.6rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-white sm:px-4 sm:py-6 sm:file:mr-3",
       tabActive: "bg-[#101828] text-white shadow-sm",
       tabIdle: "bg-white text-[#667085] ring-1 ring-black/[0.06] hover:text-[#101828]",
       btnPrimary:
@@ -79,12 +79,12 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
     muted: "text-white/55",
     label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/45",
     input: `${inputBaseDark} w-full px-3.5`,
-    inputPct: `${inputBaseDark} w-[4.25rem] shrink-0 px-2 text-center tabular-nums`,
-    inputAmt: `${inputBaseDark} w-[10.5rem] max-w-full shrink-0 px-3 text-right tabular-nums`,
+    inputPct: `${inputBaseDark} w-[4.25rem] max-w-full shrink-0 px-2 text-center tabular-nums`,
+    inputAmt: `${inputBaseDark} w-full max-w-[10.5rem] shrink-0 px-3 text-right tabular-nums`,
     textarea:
       "w-full resize-none rounded-xl border border-white/12 bg-white/[0.04] px-3.5 py-3 text-[0.95rem] font-medium text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15",
     file:
-      "block w-full rounded-xl border border-dashed border-white/15 bg-white/[0.04] px-4 py-6 text-sm font-medium text-white/70 file:mr-3 file:rounded-lg file:border-0 file:bg-[#d4b28c] file:px-3.5 file:py-2 file:text-[0.65rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-black",
+      "block w-full max-w-full overflow-hidden rounded-xl border border-dashed border-white/15 bg-white/[0.04] px-3 py-5 text-sm font-medium text-white/70 file:mr-2 file:rounded-lg file:border-0 file:bg-[#d4b28c] file:px-3 file:py-2 file:text-[0.6rem] file:font-semibold file:uppercase file:tracking-[0.08em] file:text-black sm:px-4 sm:py-6 sm:file:mr-3",
     tabActive: "bg-[#d4b28c] text-black shadow-sm",
     tabIdle: "bg-white/[0.04] text-white/50 ring-1 ring-white/10 hover:text-white",
     btnPrimary:

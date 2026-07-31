@@ -37,7 +37,7 @@ const COST_BRIGHT: Record<string, string> = {
 };
 
 const cardClass =
-  "rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)]";
+  "min-w-0 overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -183,36 +183,36 @@ export default function FinancialDashboard() {
   ];
 
   return (
-    <section className="space-y-5">
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-        <div>
+    <section className="min-w-0 space-y-4 sm:space-y-5">
+      <div className="flex flex-col gap-4">
+        <div className="min-w-0">
           <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
             Control financiero y de avance
           </p>
-          <h3 className="font-editorial mt-2 text-3xl text-white md:text-4xl">
+          <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
             Dashboard de obra
           </h3>
           <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
             Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
           </p>
         </div>
-        <div className="grid w-full grid-cols-2 gap-3 sm:max-w-md sm:w-auto">
-          <div className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem]">
-            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[#555]">
+        <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
+          <div className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem] sm:px-4 sm:py-4">
+            <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#555] sm:text-[0.68rem] sm:tracking-[0.14em]">
               Presupuesto
             </p>
-            <p className="mt-2 font-editorial text-3xl font-semibold tracking-tight text-[#0a0a0a] sm:text-4xl">
+            <p className="mt-1.5 font-editorial text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-2 sm:text-4xl">
               ${budgetMillions.toFixed(2)}
-              <span className="ml-0.5 text-xl text-[#555]">M</span>
+              <span className="ml-0.5 text-base text-[#555] sm:text-xl">M</span>
             </p>
           </div>
-          <div className="rounded-2xl border-[3px] border-[#ff6b2c]/50 bg-[#e9e9e9] px-4 py-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem]">
-            <p className="text-[0.68rem] font-bold uppercase tracking-[0.14em] text-[#ff6b2c]">
+          <div className="min-w-0 rounded-2xl border-[3px] border-[#ff6b2c]/50 bg-[#e9e9e9] px-3 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem] sm:px-4 sm:py-4">
+            <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#ff6b2c] sm:text-[0.68rem] sm:tracking-[0.14em]">
               Ejercido
             </p>
-            <p className="mt-2 font-editorial text-3xl font-semibold tracking-tight text-[#ff6b2c] sm:text-4xl">
+            <p className="mt-1.5 font-editorial text-2xl font-semibold tracking-tight text-[#ff6b2c] sm:mt-2 sm:text-4xl">
               ${spentMillions.toFixed(2)}
-              <span className="ml-0.5 text-xl opacity-70">M</span>
+              <span className="ml-0.5 text-base opacity-70 sm:text-xl">M</span>
             </p>
           </div>
         </div>
@@ -337,8 +337,8 @@ export default function FinancialDashboard() {
                 <YAxis
                   type="category"
                   dataKey="name"
-                  width={108}
-                  tick={{ fill: "#1a1a1a", fontSize: 11, fontWeight: 600 }}
+                  width={88}
+                  tick={{ fill: "#1a1a1a", fontSize: 10, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />

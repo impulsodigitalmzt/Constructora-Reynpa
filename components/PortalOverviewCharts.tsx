@@ -85,9 +85,9 @@ export default function PortalOverviewCharts() {
   });
 
   return (
-    <div className="mt-5 grid gap-5 lg:grid-cols-2">
+    <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-5">
       {/* A) Donut — Avance por Etapas */}
-      <section className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] md:p-6">
+      <section className="min-w-0 overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5 md:p-6">
         <div className="mb-2">
           <h3 className="text-base font-bold tracking-tight text-[#0a0a0a] md:text-lg">
             Avance por Etapas
@@ -168,8 +168,8 @@ export default function PortalOverviewCharts() {
       </section>
 
       {/* B) Barras horizontales — Desglose Presupuestario */}
-      <section className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)] md:p-6">
-        <div className="mb-6">
+      <section className="min-w-0 overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5 md:p-6">
+        <div className="mb-5">
           <h3 className="text-base font-bold tracking-tight text-[#0a0a0a] md:text-lg">
             Desglose Presupuestario
           </h3>
@@ -178,13 +178,13 @@ export default function PortalOverviewCharts() {
           </p>
         </div>
 
-        <div className="space-y-5">
+        <div className="space-y-4 sm:space-y-5">
           {financeRows.map((row, index) => (
             <div key={row.id} className="group">
               <p className="mb-2 text-sm font-bold text-[#0a0a0a]">{row.label}</p>
 
-              <div className="flex items-center gap-3">
-                <div className="relative h-11 min-w-0 flex-1 overflow-hidden rounded-xl border-2 border-[#cfcfcf] bg-[#d8d8d8]">
+              <div className="flex items-center gap-2 sm:gap-3">
+                <div className="relative h-10 min-w-0 flex-1 overflow-hidden rounded-xl border-2 border-[#cfcfcf] bg-[#d8d8d8] sm:h-11">
                   <div
                     className="absolute inset-y-0 left-0 flex items-center overflow-hidden rounded-[10px] transition-[width] duration-1000 ease-out"
                     style={{
@@ -201,14 +201,14 @@ export default function PortalOverviewCharts() {
                           "linear-gradient(180deg, rgba(255,255,255,0.35) 0%, transparent 42%, rgba(0,0,0,0.18) 100%)",
                       }}
                     />
-                    {row.percent >= 28 || animated ? (
-                      <span className="relative z-[1] whitespace-nowrap px-3 text-[0.7rem] font-bold tabular-nums tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:text-[0.72rem]">
+                    {row.percent >= 32 ? (
+                      <span className="relative z-[1] truncate px-2 text-[0.65rem] font-bold tabular-nums tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:px-3 sm:text-[0.72rem]">
                         {currency.format(row.amount)}
                       </span>
                     ) : null}
                   </div>
                 </div>
-                <span className="w-11 shrink-0 text-right text-[0.78rem] font-bold tabular-nums text-[#0a0a0a]">
+                <span className="w-10 shrink-0 text-right text-[0.72rem] font-bold tabular-nums text-[#0a0a0a] sm:w-11 sm:text-[0.78rem]">
                   {row.percent}%
                 </span>
               </div>

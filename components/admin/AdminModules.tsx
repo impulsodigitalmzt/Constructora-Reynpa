@@ -62,18 +62,18 @@ export function AdminTabs({
   const [tab, setTab] = useState<TabId>("metricas");
 
   return (
-    <div className="space-y-5 pb-24">
-      <nav className="flex gap-2 overflow-x-auto pb-0.5">
+    <div className="min-w-0 space-y-5 pb-8">
+      <nav className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map(({ id, label, icon: Icon }) => (
           <button
             key={id}
             type="button"
             onClick={() => setTab(id)}
-            className={`inline-flex min-h-10 shrink-0 items-center gap-2 rounded-full px-3.5 text-[0.68rem] font-semibold uppercase tracking-[0.08em] transition ${
+            className={`inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-3 text-[0.62rem] font-semibold uppercase tracking-[0.08em] transition sm:gap-2 sm:px-3.5 sm:text-[0.68rem] ${
               tab === id ? t.tabActive : t.tabIdle
             }`}
           >
-            <Icon size={14} />
+            <Icon size={14} className="shrink-0" />
             {label}
           </button>
         ))}
@@ -119,34 +119,38 @@ function MetricsTab({
           <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#d4b28c]">
             Métricas rápidas
           </p>
-          <div className="mt-5 grid grid-cols-2 gap-4 sm:grid-cols-4">
-            <div>
-              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">Avance</p>
-              <p className="mt-1 font-editorial text-4xl tracking-tight text-[#d4b28c]">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:grid-cols-4 sm:gap-4">
+            <div className="min-w-0">
+              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">Avance</p>
+              <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl">
                 {state.progress}%
               </p>
             </div>
-            <div>
-              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">SPI</p>
-              <p className="mt-1 font-editorial text-4xl tracking-tight">{state.spi.toFixed(2)}</p>
+            <div className="min-w-0">
+              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">SPI</p>
+              <p className="mt-1 font-editorial text-3xl tracking-tight sm:text-4xl">
+                {state.spi.toFixed(2)}
+              </p>
             </div>
-            <div>
-              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">CPI</p>
-              <p className="mt-1 font-editorial text-4xl tracking-tight">{state.cpi.toFixed(2)}</p>
+            <div className="min-w-0">
+              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">CPI</p>
+              <p className="mt-1 font-editorial text-3xl tracking-tight sm:text-4xl">
+                {state.cpi.toFixed(2)}
+              </p>
             </div>
-            <div>
-              <p className="text-[0.65rem] uppercase tracking-[0.1em] text-white/45">Ejercido</p>
-              <p className="mt-1 text-xl font-semibold tracking-tight sm:text-2xl">
+            <div className="min-w-0 col-span-2 sm:col-span-1">
+              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">Ejercido</p>
+              <p className="mt-1 truncate text-lg font-semibold tracking-tight sm:text-2xl">
                 {currency.format(spent)}
               </p>
             </div>
           </div>
         </div>
 
-        <div className="space-y-4 p-5 sm:p-6">
+        <div className="space-y-4 p-4 sm:p-6">
           <label className="block">
             <span className={t.label}>Avance general (%)</span>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
               <input
                 type="range"
                 min={0}
@@ -172,7 +176,7 @@ function MetricsTab({
             </div>
           </label>
 
-          <div className="flex flex-wrap gap-x-6 gap-y-3">
+          <div className="grid grid-cols-2 gap-3 sm:flex sm:flex-wrap sm:gap-x-6 sm:gap-y-3">
             <label className="block">
               <span className={t.label}>SPI</span>
               <input
@@ -195,7 +199,7 @@ function MetricsTab({
                 className={t.inputPct}
               />
             </label>
-            <label className="block">
+            <label className="col-span-2 block sm:col-span-1">
               <span className={t.label}>Presupuesto total (MXN)</span>
               <CurrencyInput
                 value={state.budgetTotal}
@@ -208,7 +212,7 @@ function MetricsTab({
       </section>
 
       {/* Etapas */}
-      <section className={`rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+      <section className={`min-w-0 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
         <div className="mb-4 flex items-end justify-between gap-3">
           <div>
             <h2 className={`text-lg font-semibold tracking-tight ${t.title}`}>Avance por etapa</h2>
@@ -301,14 +305,14 @@ function MetricsTab({
         ) : null}
       </section>
 
-      {/* CTA fijo */}
-      <div className="pointer-events-none fixed inset-x-0 bottom-0 z-40 px-4 pb-[max(1rem,env(safe-area-inset-bottom))] pt-8 sm:static sm:pointer-events-auto sm:bg-transparent sm:p-0 sm:pt-0">
+      {/* CTA sticky en móvil */}
+      <div className="pointer-events-none sticky bottom-0 z-30 -mx-1 mt-2 px-1 pb-[max(0.75rem,env(safe-area-inset-bottom))] pt-4 sm:static sm:mx-0 sm:mt-0 sm:p-0 sm:pt-0">
         <div
-          className={`pointer-events-auto mx-auto max-w-3xl sm:max-w-none ${
+          className={`pointer-events-auto ${
             t.mode === "sun"
               ? "bg-gradient-to-t from-[#f4f5f7] via-[#f4f5f7]/95 to-transparent sm:bg-none"
               : "bg-gradient-to-t from-[#121212] via-[#121212]/95 to-transparent sm:bg-none"
-          } pb-1 pt-6 sm:p-0`}
+          } pb-1 pt-5 sm:p-0`}
         >
           <button
             type="button"
@@ -355,8 +359,8 @@ function CostCard({
           {pct}%
         </span>
       </div>
-      <div className="flex flex-wrap gap-x-4 gap-y-2.5">
-        <label className="block">
+      <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-x-4 sm:gap-y-2.5">
+        <label className="block min-w-0">
           <span className={t.label}>Presupuesto</span>
           <CurrencyInput
             value={cost.budget}
@@ -364,7 +368,7 @@ function CostCard({
             className={t.inputAmt}
           />
         </label>
-        <label className="block">
+        <label className="block min-w-0">
           <span className={t.label}>Ejercido</span>
           <CurrencyInput
             value={cost.amount}
@@ -433,7 +437,7 @@ function EvidenceTab({
   };
 
   return (
-    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+    <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
         <h2 className={`text-lg font-semibold ${t.title}`}>Evidencias desde campo</h2>
         <p className={`mt-1 text-sm ${t.muted}`}>Foto o video con bitácora breve</p>
@@ -557,7 +561,7 @@ function BitacoraTab({
     BITACORA_TIPOS.find((item) => item.id === id)?.label ?? id;
 
   return (
-    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+    <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
         <h2 className={`text-lg font-semibold ${t.title}`}>Bitácora de obra</h2>
         <p className={`mt-1 text-sm ${t.muted}`}>Registro rápido de incidencias</p>
@@ -571,7 +575,7 @@ function BitacoraTab({
               type="date"
               value={date}
               onChange={(event) => setDate(event.target.value)}
-              className={`${t.input} w-[10.5rem]`}
+              className={`${t.input} w-full max-w-[10.5rem]`}
               required
             />
           </label>
@@ -672,7 +676,7 @@ function ChangeOrdersTab({
     .reduce((sum, item) => sum + item.cost, 0);
 
   return (
-    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+    <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
           <h2 className={`text-lg font-semibold ${t.title}`}>Órdenes de cambio</h2>
@@ -811,7 +815,7 @@ function MaterialsTab({
   };
 
   return (
-    <section className={`space-y-5 rounded-2xl p-5 sm:p-6 ${t.surface}`}>
+    <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
         <h2 className={`text-lg font-semibold ${t.title}`}>Recepción de materiales</h2>
         <p className={`mt-1 text-sm ${t.muted}`}>Remisiones y tickets</p>

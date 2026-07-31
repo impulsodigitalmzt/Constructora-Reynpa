@@ -186,7 +186,7 @@ export default function PortalDashboard() {
           <div className="mb-7 flex items-end justify-between">
             <div>
               <p className="text-[0.58rem] uppercase tracking-[0.18em] text-white/25">Bienvenido de nuevo, Daniel</p>
-              <h2 className="font-editorial mt-2 text-3xl">Estado del proyecto</h2>
+              <h2 className="font-editorial mt-2 text-2xl sm:text-3xl">Estado del proyecto</h2>
             </div>
             <span className="hidden items-center gap-2 text-[0.55rem] uppercase tracking-[0.16em] text-[#d4b28c] sm:flex">
               <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_12px_#d4b28c]" /> Actualizado
@@ -310,15 +310,15 @@ function Metric({
   note: string;
 }) {
   return (
-    <article className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-5 shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
-      <div className="flex items-center justify-between">
-        <span className="text-[0.62rem] font-bold uppercase tracking-[0.12em] text-[#555]">
+    <article className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5">
+      <div className="flex items-center justify-between gap-2">
+        <span className="text-[0.58rem] font-bold uppercase tracking-[0.1em] text-[#555] sm:text-[0.62rem] sm:tracking-[0.12em]">
           {label}
         </span>
-        <Icon size={17} className="text-[#ff6b2c]" />
+        <Icon size={17} className="shrink-0 text-[#ff6b2c]" />
       </div>
-      <p className="mt-6 text-3xl font-semibold tracking-tight text-[#0a0a0a]">{value}</p>
-      <p className="mt-2 text-[0.68rem] font-semibold text-[#027a48]">{note}</p>
+      <p className="mt-4 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-6 sm:text-3xl">{value}</p>
+      <p className="mt-2 text-[0.65rem] font-semibold text-[#027a48] sm:text-[0.68rem]">{note}</p>
     </article>
   );
 }

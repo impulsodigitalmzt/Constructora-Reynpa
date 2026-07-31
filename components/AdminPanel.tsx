@@ -67,7 +67,7 @@ export default function AdminPanel() {
 
   if (!ready) {
     return (
-      <div className={`rounded-2xl p-10 text-center text-sm ${theme.surface} ${theme.muted}`}>
+      <div className={`rounded-2xl p-8 text-center text-sm sm:p-10 ${theme.surface} ${theme.muted}`}>
         Cargando panel…
       </div>
     );
@@ -75,22 +75,20 @@ export default function AdminPanel() {
 
   return (
     <AdminThemeProvider theme={theme}>
-      <div
-        className={`relative left-1/2 w-screen max-w-[100vw] -translate-x-1/2 px-4 py-5 sm:left-0 sm:w-auto sm:max-w-none sm:translate-x-0 sm:rounded-3xl sm:px-6 sm:py-6 ${theme.page}`}
-      >
-        <div className="mb-5 flex items-start justify-between gap-3">
-          <div>
-            <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.12em] ${theme.accent}`}>
+      <div className={`min-w-0 overflow-x-hidden rounded-2xl px-3 py-4 sm:rounded-3xl sm:px-6 sm:py-6 ${theme.page}`}>
+        <div className="mb-4 flex items-start justify-between gap-3 sm:mb-5">
+          <div className="min-w-0">
+            <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.12em] sm:text-[0.68rem] ${theme.accent}`}>
               Residentes · campo
             </p>
-            <h1 className={`mt-1 text-2xl font-semibold tracking-tight sm:text-3xl ${theme.title}`}>
+            <h1 className={`mt-1 text-xl font-semibold tracking-tight sm:text-3xl ${theme.title}`}>
               Panel de obra
             </h1>
           </div>
           <button
             type="button"
             onClick={toggleMode}
-            className={theme.btnGhost}
+            className={`${theme.btnGhost} shrink-0`}
             aria-label={mode === "sun" ? "Modo oscuro" : "Modo sol"}
           >
             {mode === "sun" ? <Moon size={15} /> : <Sun size={15} />}
@@ -99,14 +97,14 @@ export default function AdminPanel() {
         </div>
 
         {!authenticated ? (
-          <div className={`mx-auto max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
-            <div className={`border-b px-5 py-5 ${theme.hairline}`}>
-              <h2 className={`text-xl font-semibold ${theme.title}`}>Acceso interno</h2>
+          <div className={`mx-auto w-full max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
+            <div className={`border-b px-4 py-4 sm:px-5 sm:py-5 ${theme.hairline}`}>
+              <h2 className={`text-lg font-semibold sm:text-xl ${theme.title}`}>Acceso interno</h2>
               <p className={`mt-1 text-sm ${theme.muted}`}>
                 Interfaz clara para operar a la luz del día.
               </p>
             </div>
-            <form onSubmit={login} className="space-y-3.5 p-5">
+            <form onSubmit={login} className="space-y-3.5 p-4 sm:p-5">
               <label className="block">
                 <span className={theme.label}>Usuario</span>
                 <input
@@ -115,6 +113,7 @@ export default function AdminPanel() {
                   required
                   defaultValue={ADMIN_DEMO.user}
                   className={theme.input}
+                  autoComplete="username"
                 />
               </label>
               <label className="block">
@@ -125,6 +124,7 @@ export default function AdminPanel() {
                   required
                   defaultValue={ADMIN_DEMO.password}
                   className={theme.input}
+                  autoComplete="current-password"
                 />
               </label>
               {error ? (
@@ -135,29 +135,29 @@ export default function AdminPanel() {
               <button type="submit" className={`${theme.btnPrimary} w-full`}>
                 <LockKeyhole size={15} /> Entrar
               </button>
-              <p className={`text-center text-xs ${theme.muted}`}>
+              <p className={`break-all text-center text-xs ${theme.muted}`}>
                 {ADMIN_DEMO.user} · {ADMIN_DEMO.password}
               </p>
             </form>
           </div>
         ) : (
-          <div className="space-y-4">
-            <header className={`rounded-2xl p-5 ${theme.elevated}`}>
+          <div className="min-w-0 space-y-4">
+            <header className={`rounded-2xl p-4 sm:p-5 ${theme.elevated}`}>
               <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div>
+                <div className="min-w-0">
                   <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${theme.accent}`}>
                     {state.projectCode}
                   </p>
-                  <h2 className={`mt-1 font-editorial text-3xl tracking-tight sm:text-4xl ${theme.title}`}>
+                  <h2 className={`mt-1 font-editorial text-2xl tracking-tight sm:text-4xl ${theme.title}`}>
                     {state.projectName}
                   </h2>
                   <p className={`mt-1 text-sm ${theme.muted}`}>Actualización desde campo</p>
                 </div>
                 <div className="flex flex-wrap gap-2">
-                  <Link href="/portal-cliente" className={theme.btnSecondary}>
+                  <Link href="/portal-cliente" className={`${theme.btnSecondary} flex-1 sm:flex-none`}>
                     Portal cliente
                   </Link>
-                  <button type="button" onClick={logout} className={theme.btnGhost}>
+                  <button type="button" onClick={logout} className={`${theme.btnGhost} flex-1 sm:flex-none`}>
                     <LogOut size={14} /> Salir
                   </button>
                 </div>
@@ -166,9 +166,9 @@ export default function AdminPanel() {
 
             {status ? (
               <div
-                className={`flex items-center gap-2.5 rounded-xl px-4 py-3 text-sm font-medium ${theme.statusOk}`}
+                className={`flex items-start gap-2.5 rounded-xl px-4 py-3 text-sm font-medium sm:items-center ${theme.statusOk}`}
               >
-                <CheckCircle2 size={16} /> {status}
+                <CheckCircle2 size={16} className="mt-0.5 shrink-0 sm:mt-0" /> {status}
               </div>
             ) : null}
             {error ? (

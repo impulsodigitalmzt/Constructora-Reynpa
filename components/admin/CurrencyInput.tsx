@@ -33,8 +33,8 @@ export function CurrencyInput({
   const [draft, setDraft] = useState("");
 
   return (
-    <div className="relative inline-flex items-center">
-      <span className="pointer-events-none absolute left-3 text-sm font-semibold text-[#98a2b3]">
+    <div className="relative inline-flex w-full max-w-[10.5rem] min-w-0 items-center">
+      <span className="pointer-events-none absolute left-3 z-[1] text-sm font-semibold text-[#98a2b3]">
         $
       </span>
       <input
@@ -58,7 +58,7 @@ export function CurrencyInput({
           setDraft(event.target.value.replace(/[^\d]/g, ""));
           onChange(next);
         }}
-        className={`${className ?? ""} pl-7`}
+        className={`min-w-0 pl-7 ${className ?? ""}`}
       />
     </div>
   );
