@@ -125,55 +125,60 @@ export default function PortalDashboard() {
 
   return (
     <div className="overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.65)]">
-      <div className="flex items-center justify-between border-b border-white/10 bg-white/[.025] px-4 py-4 md:px-6">
-        <div className="flex items-center gap-3">
-          <div className="grid size-9 place-items-center rounded-lg bg-[#d4b28c] text-xs font-bold text-black">R</div>
-          <div>
-            <p className="text-sm font-semibold">{state.projectName}</p>
-            <p className="mt-0.5 text-[0.56rem] uppercase tracking-[0.15em] text-white/25">
+      <div className="flex items-center justify-between gap-4 border-b border-white/10 bg-white/[.025] px-4 py-5 md:px-6 md:py-6">
+        <div className="flex min-w-0 items-center gap-3.5 md:gap-4">
+          <div className="grid size-11 shrink-0 place-items-center rounded-xl bg-[#d4b28c] text-sm font-bold text-black md:size-12 md:text-base">
+            R
+          </div>
+          <div className="min-w-0">
+            <p className="font-editorial truncate text-2xl leading-tight text-white sm:text-3xl md:text-4xl">
+              {state.projectName}
+            </p>
+            <p className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/40 sm:text-[0.62rem]">
               {state.projectCode} · Mazatlán, Sin.
             </p>
           </div>
         </div>
-        <div className="flex items-center gap-2">
-          <button className="relative grid size-9 place-items-center rounded-full border border-white/10 bg-white/[.025]" aria-label="Notificaciones">
+        <div className="flex shrink-0 items-center gap-2">
+          <button
+            className="relative grid size-10 place-items-center rounded-full border border-white/10 bg-white/[.025]"
+            aria-label="Notificaciones"
+          >
             <Bell size={16} />
-            <span className="absolute right-2 top-2 size-1.5 rounded-full bg-[#d4b28c]" />
+            <span className="absolute right-2.5 top-2.5 size-1.5 rounded-full bg-[#d4b28c]" />
           </button>
           <button
             onClick={() => setAuthenticated(false)}
-            className="hidden rounded-full border border-white/10 px-4 py-2 text-[0.58rem] uppercase tracking-[0.15em] text-white/45 transition hover:text-white sm:block"
+            className="hidden rounded-full border border-white/10 px-4 py-2.5 text-[0.58rem] uppercase tracking-[0.15em] text-white/45 transition hover:border-white/25 hover:text-white sm:block"
           >
             Cerrar demo
           </button>
         </div>
       </div>
 
-      <div className="flex gap-6 overflow-x-auto border-b border-white/10 bg-white/[.025] px-4 md:px-6">
-        <button
-          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
-            view === "overview" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
-          }`}
-          onClick={() => setView("overview")}
-        >
-          Resumen
-        </button>
-        <button
-          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
-            view === "finance" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
-          }`}
-          onClick={() => setView("finance")}
-        >
-          Finanzas
-        </button>
-        <button
-          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
-            view === "updates" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
-          }`}
-          onClick={() => setView("updates")}
-        >
-          Evidencias
-        </button>
+      <div className="border-b border-white/10 bg-[#0a0a0a] px-4 py-3 md:px-6">
+        <div className="flex gap-2 overflow-x-auto rounded-2xl border border-white/10 bg-white/[0.03] p-1.5">
+          {(
+            [
+              { id: "overview", label: "Resumen" },
+              { id: "finance", label: "Finanzas" },
+              { id: "updates", label: "Evidencias" },
+            ] as const
+          ).map((tab) => (
+            <button
+              key={tab.id}
+              type="button"
+              onClick={() => setView(tab.id)}
+              className={`shrink-0 flex-1 rounded-xl px-4 py-3 text-[0.62rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 ${
+                view === tab.id
+                  ? "bg-[#d4b28c] text-black shadow-[0_8px_24px_rgba(212,178,140,0.28)]"
+                  : "text-white/45 hover:bg-white/[0.06] hover:text-white"
+              }`}
+            >
+              {tab.label}
+            </button>
+          ))}
+        </div>
       </div>
 
       {view === "overview" ? (
