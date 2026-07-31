@@ -3,10 +3,7 @@
 import {
   Bell,
   CalendarDays,
-  Check,
   CircleDollarSign,
-  Clock3,
-  HardHat,
   LockKeyhole,
   Mail,
   Play,
@@ -192,7 +189,7 @@ export default function PortalDashboard() {
           </div>
 
           <div className="grid gap-3 md:grid-cols-3">
-            <Metric icon={TrendingUp} label="Avance general" value={`${state.progress}%`} note="Actualizado desde campo" />
+            <Metric icon={TrendingUp} label="Avance general" value={`${state.progress}%`} note="+7% este mes" />
             <Metric
               icon={CircleDollarSign}
               label="Presupuesto ejercido"
@@ -203,76 +200,6 @@ export default function PortalDashboard() {
           </div>
 
           <PortalOverviewCharts />
-
-          <div className="mt-5 grid gap-5 lg:grid-cols-[1.35fr_0.65fr]">
-            <section className="rounded-xl border border-white/8 bg-white/[.025] p-5 md:p-6">
-              <div className="mb-5 flex items-start justify-between">
-                <div>
-                  <h3 className="font-semibold">Detalle por etapa</h3>
-                  <p className="mt-1 text-[0.58rem] text-white/25">
-                    Actualizado {new Date(state.updatedAt).toLocaleString("es-MX")}
-                  </p>
-                </div>
-                <HardHat size={20} className="text-[#d4b28c]" />
-              </div>
-              <div className="space-y-4">
-                {state.stages.map((stage) => (
-                  <div key={stage.label}>
-                    <div className="mb-2 flex justify-between text-[0.65rem]">
-                      <span className="flex items-center gap-2 text-white/45">
-                        <i
-                          className="size-2 rounded-full"
-                          style={{ background: stage.color || "#d4b28c" }}
-                        />
-                        {stage.label}
-                      </span>
-                      <span className="text-white/65">{stage.value}%</span>
-                    </div>
-                    <div className="h-1.5 overflow-hidden rounded-full bg-white/10">
-                      <div
-                        className="h-full rounded-full transition-all duration-500"
-                        style={{
-                          width: `${stage.value}%`,
-                          background: stage.color || "#d4b28c",
-                        }}
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-
-            <section className="rounded-xl border border-white/8 bg-[#151515] p-5 text-white md:p-6">
-              <div className="flex items-center justify-between">
-                <h3 className="font-semibold">Próximas actividades</h3>
-                <Clock3 size={18} className="text-[#d4b28c]" />
-              </div>
-              <div className="mt-7 space-y-6">
-                {[
-                  ["30 JUL", "Colado de losa", "Estructura"],
-                  ["02 AGO", "Tubería hidráulica", "Instalaciones"],
-                  ["06 AGO", "Revisión con cliente", "Seguimiento"],
-                ].map(([date, task, area], index) => (
-                  <div key={task} className="flex gap-4">
-                    <div
-                      className={`mt-1 grid size-5 shrink-0 place-items-center rounded-full ${
-                        index === 0 ? "bg-[#d4b28c] text-black" : "border border-white/20"
-                      }`}
-                    >
-                      {index === 0 && <Check size={12} />}
-                    </div>
-                    <div>
-                      <p className="text-[0.6rem] font-bold tracking-[0.15em] text-white/35">
-                        {date}
-                      </p>
-                      <p className="mt-1 text-sm">{task}</p>
-                      <p className="mt-1 text-xs text-white/40">{area}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </section>
-          </div>
         </div>
       ) : view === "finance" ? (
         <div className="p-4 md:p-7">

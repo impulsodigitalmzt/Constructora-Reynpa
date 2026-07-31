@@ -1,19 +1,14 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import {
-  Bar,
-  BarChart,
-  CartesianGrid,
   Cell,
   Pie,
   PieChart,
   ResponsiveContainer,
   Tooltip,
-  XAxis,
-  YAxis,
 } from "recharts";
 import { useObraStore } from "@/hooks/useObraStore";
-import { getSpentTotal } from "@/lib/obra-store";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -21,175 +16,219 @@ const currency = new Intl.NumberFormat("es-MX", {
   maximumFractionDigits: 0,
 });
 
-const DONUT_FOCUS = ["Cimentación", "Estructura", "Instalaciones", "Acabados"];
+const STAGE_COLORS: Record<string, string> = {
+  Preliminares: "#00d68f",
+  Cimentación: "#3b82ff",
+  Estructura: "#f5c542",
+  Instalaciones: "#ff7a1a",
+  Acabados: "#8b5cf6",
+};
+
+const RUBRO_META: Record<
+  string,
+  { label: string; gradient: string; glow: string }
+> = {
+  materiales: {
+    label: "Materiales",
+    gradient: "linear-gradient(90deg, #0b1f4a 0%, #1d4ed8 45%, #22d3ee 100%)",
+    glow: "rgba(34, 211, 238, 0.35)",
+  },
+  manoObra: {
+    label: "Mano de Obra",
+    gradient: "linear-gradient(90deg, #052e1c 0%, #059669 45%, #34d399 100%)",
+    glow: "rgba(52, 211, 153, 0.35)",
+  },
+  equipos: {
+    label: "Equipo",
+    gradient: "linear-gradient(90deg, #4a1a05 0%, #ea580c 45%, #fb923c 100%)",
+    glow: "rgba(251, 146, 60, 0.35)",
+  },
+  subcontratistas: {
+    label: "Subcontratistas",
+    gradient: "linear-gradient(90deg, #2e1065 0%, #7c3aed 45%, #c084fc 100%)",
+    glow: "rgba(192, 132, 252, 0.35)",
+  },
+};
+
+const FINANCE_ORDER = ["materiales", "manoObra", "equipos", "subcontratistas"] as const;
 
 export default function PortalOverviewCharts() {
   const { state } = useObraStore();
-  const spent = getSpentTotal(state);
+  const [animated, setAnimated] = useState(false);
 
-  const stageData = state.stages
-    .filter((stage) => DONUT_FOCUS.includes(stage.label))
-    .map((stage) => ({
-      name: stage.label,
-      value: Math.max(stage.value, 1),
-      complete: stage.value,
-      color: stage.color,
-    }));
+  useEffect(() => {
+    const frame = window.requestAnimationFrame(() => setAnimated(true));
+    return () => window.cancelAnimationFrame(frame);
+  }, [state.costs, state.stages, state.progress]);
 
-  const financeData = state.costs.map((cost) => ({
-    name: cost.name.replace("Mano de obra foránea", "MO foránea"),
-    presupuesto: Math.round(cost.budget / 1000) / 1000,
-    ejercido: Math.round(cost.amount / 1000) / 1000,
-    presupuestoRaw: cost.budget,
-    ejercidoRaw: cost.amount,
-    color: cost.color,
+  const stageData = state.stages.map((stage) => ({
+    name: stage.label,
+    value: Math.max(stage.value, 2),
+    complete: stage.value,
+    color: STAGE_COLORS[stage.label] ?? stage.color ?? "#d4b28c",
   }));
 
-  const avgStage =
-    stageData.length > 0
-      ? Math.round(stageData.reduce((sum, s) => sum + s.complete, 0) / stageData.length)
-      : state.progress;
+  const financeRows = FINANCE_ORDER.map((id) => {
+    const cost = state.costs.find((item) => item.id === id);
+    const meta = RUBRO_META[id];
+    const amount = cost?.amount ?? 0;
+    const budget = Math.max(cost?.budget ?? 1, 1);
+    const percent = Math.min(100, Math.round((amount / budget) * 100));
+    return {
+      id,
+      label: meta.label,
+      amount,
+      percent,
+      gradient: meta.gradient,
+      glow: meta.glow,
+    };
+  });
 
   return (
     <div className="mt-5 grid gap-5 lg:grid-cols-2">
-      <section className="rounded-xl border border-white/8 bg-white/[.025] p-5 md:p-6">
-        <div className="mb-5 flex items-start justify-between gap-3">
-          <div>
-            <h3 className="font-semibold text-white">Avance por categoría</h3>
-            <p className="mt-1 text-[0.58rem] text-white/30">
-              Cimentación · Estructura · Instalaciones · Acabados
-            </p>
-          </div>
-          <span className="rounded-full border border-[#d4b28c]/30 bg-[#d4b28c]/10 px-3 py-1 text-[0.52rem] uppercase tracking-[0.14em] text-[#d4b28c]">
-            En vivo
-          </span>
+      {/* A) Donut — Avance por Etapas */}
+      <section className="rounded-xl border border-white/8 bg-gradient-to-b from-white/[0.04] to-white/[0.015] p-5 md:p-6">
+        <div className="mb-2">
+          <h3 className="text-base font-semibold tracking-tight text-white md:text-lg">
+            Avance por Etapas
+          </h3>
+          <p className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/30">
+            Distribución del avance físico
+          </p>
         </div>
 
-        <div className="grid items-center gap-6 sm:grid-cols-[1fr_1.05fr]">
-          <div className="relative mx-auto h-52 w-full max-w-[14rem]">
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={stageData}
-                  dataKey="value"
-                  innerRadius="62%"
-                  outerRadius="88%"
-                  paddingAngle={3}
-                  stroke="none"
-                >
-                  {stageData.map((item) => (
-                    <Cell key={item.name} fill={item.color} />
-                  ))}
-                </Pie>
-                <Tooltip
-                  content={({ active, payload }) => {
-                    if (!active || !payload?.length) return null;
-                    const item = payload[0]?.payload as (typeof stageData)[number];
-                    return (
-                      <div className="rounded-xl border border-white/15 bg-[#121212]/95 px-3 py-2.5 text-xs shadow-2xl">
-                        <p className="text-[#d4b28c]">{item.name}</p>
-                        <p className="mt-1 text-white/80">{item.complete}% completado</p>
-                      </div>
-                    );
-                  }}
-                />
-              </PieChart>
-            </ResponsiveContainer>
-            <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-              <p className="text-[0.52rem] uppercase tracking-[0.16em] text-white/35">Promedio</p>
-              <p className="font-editorial text-3xl text-white">{avgStage}%</p>
-            </div>
-          </div>
-
-          <ul className="space-y-3">
-            {stageData.map((item) => (
-              <li key={item.name}>
-                <div className="mb-1.5 flex items-center justify-between gap-2 text-xs">
-                  <span className="flex items-center gap-2 text-white/60">
-                    <i className="size-2.5 rounded-full" style={{ background: item.color }} />
-                    {item.name}
-                  </span>
-                  <span className="tabular-nums text-white/85">{item.complete}%</span>
-                </div>
-                <div className="h-1 overflow-hidden rounded-full bg-white/10">
-                  <div
-                    className="h-full rounded-full transition-all duration-500"
-                    style={{ width: `${item.complete}%`, background: item.color }}
-                  />
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      </section>
-
-      <section className="rounded-xl border border-white/8 bg-white/[.025] p-5 md:p-6">
-        <div className="mb-5 flex items-start justify-between gap-3">
-          <div>
-            <h3 className="font-semibold text-white">Desglose financiero</h3>
-            <p className="mt-1 text-[0.58rem] text-white/30">
-              Presupuesto vs. ejercido por rubro · {currency.format(spent)} ejercidos
-            </p>
-          </div>
-          <div className="hidden gap-3 text-[0.52rem] uppercase tracking-[0.12em] sm:flex">
-            <span className="inline-flex items-center gap-1.5 text-white/40">
-              <i className="size-2 rounded-full bg-white/35" /> Presupuesto
-            </span>
-            <span className="inline-flex items-center gap-1.5 text-white/40">
-              <i className="size-2 rounded-full bg-[#d4b28c]" /> Ejercido
-            </span>
-          </div>
-        </div>
-
-        <div className="h-64 w-full sm:h-72">
+        <div className="relative mx-auto mt-2 h-[15.5rem] w-full max-w-[17rem] sm:h-[17rem] sm:max-w-[18.5rem]">
           <ResponsiveContainer width="100%" height="100%">
-            <BarChart
-              data={financeData}
-              margin={{ top: 4, right: 4, left: -12, bottom: 8 }}
-              barGap={4}
-              barCategoryGap="22%"
-            >
-              <CartesianGrid stroke="rgba(255,255,255,0.06)" vertical={false} />
-              <XAxis
-                dataKey="name"
-                tick={{ fill: "rgba(255,255,255,0.4)", fontSize: 10 }}
-                axisLine={false}
-                tickLine={false}
-                interval={0}
-                angle={-18}
-                textAnchor="end"
-                height={48}
-              />
-              <YAxis
-                tick={{ fill: "rgba(255,255,255,0.3)", fontSize: 10 }}
-                axisLine={false}
-                tickLine={false}
-                tickFormatter={(value: number) => `$${value}M`}
-              />
+            <PieChart>
+              <defs>
+                {stageData.map((item) => (
+                  <linearGradient
+                    key={`grad-${item.name}`}
+                    id={`stage-${item.name}`}
+                    x1="0"
+                    y1="0"
+                    x2="1"
+                    y2="1"
+                  >
+                    <stop offset="0%" stopColor={item.color} stopOpacity={0.75} />
+                    <stop offset="100%" stopColor={item.color} stopOpacity={1} />
+                  </linearGradient>
+                ))}
+              </defs>
+              <Pie
+                data={stageData}
+                dataKey="value"
+                nameKey="name"
+                innerRadius="58%"
+                outerRadius="86%"
+                paddingAngle={3.5}
+                stroke="rgba(10,10,10,0.85)"
+                strokeWidth={3}
+                isAnimationActive
+                animationDuration={1100}
+                animationBegin={120}
+              >
+                {stageData.map((item) => (
+                  <Cell
+                    key={item.name}
+                    fill={`url(#stage-${item.name})`}
+                    style={{ filter: `drop-shadow(0 0 10px ${item.color}55)` }}
+                  />
+                ))}
+              </Pie>
               <Tooltip
-                cursor={{ fill: "rgba(255,255,255,0.04)" }}
+                cursor={false}
                 content={({ active, payload }) => {
                   if (!active || !payload?.length) return null;
-                  const item = payload[0]?.payload as (typeof financeData)[number];
+                  const item = payload[0]?.payload as (typeof stageData)[number];
                   return (
-                    <div className="rounded-xl border border-white/15 bg-[#121212]/95 px-3 py-2.5 text-xs shadow-2xl">
-                      <p className="mb-2 text-[#d4b28c]">{item.name}</p>
-                      <p className="text-white/55">
-                        Presupuesto:{" "}
-                        <span className="text-white">{currency.format(item.presupuestoRaw)}</span>
+                    <div className="rounded-xl border border-white/15 bg-[#0d0d0d]/95 px-3.5 py-2.5 shadow-2xl backdrop-blur-md">
+                      <p className="flex items-center gap-2 text-xs font-medium text-white">
+                        <i
+                          className="size-2.5 rounded-full"
+                          style={{ background: item.color, boxShadow: `0 0 8px ${item.color}` }}
+                        />
+                        {item.name}
                       </p>
-                      <p className="mt-1 text-white/55">
-                        Ejercido:{" "}
-                        <span className="text-white">{currency.format(item.ejercidoRaw)}</span>
+                      <p className="mt-1.5 text-sm tabular-nums text-[#d4b28c]">
+                        {item.complete}% completado
                       </p>
                     </div>
                   );
                 }}
               />
-              <Bar dataKey="presupuesto" name="Presupuesto" fill="rgba(255,255,255,0.22)" radius={[6, 6, 0, 0]} />
-              <Bar dataKey="ejercido" name="Ejercido" fill="#d4b28c" radius={[6, 6, 0, 0]} />
-            </BarChart>
+            </PieChart>
           </ResponsiveContainer>
+
+          <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
+            <p className="text-[0.52rem] uppercase tracking-[0.2em] text-white/35">Global</p>
+            <p className="font-editorial mt-1 text-4xl tabular-nums text-[#d4b28c] sm:text-5xl">
+              {state.progress}%
+            </p>
+          </div>
+        </div>
+
+        <ul className="mt-4 grid grid-cols-2 gap-x-4 gap-y-2.5 sm:grid-cols-3 lg:grid-cols-2 xl:grid-cols-3">
+          {stageData.map((item) => (
+            <li key={item.name} className="flex items-center gap-2 text-[0.7rem] text-white/60">
+              <i
+                className="size-2.5 shrink-0 rounded-full"
+                style={{ background: item.color, boxShadow: `0 0 8px ${item.color}88` }}
+              />
+              <span className="truncate">{item.name}</span>
+              <span className="ml-auto tabular-nums text-white/85">{item.complete}%</span>
+            </li>
+          ))}
+        </ul>
+      </section>
+
+      {/* B) Barras horizontales — Desglose Presupuestario */}
+      <section className="rounded-xl border border-white/8 bg-gradient-to-b from-white/[0.04] to-white/[0.015] p-5 md:p-6">
+        <div className="mb-6">
+          <h3 className="text-base font-semibold tracking-tight text-white md:text-lg">
+            Desglose Presupuestario
+          </h3>
+          <p className="mt-1 text-[0.58rem] uppercase tracking-[0.16em] text-white/30">
+            Ejercido por rubro · con gradiente
+          </p>
+        </div>
+
+        <div className="space-y-5">
+          {financeRows.map((row, index) => (
+            <div key={row.id} className="group">
+              <p className="mb-2 text-sm font-medium text-white/85">{row.label}</p>
+
+              <div className="flex items-center gap-3">
+                <div className="relative h-11 min-w-0 flex-1 overflow-hidden rounded-xl bg-white/[0.06] ring-1 ring-white/5">
+                  <div
+                    className="absolute inset-y-0 left-0 flex items-center overflow-hidden rounded-xl transition-[width] duration-1000 ease-out"
+                    style={{
+                      width: animated ? `${Math.max(row.percent, 10)}%` : "0%",
+                      background: row.gradient,
+                      boxShadow: `0 0 24px ${row.glow}`,
+                      transitionDelay: `${index * 90}ms`,
+                    }}
+                  >
+                    <span
+                      className="pointer-events-none absolute inset-0 opacity-40"
+                      style={{
+                        background:
+                          "linear-gradient(180deg, rgba(255,255,255,0.28) 0%, transparent 42%, rgba(0,0,0,0.22) 100%)",
+                      }}
+                    />
+                    {row.percent >= 28 || animated ? (
+                      <span className="relative z-[1] whitespace-nowrap px-3 text-[0.7rem] font-semibold tabular-nums tracking-wide text-white drop-shadow-[0_1px_2px_rgba(0,0,0,0.65)] sm:text-[0.72rem]">
+                        {currency.format(row.amount)}
+                      </span>
+                    ) : null}
+                  </div>
+                </div>
+                <span className="w-11 shrink-0 text-right text-[0.78rem] font-semibold tabular-nums text-white/80">
+                  {row.percent}%
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       </section>
     </div>
