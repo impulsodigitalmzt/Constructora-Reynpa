@@ -13,6 +13,7 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { type FormEvent, useState } from "react";
+import FinancialDashboard from "@/components/FinancialDashboard";
 
 const videos = [
   "AQM05lq19CEQAvO4u2f8rC41EUII7qBdO-2dZBUCDgUKXkEYPhpb3opA-pzwK6n2QzoUNUR7oau5crS2i1cJAt2FBg5zwxrtxkM8Icasnw.mp4",
@@ -34,7 +35,7 @@ const stages = [
 
 export default function PortalDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
-  const [view, setView] = useState<"overview" | "updates">("overview");
+  const [view, setView] = useState<"overview" | "finance" | "updates">("overview");
 
   const enterDemo = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -149,9 +150,9 @@ export default function PortalDashboard() {
         </div>
       </div>
 
-      <div className="flex border-b border-white/10 bg-white/[.025] px-4 md:px-6">
+      <div className="flex gap-6 overflow-x-auto border-b border-white/10 bg-white/[.025] px-4 md:px-6">
         <button
-          className={`border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
+          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
             view === "overview" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
           }`}
           onClick={() => setView("overview")}
@@ -159,7 +160,15 @@ export default function PortalDashboard() {
           Resumen
         </button>
         <button
-          className={`ml-7 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
+          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
+            view === "finance" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
+          }`}
+          onClick={() => setView("finance")}
+        >
+          Finanzas
+        </button>
+        <button
+          className={`shrink-0 border-b px-1 py-4 text-[0.58rem] font-semibold uppercase tracking-[0.18em] transition-colors ${
             view === "updates" ? "border-[#d4b28c] text-[#d4b28c]" : "border-transparent text-white/30"
           }`}
           onClick={() => setView("updates")}
@@ -235,6 +244,10 @@ export default function PortalDashboard() {
               </div>
             </section>
           </div>
+        </div>
+      ) : view === "finance" ? (
+        <div className="p-4 md:p-7">
+          <FinancialDashboard />
         </div>
       ) : (
         <div className="p-4 md:p-7">
