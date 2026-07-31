@@ -47,12 +47,32 @@ export default function Navbar() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-4">
         <nav
-          className={`mx-auto flex h-[4.5rem] max-w-[86rem] items-center justify-between gap-2 rounded-full border px-3 shadow-lg transition-all duration-500 ease-out sm:px-5 ${
+          className={`relative mx-auto flex h-[4.5rem] max-w-[86rem] items-center justify-between gap-2 overflow-hidden rounded-full border px-3 text-white shadow-lg transition-all duration-500 ease-out sm:px-5 ${
             scrolled
-              ? "border-white/15 bg-[#0a0a0a]/80 text-white shadow-black/30 backdrop-blur-xl"
-              : "border-white/20 bg-[#0a0a0a]/55 text-white shadow-black/20 backdrop-blur-xl"
+              ? "border-white/20 shadow-black/40"
+              : "border-white/25 shadow-black/25"
           }`}
         >
+          <Image
+            src="/cromo cepillado.JPG"
+            alt=""
+            fill
+            priority
+            sizes="86rem"
+            className="pointer-events-none object-cover object-center"
+            aria-hidden="true"
+          />
+          <div
+            className={`pointer-events-none absolute inset-0 transition-colors duration-500 ${
+              scrolled ? "bg-black/55" : "bg-black/40"
+            }`}
+            aria-hidden="true"
+          />
+          <div
+            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"
+            aria-hidden="true"
+          />
+
           <Link
             href="/"
             className="relative z-10 block h-10 w-24 shrink-0 sm:h-11 sm:w-28"
@@ -68,7 +88,7 @@ export default function Navbar() {
             />
           </Link>
 
-          <div className="hidden items-center gap-1 lg:flex">
+          <div className="relative z-10 hidden items-center gap-1 lg:flex">
             {links.map((link) => {
               const active =
                 link.href === "/"
@@ -117,7 +137,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="absolute left-1/2 hidden -translate-x-1/2 gap-1 min-[380px]:flex lg:hidden">
+          <div className="absolute left-1/2 z-10 hidden -translate-x-1/2 gap-1 min-[380px]:flex lg:hidden">
             <DesktopSocialLink
               href="https://www.facebook.com/profile.php?id=100063495704831"
               label="Facebook"
