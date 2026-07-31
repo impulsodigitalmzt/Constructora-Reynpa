@@ -15,6 +15,10 @@ export type AdminTheme = {
   muted: string;
   label: string;
   input: string;
+  /** % / SPI / CPI · 2–4 dígitos */
+  inputPct: string;
+  /** Montos MXN · hasta ~7 dígitos */
+  inputAmt: string;
   textarea: string;
   file: string;
   tabActive: string;
@@ -28,6 +32,11 @@ export type AdminTheme = {
   hairline: string;
 };
 
+const inputBaseSun =
+  "h-11 rounded-xl border border-[#d0d5dd] bg-[#f9fafb] text-[0.95rem] font-semibold text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25";
+const inputBaseDark =
+  "h-11 rounded-xl border border-white/12 bg-white/[0.04] text-[0.95rem] font-semibold text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15";
+
 export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
   if (mode === "sun") {
     return {
@@ -39,8 +48,9 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
       title: "text-[#101828]",
       muted: "text-[#667085]",
       label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#667085]",
-      input:
-        "h-12 w-full rounded-xl border border-[#d0d5dd] bg-[#f9fafb] px-3.5 text-[0.95rem] font-medium text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25",
+      input: `${inputBaseSun} w-full px-3.5`,
+      inputPct: `${inputBaseSun} w-[4.25rem] shrink-0 px-2 text-center tabular-nums`,
+      inputAmt: `${inputBaseSun} w-[10.5rem] max-w-full shrink-0 px-3 text-right tabular-nums`,
       textarea:
         "w-full resize-none rounded-xl border border-[#d0d5dd] bg-[#f9fafb] px-3.5 py-3 text-[0.95rem] font-medium text-[#101828] outline-none transition placeholder:text-[#98a2b3] focus:border-[#b8925f] focus:bg-white focus:ring-4 focus:ring-[#d4b28c]/25",
       file:
@@ -68,8 +78,9 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
     title: "text-white",
     muted: "text-white/55",
     label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/45",
-    input:
-      "h-12 w-full rounded-xl border border-white/12 bg-white/[0.04] px-3.5 text-[0.95rem] font-medium text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15",
+    input: `${inputBaseDark} w-full px-3.5`,
+    inputPct: `${inputBaseDark} w-[4.25rem] shrink-0 px-2 text-center tabular-nums`,
+    inputAmt: `${inputBaseDark} w-[10.5rem] max-w-full shrink-0 px-3 text-right tabular-nums`,
     textarea:
       "w-full resize-none rounded-xl border border-white/12 bg-white/[0.04] px-3.5 py-3 text-[0.95rem] font-medium text-white outline-none transition placeholder:text-white/30 focus:border-[#d4b28c]/60 focus:ring-4 focus:ring-[#d4b28c]/15",
     file:

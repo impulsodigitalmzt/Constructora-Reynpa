@@ -13,6 +13,7 @@ import {
   Video,
 } from "lucide-react";
 import { FormEvent, useRef, useState } from "react";
+import { CurrencyInput } from "@/components/admin/CurrencyInput";
 import { useAdminTheme } from "@/components/admin/admin-theme";
 import {
   BITACORA_TIPOS,
@@ -142,8 +143,8 @@ function MetricsTab({
           </div>
         </div>
 
-        <div className="grid gap-4 p-5 sm:grid-cols-2 sm:p-6">
-          <label className="block sm:col-span-2">
+        <div className="space-y-4 p-5 sm:p-6">
+          <label className="block">
             <span className={t.label}>Avance general (%)</span>
             <div className="flex items-center gap-3">
               <input
@@ -152,7 +153,7 @@ function MetricsTab({
                 max={100}
                 value={state.progress}
                 onChange={(event) => save({ ...state, progress: Number(event.target.value) })}
-                className="h-2 flex-1 cursor-pointer appearance-none rounded-full bg-[#eaecf0] accent-[#b8925f]"
+                className="h-2 min-w-0 flex-1 cursor-pointer appearance-none rounded-full bg-[#eaecf0] accent-[#b8925f]"
               />
               <input
                 type="number"
@@ -166,44 +167,43 @@ function MetricsTab({
                     progress: Math.min(100, Math.max(0, Number(event.target.value) || 0)),
                   })
                 }
-                className={`${t.input} w-[4.5rem] shrink-0 text-center text-lg font-semibold`}
+                className={t.inputPct}
               />
             </div>
           </label>
-          <label className="block">
-            <span className={t.label}>SPI</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              step={0.01}
-              value={state.spi}
-              onChange={(event) => save({ ...state, spi: Number(event.target.value) || 0 })}
-              className={t.input}
-            />
-          </label>
-          <label className="block">
-            <span className={t.label}>CPI</span>
-            <input
-              type="number"
-              inputMode="decimal"
-              step={0.01}
-              value={state.cpi}
-              onChange={(event) => save({ ...state, cpi: Number(event.target.value) || 0 })}
-              className={t.input}
-            />
-          </label>
-          <label className="block sm:col-span-2">
-            <span className={t.label}>Presupuesto total (MXN)</span>
-            <input
-              type="number"
-              inputMode="numeric"
-              value={state.budgetTotal}
-              onChange={(event) =>
-                save({ ...state, budgetTotal: Number(event.target.value) || 0 })
-              }
-              className={t.input}
-            />
-          </label>
+
+          <div className="flex flex-wrap gap-x-6 gap-y-3">
+            <label className="block">
+              <span className={t.label}>SPI</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                step={0.01}
+                value={state.spi}
+                onChange={(event) => save({ ...state, spi: Number(event.target.value) || 0 })}
+                className={t.inputPct}
+              />
+            </label>
+            <label className="block">
+              <span className={t.label}>CPI</span>
+              <input
+                type="number"
+                inputMode="decimal"
+                step={0.01}
+                value={state.cpi}
+                onChange={(event) => save({ ...state, cpi: Number(event.target.value) || 0 })}
+                className={t.inputPct}
+              />
+            </label>
+            <label className="block">
+              <span className={t.label}>Presupuesto total (MXN)</span>
+              <CurrencyInput
+                value={state.budgetTotal}
+                onChange={(budgetTotal) => save({ ...state, budgetTotal })}
+                className={t.inputAmt}
+              />
+            </label>
+          </div>
         </div>
       </section>
 
@@ -215,21 +215,24 @@ function MetricsTab({
             <p className={`mt-1 text-sm ${t.muted}`}>Alimenta el donut del portal</p>
           </div>
         </div>
-        <div className="grid grid-cols-2 gap-3">
+        <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2">
           {state.stages.map((stage, index) => {
             const accent = STAGE_ACCENTS[index % STAGE_ACCENTS.length];
             return (
-              <label
+              <div
                 key={stage.label}
-                className={`rounded-xl p-3.5 ${
+                className={`flex items-center justify-between gap-3 rounded-xl px-3.5 py-3 ${
                   t.mode === "sun" ? "bg-[#f9fafb] ring-1 ring-black/[0.04]" : "bg-white/[0.03] ring-1 ring-white/8"
                 }`}
               >
-                <span className="mb-2 flex items-center gap-2 text-[0.78rem] font-semibold" style={{ color: accent }}>
-                  <i className="size-2 rounded-full" style={{ background: accent }} />
-                  {stage.label}
+                <span
+                  className="flex min-w-0 items-center gap-2 text-[0.82rem] font-semibold"
+                  style={{ color: accent }}
+                >
+                  <i className="size-2 shrink-0 rounded-full" style={{ background: accent }} />
+                  <span className="truncate">{stage.label}</span>
                 </span>
-                <div className="flex items-center gap-2">
+                <div className="flex shrink-0 items-center gap-1.5">
                   <input
                     type="number"
                     inputMode="numeric"
@@ -245,11 +248,11 @@ function MetricsTab({
                         ),
                       });
                     }}
-                    className={`${t.input} text-center text-lg font-semibold`}
+                    className={t.inputPct}
                   />
-                  <span className={`text-sm font-medium ${t.muted}`}>%</span>
+                  <span className={`text-sm font-semibold ${t.muted}`}>%</span>
                 </div>
-              </label>
+              </div>
             );
           })}
         </div>
@@ -335,42 +338,38 @@ function CostCard({
 
   return (
     <div
-      className={`rounded-xl p-4 ${
+      className={`rounded-xl p-3.5 ${
         t.mode === "sun" ? "bg-[#f9fafb] ring-1 ring-black/[0.04]" : "bg-white/[0.03] ring-1 ring-white/8"
       }`}
     >
       <div className="mb-3 flex items-center justify-between gap-2">
-        <span className={`flex items-center gap-2 text-sm font-semibold ${t.title}`}>
-          <i className="size-2.5 rounded-full" style={{ background: cost.color }} />
-          {cost.name}
+        <span className={`flex min-w-0 items-center gap-2 text-sm font-semibold ${t.title}`}>
+          <i className="size-2.5 shrink-0 rounded-full" style={{ background: cost.color }} />
+          <span className="truncate">{cost.name}</span>
         </span>
         <span
-          className={`rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${
+          className={`shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold ${
             t.mode === "sun" ? "bg-[#ecfdf3] text-[#027a48]" : "bg-emerald-500/15 text-emerald-300"
           }`}
         >
           {pct}%
         </span>
       </div>
-      <div className="grid grid-cols-2 gap-2.5">
+      <div className="flex flex-wrap gap-x-4 gap-y-2.5">
         <label className="block">
           <span className={t.label}>Presupuesto</span>
-          <input
-            type="number"
-            inputMode="numeric"
+          <CurrencyInput
             value={cost.budget}
-            onChange={(event) => onChange({ budget: Number(event.target.value) || 0 })}
-            className={t.input}
+            onChange={(budget) => onChange({ budget })}
+            className={t.inputAmt}
           />
         </label>
         <label className="block">
           <span className={t.label}>Ejercido</span>
-          <input
-            type="number"
-            inputMode="numeric"
+          <CurrencyInput
             value={cost.amount}
-            onChange={(event) => onChange({ amount: Number(event.target.value) || 0 })}
-            className={t.input}
+            onChange={(amount) => onChange({ amount })}
+            className={t.inputAmt}
           />
         </label>
       </div>
@@ -565,18 +564,18 @@ function BitacoraTab({
       </div>
 
       <form onSubmit={submit} className="space-y-3">
-        <div className="grid grid-cols-2 gap-3">
+        <div className="flex flex-wrap gap-3">
           <label className="block">
             <span className={t.label}>Fecha</span>
             <input
               type="date"
               value={date}
               onChange={(event) => setDate(event.target.value)}
-              className={t.input}
+              className={`${t.input} w-[10.5rem]`}
               required
             />
           </label>
-          <label className="block">
+          <label className="block min-w-[10rem] flex-1">
             <span className={t.label}>Tipo</span>
             <select
               value={tipo}
@@ -650,7 +649,7 @@ function ChangeOrdersTab({
 }) {
   const t = useAdminTheme();
   const [description, setDescription] = useState("");
-  const [cost, setCost] = useState("");
+  const [cost, setCost] = useState(0);
 
   const submit = (event: FormEvent) => {
     event.preventDefault();
@@ -658,13 +657,13 @@ function ChangeOrdersTab({
     const order: ChangeOrder = {
       id: `oc-${Date.now()}`,
       description: description.trim(),
-      cost: Number(cost) || 0,
+      cost,
       status: "pendiente",
       createdAt: new Date().toISOString(),
     };
     save({ ...state, changeOrders: [order, ...state.changeOrders] });
     setDescription("");
-    setCost("");
+    setCost(0);
     onStatus("Orden de cambio registrada.");
   };
 
@@ -700,13 +699,10 @@ function ChangeOrdersTab({
         </label>
         <label className="block">
           <span className={t.label}>Costo extra (MXN)</span>
-          <input
-            type="number"
-            inputMode="numeric"
+          <CurrencyInput
             value={cost}
-            onChange={(event) => setCost(event.target.value)}
-            placeholder="48500"
-            className={t.input}
+            onChange={setCost}
+            className={t.inputAmt}
             required
           />
         </label>
