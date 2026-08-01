@@ -59,9 +59,12 @@ export function TechTerm({
 export default function TechFootnotes({
   ids,
   tone = "light",
+  wide = false,
 }: {
   ids: TechNoteId[];
   tone?: "light" | "dark";
+  /** Notas a ancho completo bajo texto + gráfica */
+  wide?: boolean;
 }) {
   const notes = ids
     .map((id, index) => {
@@ -78,11 +81,20 @@ export default function TechFootnotes({
   const body = tone === "dark" ? "text-white/35" : "text-black/45";
 
   return (
-    <aside className={`mt-6 border-t ${border} pt-4`} aria-label="Notas aclaratorias">
-      <p className={`mb-2.5 text-[0.55rem] font-semibold uppercase tracking-[0.16em] ${title}`}>
+    <aside
+      className={`${wide ? "mt-10 md:mt-12" : "mt-6"} border-t ${border} ${wide ? "pt-5 md:pt-6" : "pt-4"}`}
+      aria-label="Notas aclaratorias"
+    >
+      <p className={`mb-3 text-[0.55rem] font-semibold uppercase tracking-[0.16em] ${title}`}>
         Notas
       </p>
-      <ol className={`space-y-2 text-[0.68rem] font-light leading-5 ${body}`}>
+      <ol
+        className={`${
+          wide
+            ? "grid gap-x-6 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3"
+            : "space-y-2"
+        } text-[0.68rem] font-light leading-5 ${body}`}
+      >
         {notes.map((note) => (
           <li key={note.id} id={`nota-${note.id}`} className="flex gap-2">
             <span className="shrink-0 font-semibold opacity-80">[{note.n}]</span>
