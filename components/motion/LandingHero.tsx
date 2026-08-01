@@ -12,35 +12,37 @@ export default function LandingHero() {
     <div className="relative z-10 flex min-h-[62vh] flex-col justify-end px-5 pb-12 pt-36 sm:px-10 lg:min-h-screen lg:px-[6vw] lg:pb-16">
       <motion.span
         className="mb-8 block text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#d4b28c]"
-        initial={reduce ? false : { opacity: 0, y: 16 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: easeLux }}
+        initial={reduce ? false : { opacity: 0, x: -40 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: easeLux }}
       >
         Arquitectura · Interiorismo · Construcción
       </motion.span>
 
-      <motion.h1
-        className="text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-luxury"
-        initial={reduce ? false : { opacity: 0, x: -72 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ duration: 0.95, ease: easeLux, delay: 0.08 }}
-      >
-        Espacios
+      <h1 className="text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-luxury">
         <motion.span
-          className="font-editorial block pl-[6vw] italic text-[#d4b28c]"
-          initial={reduce ? false : { opacity: 0, x: 56 }}
+          className="block"
+          initial={reduce ? false : { opacity: 0, x: -64 }}
           animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.95, ease: easeLux, delay: 0.22 }}
+          transition={{ duration: 0.9, ease: easeLux, delay: 0.06 }}
+        >
+          Espacios
+        </motion.span>
+        <motion.span
+          className="font-editorial block whitespace-nowrap pl-[6vw] italic text-[#d4b28c]"
+          initial={reduce ? false : { opacity: 0, x: 64 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.9, ease: easeLux, delay: 0.18 }}
         >
           que viven.
         </motion.span>
-      </motion.h1>
+      </h1>
 
       <motion.p
         className="mt-9 max-w-xl border-l border-[#d4b28c]/50 pl-5 text-sm font-light leading-7 text-white/50"
-        initial={reduce ? false : { opacity: 0, y: 18 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6, ease: easeLux, delay: 0.18 }}
+        initial={reduce ? false : { opacity: 0, x: -36 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.7, ease: easeLux, delay: 0.28 }}
       >
         En REYPA convertimos ideas, necesidades y aspiraciones en espacios funcionales,
         sensibles y duraderos. Acompañamos cada decisión desde el primer trazo hasta la
@@ -48,9 +50,9 @@ export default function LandingHero() {
       </motion.p>
 
       <motion.div
-        initial={reduce ? false : { opacity: 0, y: 14 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.55, ease: easeLux, delay: 0.28 }}
+        initial={reduce ? false : { opacity: 0, x: -28 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.65, ease: easeLux, delay: 0.38 }}
       >
         <Link
           href="/proyectos"

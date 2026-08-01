@@ -63,7 +63,7 @@ export default function HoverLift3D({ children, className = "", intensity = 8 }:
         className="pointer-events-none absolute inset-0 z-[1] rounded-[inherit] opacity-0 transition-opacity duration-300 group-hover/lift:opacity-100"
         style={{ background: glow }}
       />
-      <div className="relative z-[2] h-full">{children}</div>
+      <div className="relative z-[2] h-full min-h-0">{children}</div>
     </motion.div>
   );
 }

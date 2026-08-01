@@ -77,10 +77,10 @@ export default function Home() {
             </SlideTitle>
           </div>
 
-          <Stagger className="mt-20 grid auto-rows-[minmax(13rem,auto)] gap-3 md:grid-cols-12" delay={0.05} inView>
-            <FadeInItem className="md:col-span-7 md:row-span-2">
+          <Stagger className="mt-20 grid gap-3 md:grid-cols-12" delay={0.05} inView>
+            <FadeInItem className="md:col-span-7 md:row-span-2 md:min-h-0">
               <HoverLift3D className="h-full">
-                <article className="luxury-card group relative min-h-[26rem] overflow-hidden rounded-2xl">
+                <article className="luxury-card group relative h-full min-h-[26rem] overflow-hidden rounded-2xl">
                   <Image
                     src="/foto/DISEÑOS/493945530_1260234636103048_7833668012152188885_n.jpg"
                     alt="Diseño interior contemporáneo de REYPA"
@@ -100,12 +100,12 @@ export default function Home() {
             {values.slice(0, 2).map(({ icon: Icon, number, title, text }) => (
               <FadeInItem key={title} className="md:col-span-5">
                 <HoverLift3D className="h-full">
-                  <article className="luxury-card h-full rounded-2xl p-7 md:p-9">
+                  <article className="luxury-card flex h-full min-h-[13rem] flex-col justify-between rounded-2xl p-7 md:p-9">
                     <div className="flex items-start justify-between">
                       <Icon size={25} strokeWidth={1.25} className="text-[#d4b28c]" />
                       <span className="text-[0.58rem] tracking-[0.2em] text-white/25">{number}</span>
                     </div>
-                    <div className="mt-12">
+                    <div className="mt-10">
                       <h3 className="text-2xl font-light tracking-[-0.03em]">{title}</h3>
                       <p className="mt-3 max-w-sm text-sm font-light leading-6 text-white/45">{text}</p>
                     </div>
@@ -116,7 +116,7 @@ export default function Home() {
 
             <FadeInItem className="md:col-span-5">
               <HoverLift3D className="h-full">
-                <article className="luxury-card group relative min-h-64 overflow-hidden rounded-2xl">
+                <article className="luxury-card group relative h-full min-h-64 overflow-hidden rounded-2xl">
                   <video
                     src="/video/GENERA_UN_LOGO_METALICO_TIPO_B (online-video-cutter.com).mp4"
                     autoPlay
@@ -145,7 +145,7 @@ export default function Home() {
 
             <FadeInItem className="md:col-span-7">
               <HoverLift3D className="h-full">
-                <article className="luxury-card grid-lines flex min-h-64 h-full flex-col justify-end rounded-2xl p-7 md:p-9">
+                <article className="luxury-card grid-lines flex h-full min-h-64 flex-col justify-end rounded-2xl p-7 md:p-9">
                   <span className="mb-5 inline-block h-px w-16 bg-[#d4b28c]" />
                   <p className="max-w-2xl text-xl font-light leading-relaxed text-white/72 md:text-2xl">
                     “La claridad no es un reporte al final. Es la manera en que construimos desde el primer día.”
