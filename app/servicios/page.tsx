@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import Link from "next/link";
 import {
-  ArrowRight,
   Building2,
   FileCheck2,
   HardHat,
@@ -10,6 +8,8 @@ import {
   Paintbrush2,
   WalletCards,
 } from "lucide-react";
+import ArrowLink from "@/components/motion/ArrowLink";
+import PortalPreviewCard from "@/components/PortalPreviewCard";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -223,57 +223,15 @@ export default function ServiciosPage() {
               actividades. El cliente entiende qué está sucediendo, qué sigue y cómo evoluciona
               su inversión.
             </p>
-            <Link
+            <ArrowLink
               href="/portal-cliente"
-              className="group mt-10 inline-flex items-center gap-4 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-black transition-colors hover:text-black/55"
+              className="mt-10 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-black transition-colors hover:text-black/55"
             >
-              Entrar al portal demo <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
-            </Link>
+              Entrar al portal demo
+            </ArrowLink>
           </div>
 
-          <div className="glass rounded-2xl p-3 shadow-[0_50px_120px_rgba(0,0,0,.5)] md:p-5">
-            <div className="rounded-xl border border-white/8 bg-[#0d0d0d] p-5 md:p-7">
-              <div className="flex items-center justify-between border-b border-white/8 pb-5">
-                <div className="flex items-center gap-3">
-                  <span className="grid size-9 place-items-center rounded-lg bg-[#d4b28c] text-xs font-bold text-black">R</span>
-                  <div>
-                    <p className="text-xs">Residencia Lomas</p>
-                    <p className="mt-1 text-[0.5rem] uppercase tracking-[0.18em] text-white/25">Vista ejecutiva</p>
-                  </div>
-                </div>
-                <span className="flex items-center gap-2 text-[0.52rem] uppercase tracking-[0.18em] text-[#d4b28c]">
-                  <i className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_12px_#d4b28c]" /> En línea
-                </span>
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-3">
-                {[["68%", "Avance"], ["$1.83M", "Ejercido"], ["84 días", "Restantes"]].map(([value, label]) => (
-                  <div key={label} className="rounded-xl border border-white/8 bg-white/[.025] p-4">
-                    <p className="text-xl font-light">{value}</p>
-                    <p className="mt-5 text-[0.5rem] uppercase tracking-[0.17em] text-white/25">{label}</p>
-                  </div>
-                ))}
-              </div>
-              <div className="mt-3 grid gap-3 sm:grid-cols-[1.25fr_.75fr]">
-                <div className="rounded-xl border border-white/8 p-5">
-                  <p className="mb-6 text-[0.56rem] uppercase tracking-[0.18em] text-white/30">Progreso por etapa</p>
-                  {[["Estructura", 82], ["Instalaciones", 46], ["Acabados", 12]].map(([label, value]) => (
-                    <div key={String(label)} className="mb-4 last:mb-0">
-                      <div className="mb-2 flex justify-between text-[0.55rem] text-white/40"><span>{label}</span><span>{value}%</span></div>
-                      <div className="h-px bg-white/10"><div className="h-px bg-[#d4b28c]" style={{ width: `${value}%` }} /></div>
-                    </div>
-                  ))}
-                </div>
-                <div className="grid-lines rounded-xl border border-white/8 p-5">
-                  <p className="text-[0.56rem] uppercase tracking-[0.18em] text-white/30">Actividad</p>
-                  <div className="mt-8 flex h-16 items-end gap-1">
-                    {[35, 55, 42, 76, 62, 88, 70, 94].map((height, index) => (
-                      <span key={index} className="flex-1 bg-[#d4b28c]/60" style={{ height: `${height}%` }} />
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <PortalPreviewCard />
         </div>
       </section>
     </>
