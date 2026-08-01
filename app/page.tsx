@@ -4,6 +4,7 @@ import { ArrowDownRight, ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-
 import DesignCarousel from "@/components/DesignCarousel";
 import ArrowLink from "@/components/motion/ArrowLink";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
+import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
 
 const values = [
   {
@@ -282,13 +283,17 @@ export default function Home() {
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
-                  Finanzas claras: ejercido por rubro, SPI y curva de costos.
+                  <span>
+                    Finanzas claras: ejercido por <TechTerm n={1}>rubro</TechTerm>,{" "}
+                    <TechTerm n={2}>SPI</TechTerm>/<TechTerm n={3}>CPI</TechTerm> y curva de costos.
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
                   Evidencias con foto y video para validar cada etapa sin desplazarte.
                 </li>
               </ul>
+              <TechFootnotes ids={["rubro", "spi", "cpi"]} tone="dark" />
             </div>
 
             <ArrowLink

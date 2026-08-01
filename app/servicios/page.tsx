@@ -10,6 +10,7 @@ import {
 } from "lucide-react";
 import ArrowLink from "@/components/motion/ArrowLink";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
+import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
 
 export const metadata: Metadata = {
   title: "Servicios",
@@ -214,7 +215,8 @@ export default function ServiciosPage() {
           <div className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
             <div>
               <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
-                <span className="h-px w-10 bg-black/60" /> Portal de obra SaaS
+                <span className="h-px w-10 bg-black/60" /> Portal de obra{" "}
+                <TechTerm n={1}>SaaS</TechTerm>
               </span>
               <h2 className="heading-section mt-10 text-balance text-[#0a0a0a]">
                 Control visible.
@@ -231,8 +233,8 @@ export default function ServiciosPage() {
               <p>
                 Desde una sola pantalla puedes revisar el avance global, los días transcurridos
                 desde el inicio, la fecha estimada de entrega y el monto ejercido frente al
-                presupuesto autorizado. Las gráficas desglosan etapas físicas y rubros
-                financieros para que cada decisión tenga contexto.
+                presupuesto autorizado. Las gráficas desglosan etapas físicas y{" "}
+                <TechTerm n={2}>rubros</TechTerm> financieros para que cada decisión tenga contexto.
               </p>
               <p>
                 El residente actualiza métricas, bitácora y evidencias desde campo; tú las ves
@@ -242,17 +244,24 @@ export default function ServiciosPage() {
               <ul className="space-y-3 border-t border-black/15 pt-5 text-[0.78rem] leading-6 text-black/50">
                 <li className="flex gap-3">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
-                  Vista Resumen con KPIs, donut de etapas y desglose presupuestario.
+                  <span>
+                    Vista Resumen con <TechTerm n={3}>KPIs</TechTerm>,{" "}
+                    <TechTerm n={4}>donut</TechTerm> de etapas y desglose presupuestario.
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
-                  Módulo financiero con curvas de avance, costos y desempeño SPI/CPI.
+                  <span>
+                    Módulo financiero con curvas de avance, costos y desempeño{" "}
+                    <TechTerm n={5}>SPI</TechTerm>/<TechTerm n={6}>CPI</TechTerm>.
+                  </span>
                 </li>
                 <li className="flex gap-3">
                   <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
                   Galería de evidencias para validar avance sin depender solo del reporte oral.
                 </li>
               </ul>
+              <TechFootnotes ids={["saas", "rubro", "kpi", "donut", "spi", "cpi"]} tone="light" />
             </div>
 
             <ArrowLink
