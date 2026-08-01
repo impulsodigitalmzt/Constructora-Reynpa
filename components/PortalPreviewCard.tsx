@@ -2,7 +2,9 @@
 
 import { CalendarDays, Clock3, TrendingUp, Wallet } from "lucide-react";
 import Link from "next/link";
+import PortalOverviewCharts from "@/components/PortalOverviewCharts";
 import { useObraStore } from "@/hooks/useObraStore";
+import { getPortalChartTheme } from "@/hooks/usePortalChartMode";
 import { formatDeliveryLabel, getDaysElapsed, getSpentTotal } from "@/lib/obra-store";
 
 const currencyFull = new Intl.NumberFormat("es-MX", {
@@ -11,12 +13,19 @@ const currencyFull = new Intl.NumberFormat("es-MX", {
   maximumFractionDigits: 0,
 });
 
+const previewTheme = getPortalChartTheme("dark");
+
 export default function PortalPreviewCard() {
   const { state } = useObraStore();
   const spent = getSpentTotal(state);
   const progressShare = Math.round((spent / Math.max(state.budgetTotal, 1)) * 100);
   const daysElapsed = getDaysElapsed(state.startDate);
   const deliveryLabel = formatDeliveryLabel(state.deliveryDate);
+  const startLabel = new Date(`${state.startDate}T12:00:00`).toLocaleDateString("es-MX", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   return (
     <Link
@@ -33,7 +42,7 @@ export default function PortalPreviewCard() {
               {state.projectName}
             </p>
             <p className="mt-0.5 text-[0.55rem] uppercase tracking-[0.16em] text-white/40">
-              {state.projectCode} · En ejecución
+              {state.projectCode} · Mazatlán, Sin.
             </p>
           </div>
         </div>
@@ -48,7 +57,7 @@ export default function PortalPreviewCard() {
           {["Resumen", "Finanzas", "Evidencias"].map((tab, index) => (
             <span
               key={tab}
-              className={`shrink-0 rounded-lg px-3 py-2 text-[0.58rem] font-semibold uppercase tracking-[0.12em] ${
+              className={`shrink-0 flex-1 rounded-lg px-3 py-2 text-center text-[0.58rem] font-semibold uppercase tracking-[0.12em] ${
                 index === 0
                   ? "bg-[#d4b28c] text-black"
                   : "bg-white/[0.08] text-white/85 ring-1 ring-white/20"
@@ -60,12 +69,18 @@ export default function PortalPreviewCard() {
         </div>
       </div>
 
-      <div className="space-y-3 p-4 md:p-5">
+      <div className="space-y-4 p-4 md:p-5">
         <div>
-          <p className="text-[0.55rem] font-semibold uppercase tracking-[0.12em] text-white/45">
+          <p className="text-[0.55rem] uppercase tracking-[0.18em] text-white/25">
+            Bienvenido de nuevo, Daniel
+          </p>
+          <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl">
+            Estado del proyecto
+          </h3>
+          <p className="mt-3 text-[0.55rem] font-semibold uppercase tracking-[0.12em] text-white/45">
             Presupuesto total
           </p>
-          <p className="mt-1 font-editorial text-2xl tracking-tight text-[#d4b28c] sm:text-3xl">
+          <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl">
             {currencyFull.format(state.budgetTotal)}
           </p>
         </div>
@@ -81,7 +96,7 @@ export default function PortalPreviewCard() {
             icon={Clock3}
             label="Días transcurridos"
             value={`${daysElapsed}`}
-            note="Desde el inicio"
+            note={`Desde ${startLabel}`}
           />
           <PreviewMetric
             icon={CalendarDays}
@@ -95,6 +110,10 @@ export default function PortalPreviewCard() {
             value={currencyFull.format(spent)}
             note={`${progressShare}% del presupuesto`}
           />
+        </div>
+
+        <div className="pointer-events-none">
+          <PortalOverviewCharts forcedMode="dark" compact />
         </div>
       </div>
     </Link>
@@ -113,14 +132,14 @@ function PreviewMetric({
   note: string;
 }) {
   return (
-    <article className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-3.5 shadow-[0_8px_24px_rgba(0,0,0,0.2)] sm:p-4">
+    <article className={`${previewTheme.card} !p-3 sm:!p-3.5`}>
       <div className="flex items-center justify-between gap-2">
-        <span className="text-[0.52rem] font-bold uppercase tracking-[0.1em] text-[#555]">
+        <span className={`text-[0.52rem] font-bold uppercase tracking-[0.1em] ${previewTheme.muted}`}>
           {label}
         </span>
         <Icon size={14} className="shrink-0 text-[#ff6b2c]" />
       </div>
-      <p className="mt-3 text-xl font-semibold tracking-tight text-[#0a0a0a] sm:text-2xl">
+      <p className={`mt-3 break-words text-lg font-semibold tracking-tight sm:text-xl ${previewTheme.title}`}>
         {value}
       </p>
       <p className="mt-1.5 text-[0.58rem] font-semibold text-[#027a48]">{note}</p>

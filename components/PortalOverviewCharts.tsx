@@ -9,7 +9,11 @@ import {
   Tooltip,
 } from "recharts";
 import { useObraStore } from "@/hooks/useObraStore";
-import { usePortalChartMode } from "@/hooks/usePortalChartMode";
+import {
+  getPortalChartTheme,
+  type PortalChartMode,
+  usePortalChartMode,
+} from "@/hooks/usePortalChartMode";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -53,9 +57,16 @@ const RUBRO_META: Record<
 
 const FINANCE_ORDER = ["materiales", "manoObra", "equipos", "subcontratistas"] as const;
 
-export default function PortalOverviewCharts() {
+export default function PortalOverviewCharts({
+  forcedMode,
+  compact = false,
+}: {
+  forcedMode?: PortalChartMode;
+  compact?: boolean;
+} = {}) {
   const { state } = useObraStore();
-  const { theme } = usePortalChartMode();
+  const hook = usePortalChartMode();
+  const theme = forcedMode ? getPortalChartTheme(forcedMode) : hook.theme;
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
@@ -87,10 +98,10 @@ export default function PortalOverviewCharts() {
   });
 
   return (
-    <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-5">
-      <section className={theme.card}>
+    <div className={`grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-5 ${compact ? "mt-0" : "mt-5"}`}>
+      <section className={compact ? `${theme.card} !p-3.5 sm:!p-4` : theme.card}>
           <div className="mb-2">
-            <h3 className={`text-base font-bold tracking-tight md:text-lg ${theme.title}`}>
+            <h3 className={`font-bold tracking-tight ${theme.title} ${compact ? "text-sm md:text-base" : "text-base md:text-lg"}`}>
               Avance por Etapas
             </h3>
             <p className={`mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.14em] ${theme.muted}`}>
@@ -98,7 +109,7 @@ export default function PortalOverviewCharts() {
             </p>
           </div>
 
-          <div className="relative mx-auto mt-2 h-[15.5rem] w-full max-w-[17rem] sm:h-[17rem] sm:max-w-[18.5rem]">
+          <div className={`relative mx-auto mt-2 w-full ${compact ? "h-[12.5rem] max-w-[14rem] sm:h-[13.5rem] sm:max-w-[15rem]" : "h-[15.5rem] max-w-[17rem] sm:h-[17rem] sm:max-w-[18.5rem]"}`}>
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -110,7 +121,7 @@ export default function PortalOverviewCharts() {
                   paddingAngle={3.5}
                   stroke={theme.pieStroke}
                   strokeWidth={3}
-                  isAnimationActive
+                  isAnimationActive={!compact}
                   animationDuration={1100}
                   animationBegin={120}
                 >
@@ -148,7 +159,7 @@ export default function PortalOverviewCharts() {
 
             <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
               <p className={`text-[0.52rem] font-bold uppercase tracking-[0.18em] ${theme.muted}`}>Global</p>
-              <p className={`font-editorial mt-1 text-4xl tabular-nums sm:text-5xl ${theme.title}`}>
+              <p className={`font-editorial mt-1 tabular-nums ${theme.title} ${compact ? "text-3xl sm:text-4xl" : "text-4xl sm:text-5xl"}`}>
                 {state.progress}%
               </p>
             </div>
@@ -168,9 +179,9 @@ export default function PortalOverviewCharts() {
           </ul>
         </section>
 
-        <section className={theme.card}>
-          <div className="mb-5">
-            <h3 className={`text-base font-bold tracking-tight md:text-lg ${theme.title}`}>
+        <section className={compact ? `${theme.card} !p-3.5 sm:!p-4` : theme.card}>
+          <div className={compact ? "mb-4" : "mb-5"}>
+            <h3 className={`font-bold tracking-tight ${theme.title} ${compact ? "text-sm md:text-base" : "text-base md:text-lg"}`}>
               Desglose Presupuestario
             </h3>
             <p className={`mt-1 text-[0.58rem] font-semibold uppercase tracking-[0.14em] ${theme.muted}`}>
@@ -178,14 +189,14 @@ export default function PortalOverviewCharts() {
             </p>
           </div>
 
-          <div className="space-y-4 sm:space-y-5">
+          <div className={`space-y-4 ${compact ? "sm:space-y-4" : "sm:space-y-5"}`}>
             {financeRows.map((row, index) => (
               <div key={row.id} className="group">
-                <p className={`mb-2 text-sm font-bold ${theme.title}`}>{row.label}</p>
+                <p className={`mb-2 font-bold ${theme.title} ${compact ? "text-xs sm:text-sm" : "text-sm"}`}>{row.label}</p>
 
                 <div className="flex items-center gap-2 sm:gap-3">
                   <div
-                    className={`relative h-10 min-w-0 flex-1 overflow-hidden rounded-xl sm:h-11 ${theme.track}`}
+                    className={`relative min-w-0 flex-1 overflow-hidden rounded-xl ${theme.track} ${compact ? "h-8 sm:h-9" : "h-10 sm:h-11"}`}
                   >
                     <div
                       className="absolute inset-y-0 left-0 flex items-center overflow-hidden rounded-[10px] transition-[width] duration-1000 ease-out"
