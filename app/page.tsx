@@ -252,8 +252,8 @@ export default function Home() {
 
       <section className="noise border-y border-white/10 bg-[#121212] py-28 md:py-44">
         <div className="container-reypa relative z-10">
-          <div className="grid gap-16 lg:grid-cols-[.9fr_1.1fr] lg:items-stretch">
-            <FadeIn inView className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
+          <div className="grid gap-16 lg:grid-cols-[.9fr_1.1fr] lg:items-start">
+            <FadeIn inView className="flex min-h-0 flex-col gap-8 lg:gap-10 lg:py-2">
               <div>
                 <span className="eyebrow">Portal privado</span>
                 <h2 className="heading-section mt-10 text-balance">

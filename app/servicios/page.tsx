@@ -212,8 +212,8 @@ export default function ServiciosPage() {
 
       <section className="noise overflow-hidden border-y border-black/10 bg-[#d8c7b3] py-28 text-[#0a0a0a] md:py-44">
         <div className="container-reypa relative z-10">
-          <div className="grid gap-16 lg:grid-cols-[.75fr_1.25fr] lg:items-stretch">
-            <div className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
+          <div className="grid gap-16 lg:grid-cols-[.75fr_1.25fr] lg:items-start">
+            <div className="flex min-h-0 flex-col gap-8 lg:gap-10 lg:py-2">
               <div>
                 <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
                   <span className="h-px w-10 bg-black/60" /> Portal de obra{" "}

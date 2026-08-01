@@ -30,7 +30,7 @@ export default function PortalPreviewCard() {
   return (
     <Link
       href="/portal-cliente"
-      className="group block h-full overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.55)] transition duration-500 hover:border-[#d4b28c]/35"
+      className="group block overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.55)] transition duration-500 hover:border-[#d4b28c]/35"
     >
       <div className="flex items-center justify-between gap-3 border-b border-white/10 bg-white/[.025] px-4 py-4 md:px-5">
         <div className="flex min-w-0 items-center gap-3">
