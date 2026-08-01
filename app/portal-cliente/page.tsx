@@ -83,7 +83,7 @@ export default function PortalClientePage() {
               ))}
             </div>
           </div>
-          <div className="relative min-h-[18rem] w-full overflow-hidden rounded-2xl border border-black/15 bg-black sm:min-h-[22rem] lg:min-h-0 lg:max-w-md lg:justify-self-end">
+          <div className="relative aspect-[3/4] w-full min-h-[18rem] overflow-hidden rounded-2xl border border-black/15 bg-black sm:min-h-[22rem] lg:aspect-auto lg:min-h-full lg:self-stretch">
             <video
               src="/video/AQO7zqrBLunM_-AAN4WHpaT1zqtzOue-UyF083Xg_8pnZBty30YZ4REP1WPcnEbZYBYjx9yqOd_ewWPKXVA22ezJJLSGrEq8nkj_8pSneA.mp4"
               autoPlay
@@ -92,7 +92,7 @@ export default function PortalClientePage() {
               muted
               playsInline
               preload="auto"
-              className="absolute inset-0 size-full object-contain"
+              className="absolute inset-0 size-full object-cover object-center"
             />
             <div className="pointer-events-none absolute left-5 top-5 rounded-xl bg-[#d8c7b3] px-4 py-3">
               <p className="text-[0.52rem] font-semibold uppercase tracking-[0.2em]">Evidencia verificada</p>
