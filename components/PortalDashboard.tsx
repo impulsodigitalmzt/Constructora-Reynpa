@@ -6,7 +6,9 @@ import {
   Clock3,
   LockKeyhole,
   Mail,
+  Moon,
   Play,
+  Sun,
   TrendingUp,
   Wallet,
 } from "lucide-react";
@@ -14,6 +16,7 @@ import { type FormEvent, useState } from "react";
 import FinancialDashboard from "@/components/FinancialDashboard";
 import PortalOverviewCharts from "@/components/PortalOverviewCharts";
 import { useObraStore } from "@/hooks/useObraStore";
+import { type PortalChartTheme, usePortalChartMode } from "@/hooks/usePortalChartMode";
 import { formatDeliveryLabel, getDaysElapsed, getSpentTotal } from "@/lib/obra-store";
 
 const videos = [
@@ -51,6 +54,7 @@ export default function PortalDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [view, setView] = useState<"overview" | "finance" | "updates">("overview");
   const { state } = useObraStore();
+  const { mode: chartMode, theme: chartTheme, toggle: toggleChartMode } = usePortalChartMode();
   const spent = getSpentTotal(state);
   const currencyFull = new Intl.NumberFormat("es-MX", {
     style: "currency",
@@ -173,6 +177,15 @@ export default function PortalDashboard() {
         </div>
         <div className="flex shrink-0 items-center gap-2">
           <button
+            type="button"
+            onClick={toggleChartMode}
+            className={chartTheme.toggleBtn}
+            aria-label={chartMode === "sun" ? "Modo oscuro" : "Modo día"}
+          >
+            {chartMode === "sun" ? <Moon size={14} /> : <Sun size={14} />}
+            <span className="hidden sm:inline">{chartMode === "sun" ? "Oscuro" : "Día"}</span>
+          </button>
+          <button
             className="relative grid size-10 place-items-center rounded-full border border-white/10 bg-white/[.025]"
             aria-label="Notificaciones"
           >
@@ -237,24 +250,28 @@ export default function PortalDashboard() {
               label="Avance general"
               value={`${state.progress}%`}
               note="+7% este mes"
+              theme={chartTheme}
             />
             <Metric
               icon={Clock3}
               label="Días transcurridos"
               value={`${daysElapsed}`}
               note={`Desde ${startLabel}`}
+              theme={chartTheme}
             />
             <Metric
               icon={CalendarDays}
               label="Entrega estimada"
               value={deliveryLabel}
               note="En tiempo"
+              theme={chartTheme}
             />
             <Metric
               icon={Wallet}
               label="Ejercido"
               value={currencyFull.format(spent)}
               note={`${progressShare}% del presupuesto`}
+              theme={chartTheme}
             />
           </div>
 
@@ -357,21 +374,23 @@ function Metric({
   label,
   value,
   note,
+  theme,
 }: {
   icon: typeof TrendingUp;
   label: string;
   value: string;
   note: string;
+  theme: PortalChartTheme;
 }) {
   return (
-    <article className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5">
+    <article className={theme.card}>
       <div className="flex items-center justify-between gap-2">
-        <span className="text-[0.58rem] font-bold uppercase tracking-[0.1em] text-[#555] sm:text-[0.62rem] sm:tracking-[0.12em]">
+        <span className={`text-[0.58rem] font-bold uppercase tracking-[0.1em] sm:text-[0.62rem] sm:tracking-[0.12em] ${theme.muted}`}>
           {label}
         </span>
         <Icon size={17} className="shrink-0 text-[#ff6b2c]" />
       </div>
-      <p className="mt-4 break-words text-xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-6 sm:text-2xl xl:text-[1.65rem]">
+      <p className={`mt-4 break-words text-xl font-semibold tracking-tight sm:mt-6 sm:text-2xl xl:text-[1.65rem] ${theme.title}`}>
         {value}
       </p>
       <p className="mt-2 text-[0.65rem] font-semibold text-[#027a48] sm:text-[0.68rem]">{note}</p>

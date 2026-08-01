@@ -1,6 +1,5 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
 import {
   Cell,
@@ -56,7 +55,7 @@ const FINANCE_ORDER = ["materiales", "manoObra", "equipos", "subcontratistas"] a
 
 export default function PortalOverviewCharts() {
   const { state } = useObraStore();
-  const { mode, theme, toggle } = usePortalChartMode();
+  const { theme } = usePortalChartMode();
   const [animated, setAnimated] = useState(false);
 
   useEffect(() => {
@@ -88,16 +87,8 @@ export default function PortalOverviewCharts() {
   });
 
   return (
-    <div className="mt-5 space-y-3">
-      <div className="flex justify-end">
-        <button type="button" onClick={toggle} className={theme.toggleBtn} aria-label={mode === "sun" ? "Modo oscuro" : "Modo día"}>
-          {mode === "sun" ? <Moon size={14} /> : <Sun size={14} />}
-          <span>{mode === "sun" ? "Oscuro" : "Día"}</span>
-        </button>
-      </div>
-
-      <div className="grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-5">
-        <section className={theme.card}>
+    <div className="mt-5 grid min-w-0 gap-4 lg:grid-cols-2 lg:gap-5">
+      <section className={theme.card}>
           <div className="mb-2">
             <h3 className={`text-base font-bold tracking-tight md:text-lg ${theme.title}`}>
               Avance por Etapas
@@ -228,6 +219,5 @@ export default function PortalOverviewCharts() {
           </div>
         </section>
       </div>
-    </div>
   );
 }

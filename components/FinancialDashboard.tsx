@@ -1,6 +1,5 @@
 "use client";
 
-import { Moon, Sun } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -157,7 +156,7 @@ function DonutGauge({
 
 export default function FinancialDashboard() {
   const { state } = useObraStore();
-  const { mode, theme, toggle } = usePortalChartMode();
+  const { mode, theme } = usePortalChartMode();
   const totalCost = getSpentTotal(state);
   const costBreakdown = withCostPercents(state).map((item) => ({
     ...item,
@@ -193,27 +192,16 @@ export default function FinancialDashboard() {
   return (
     <section className="min-w-0 space-y-4 sm:space-y-5">
       <div className="flex flex-col gap-4">
-        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-          <div className="min-w-0">
-            <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
-              Control financiero y de avance
-            </p>
-            <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
-              Dashboard de obra
-            </h3>
-            <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
-              Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={toggle}
-            className={theme.toggleBtn}
-            aria-label={mode === "sun" ? "Modo oscuro" : "Modo día"}
-          >
-            {mode === "sun" ? <Moon size={14} /> : <Sun size={14} />}
-            <span>{mode === "sun" ? "Oscuro" : "Día"}</span>
-          </button>
+        <div className="min-w-0">
+          <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
+            Control financiero y de avance
+          </p>
+          <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
+            Dashboard de obra
+          </h3>
+          <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
+            Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
+          </p>
         </div>
 
         <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
