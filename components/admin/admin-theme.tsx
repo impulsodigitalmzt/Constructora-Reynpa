@@ -43,9 +43,9 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
     return {
       mode,
       page: "bg-[#f4f5f7]",
-      surface: "border border-black/[0.06] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
-      elevated:
-        "border border-black/[0.06] bg-white shadow-[0_8px_30px_rgba(16,24,40,0.06)]",
+    surface: "border-[3px] border-black/[0.08] bg-white shadow-[0_1px_2px_rgba(16,24,40,0.04)]",
+    elevated:
+      "border-[3px] border-black/[0.08] bg-white shadow-[0_8px_30px_rgba(16,24,40,0.06)]",
       title: "text-[#101828]",
       muted: "text-[#667085]",
       label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#667085]",
@@ -75,8 +75,8 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
   return {
     mode,
     page: "bg-[#121212] [color-scheme:dark]",
-    surface: "border border-white/10 bg-[#1a1a1a]",
-    elevated: "border border-white/10 bg-[#1f1f1f] shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
+    surface: "border-[3px] border-white/20 bg-[#1a1a1a]",
+    elevated: "border-[3px] border-white/20 bg-[#1f1f1f] shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
     title: "text-white",
     muted: "text-white/55",
     label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/45",

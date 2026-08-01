@@ -356,7 +356,7 @@ export default function PortalDashboard() {
                   <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
                     {state.evidences.map((item) => (
                       <FadeInItem key={item.id}>
-                        <article className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                        <article className="group overflow-hidden rounded-2xl border-[5px] border-[#a8a8a8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
                           <div className="relative aspect-[4/5] bg-neutral-900">
                             {item.type === "image" ? (
                               // eslint-disable-next-line @next/next/no-img-element
@@ -393,7 +393,7 @@ export default function PortalDashboard() {
               <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" delay={0.1}>
                 {videos.map((video, index) => (
                   <FadeInItem key={video.file}>
-                    <article className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                    <article className="group overflow-hidden rounded-2xl border-[5px] border-[#a8a8a8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
                       <div className="group relative aspect-[4/5] bg-neutral-900">
                         <video
                           src={videoSrc(video.file)}
