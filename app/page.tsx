@@ -304,12 +304,11 @@ export default function Home() {
               </ArrowLink>
             </FadeIn>
 
-            <FadeIn inView delay={0.12}>
+            <FadeIn inView delay={0.12} className="min-w-0">
               <PortalPreviewCard />
+              <TechFootnotes ids={["rubro", "spi", "cpi"]} tone="dark" compact />
             </FadeIn>
           </div>
-
-          <TechFootnotes ids={["rubro", "spi", "cpi"]} tone="dark" wide />
         </div>
       </section>
 

@@ -4,38 +4,32 @@ const DEFAULT_NOTES = [
   {
     id: "kpi",
     term: "KPI",
-    meaning:
-      "Indicador clave de desempeño: cifra que resume el estado del proyecto (avance, plazos, presupuesto, etc.).",
+    meaning: "Indicador clave del estado del proyecto (avance, plazos, presupuesto).",
   },
   {
     id: "donut",
-    term: "Donut / gráfico de anillo",
-    meaning:
-      "Gráfica circular con un hueco al centro que muestra cómo se reparte el avance entre etapas de obra.",
+    term: "Donut",
+    meaning: "Gráfico de anillo que reparte el avance entre etapas de obra.",
   },
   {
     id: "spi",
     term: "SPI",
-    meaning:
-      "Schedule Performance Index (índice de desempeño del cronograma): indica si la obra va a tiempo. Cerca de 1.0 = en tiempo; menor a 1.0 = retraso.",
+    meaning: "Índice de tiempo: ≈1.0 = a tiempo; <1.0 = retraso.",
   },
   {
     id: "cpi",
     term: "CPI",
-    meaning:
-      "Cost Performance Index (índice de desempeño del costo): indica si el gasto va acorde al presupuesto. Cerca de 1.0 o mayor = buen control de costos.",
+    meaning: "Índice de costo: ≈1.0 o más = gasto controlado.",
   },
   {
     id: "rubro",
     term: "Rubro",
-    meaning:
-      "Categoría del presupuesto (materiales, mano de obra, equipo, subcontratistas, etc.).",
+    meaning: "Categoría del presupuesto (materiales, mano de obra, etc.).",
   },
   {
     id: "saas",
     term: "SaaS",
-    meaning:
-      "Software as a Service: plataforma digital accesible por internet, sin instalar programas en tu equipo.",
+    meaning: "Software en la nube, accesible por internet sin instalar nada.",
   },
 ] as const;
 
@@ -59,12 +53,12 @@ export function TechTerm({
 export default function TechFootnotes({
   ids,
   tone = "light",
-  wide = false,
+  compact = false,
 }: {
   ids: TechNoteId[];
   tone?: "light" | "dark";
-  /** Notas a ancho completo bajo texto + gráfica */
-  wide?: boolean;
+  /** Notas compactas bajo la gráfica */
+  compact?: boolean;
 }) {
   const notes = ids
     .map((id, index) => {
@@ -78,25 +72,23 @@ export default function TechFootnotes({
 
   const border = tone === "dark" ? "border-white/10" : "border-black/15";
   const title = tone === "dark" ? "text-white/35" : "text-black/40";
-  const body = tone === "dark" ? "text-white/35" : "text-black/45";
+  const body = tone === "dark" ? "text-white/40" : "text-black/50";
 
   return (
     <aside
-      className={`${wide ? "mt-10 md:mt-12" : "mt-6"} border-t ${border} ${wide ? "pt-5 md:pt-6" : "pt-4"}`}
+      className={`${compact ? "mt-4 pt-3" : "mt-6 pt-4"} border-t ${border}`}
       aria-label="Notas aclaratorias"
     >
-      <p className={`mb-3 text-[0.55rem] font-semibold uppercase tracking-[0.16em] ${title}`}>
+      <p className={`mb-2 text-[0.52rem] font-semibold uppercase tracking-[0.16em] ${title}`}>
         Notas
       </p>
       <ol
-        className={`${
-          wide
-            ? "grid gap-x-6 gap-y-2.5 sm:grid-cols-2 lg:grid-cols-3"
-            : "space-y-2"
-        } text-[0.68rem] font-light leading-5 ${body}`}
+        className={`grid gap-x-4 gap-y-1.5 ${
+          compact ? "grid-cols-1 sm:grid-cols-2" : "grid-cols-1 sm:grid-cols-2 lg:grid-cols-3"
+        } text-[0.62rem] font-light leading-4 ${body}`}
       >
         {notes.map((note) => (
-          <li key={note.id} id={`nota-${note.id}`} className="flex gap-2">
+          <li key={note.id} id={`nota-${note.id}`} className="flex gap-1.5">
             <span className="shrink-0 font-semibold opacity-80">[{note.n}]</span>
             <span>
               <span className="font-medium opacity-90">{note.term}:</span> {note.meaning}

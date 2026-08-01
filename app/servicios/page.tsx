@@ -272,10 +272,15 @@ export default function ServiciosPage() {
               </ArrowLink>
             </div>
 
-            <PortalPreviewCard />
+            <div className="min-w-0">
+              <PortalPreviewCard />
+              <TechFootnotes
+                ids={["saas", "rubro", "kpi", "donut", "spi", "cpi"]}
+                tone="light"
+                compact
+              />
+            </div>
           </div>
-
-          <TechFootnotes ids={["saas", "rubro", "kpi", "donut", "spi", "cpi"]} tone="light" wide />
         </div>
       </section>
     </>
