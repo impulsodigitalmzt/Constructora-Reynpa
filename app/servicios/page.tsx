@@ -100,15 +100,15 @@ export default function ServiciosPage() {
               key={title}
               className="service-card group overflow-hidden rounded-2xl p-0"
             >
-              <div className="relative aspect-[16/9] overflow-hidden bg-[#0f0f0f]">
+              <div className="relative aspect-[16/10] w-full overflow-hidden bg-[#0f0f0f] sm:aspect-[16/9]">
                 <Image
                   src={image}
                   alt={alt}
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
-                  className="object-contain transition-transform duration-1000 ease-out group-hover:scale-[1.025]"
+                  className="object-cover object-center transition-transform duration-1000 ease-out group-hover:scale-[1.03]"
                 />
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-black/5" />
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/35 via-transparent to-black/10" />
                 <span className="absolute left-5 top-5 z-10 grid size-11 place-items-center rounded-full border border-[#d4b28c]/60 bg-[#171717]/90 text-[#d4b28c] shadow-xl backdrop-blur-md transition-all duration-500 group-hover:border-[#d4b28c] group-hover:bg-[#171717]">
                   <Icon size={19} strokeWidth={1.35} />
                 </span>
