@@ -19,16 +19,22 @@ export default function LandingHero() {
         Arquitectura · Interiorismo · Construcción
       </motion.span>
 
-      <motion.div
-        initial={reduce ? false : { opacity: 0, y: 28 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.7, ease: easeLux, delay: 0.08 }}
+      <motion.h1
+        className="text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-luxury"
+        initial={reduce ? false : { opacity: 0, x: -72 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ duration: 0.95, ease: easeLux, delay: 0.08 }}
       >
-        <h1 className="text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-luxury">
-          Espacios
-          <span className="font-editorial block pl-[6vw] italic text-[#d4b28c]">que viven.</span>
-        </h1>
-      </motion.div>
+        Espacios
+        <motion.span
+          className="font-editorial block pl-[6vw] italic text-[#d4b28c]"
+          initial={reduce ? false : { opacity: 0, x: 56 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.95, ease: easeLux, delay: 0.22 }}
+        >
+          que viven.
+        </motion.span>
+      </motion.h1>
 
       <motion.p
         className="mt-9 max-w-xl border-l border-[#d4b28c]/50 pl-5 text-sm font-light leading-7 text-white/50"

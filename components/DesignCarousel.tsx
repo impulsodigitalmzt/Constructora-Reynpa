@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { ArrowLeft, ArrowRight } from "lucide-react";
 import { useCallback, useEffect, useRef } from "react";
+import SlideTitle from "@/components/motion/SlideTitle";
 
 const designs = [
   ["493945530_1260234636103048_7833668012152188885_n.jpg", "Interior sereno"],
@@ -88,10 +89,10 @@ export default function DesignCarousel() {
       <div className="container-reypa mb-12 flex flex-col gap-8 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <span className="eyebrow">Pasarela de diseños</span>
-          <h2 className="heading-section mt-8">
+          <SlideTitle from="left" className="heading-section mt-8">
             Ideas en
             <span className="font-editorial italic text-[#d4b28c]"> movimiento.</span>
-          </h2>
+          </SlideTitle>
           <p className="mt-6 max-w-xl text-sm font-light leading-7 text-white/42">
             Arrastra con el mouse o desliza con el dedo para explorar nuestros interiores,
             fachadas y atmósferas.

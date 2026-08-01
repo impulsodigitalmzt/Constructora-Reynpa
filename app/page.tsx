@@ -9,6 +9,7 @@ import ArrowLink from "@/components/motion/ArrowLink";
 import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
 import HoverLift3D from "@/components/motion/HoverLift3D";
 import LandingHero from "@/components/motion/LandingHero";
+import SlideTitle from "@/components/motion/SlideTitle";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
 import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
 import { easeLux } from "@/lib/motion";
@@ -62,19 +63,19 @@ export default function Home() {
 
       <section className="bg-[#0a0a0a] py-28 md:py-44">
         <div className="container-reypa">
-          <FadeIn inView className="grid gap-12 lg:grid-cols-[.65fr_1.35fr]">
-            <div>
+          <div className="grid gap-12 lg:grid-cols-[.65fr_1.35fr]">
+            <FadeIn inView>
               <span className="eyebrow">Nuestro manifiesto</span>
               <p className="mt-8 max-w-xs text-sm font-light leading-7 text-white/42">
                 Creemos que la arquitectura excepcional no necesita excesos. Necesita intención,
                 precisión y una relación honesta con quien la habita.
               </p>
-            </div>
-            <h2 className="heading-section text-balance text-white/95">
+            </FadeIn>
+            <SlideTitle from="right" className="heading-section text-balance text-white/95">
               La confianza también
               <span className="font-editorial block italic text-[#d4b28c]">se diseña.</span>
-            </h2>
-          </FadeIn>
+            </SlideTitle>
+          </div>
 
           <Stagger className="mt-20 grid auto-rows-[minmax(13rem,auto)] gap-3 md:grid-cols-12" delay={0.05} inView>
             <FadeInItem className="md:col-span-7 md:row-span-2">
@@ -158,8 +159,8 @@ export default function Home() {
 
       <section className="bg-[#d8c7b3] py-24 text-[#0a0a0a] md:py-36">
         <div className="container-reypa">
-          <FadeIn inView className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
-            <div>
+          <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
+            <FadeIn inView>
               <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
                 <span className="h-px w-10 bg-black/60" /> Lo que hacemos
               </span>
@@ -167,12 +168,12 @@ export default function Home() {
                 Resolvemos el proyecto de forma integral para que diseño, presupuesto y
                 construcción avancen con una misma visión.
               </p>
-            </div>
-            <h2 className="heading-section text-balance">
+            </FadeIn>
+            <SlideTitle from="right" className="heading-section text-balance">
               Una sola visión.
               <span className="font-editorial block italic text-black/55">De principio a fin.</span>
-            </h2>
-          </FadeIn>
+            </SlideTitle>
+          </div>
 
           <Stagger className="mt-16 border-t border-black/20" delay={0.04} inView>
             {[
@@ -208,12 +209,12 @@ export default function Home() {
 
       <section className="bg-[#0a0a0a] py-24 md:py-40">
         <div className="container-reypa">
-          <FadeIn inView className="mb-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
-            <h2 className="heading-section">
+          <div className="mb-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
+            <SlideTitle from="left" className="heading-section">
               La obra también
               <span className="font-editorial block italic text-[#d4b28c]">cuenta una historia.</span>
-            </h2>
-            <div>
+            </SlideTitle>
+            <FadeIn inView delay={0.12}>
               <p className="max-w-lg text-sm font-light leading-7 text-white/45">
                 Documentamos el proceso para que cada cliente vea cómo el proyecto toma forma.
                 La evidencia audiovisual permite entender avances, validar decisiones y mantener
@@ -222,8 +223,8 @@ export default function Home() {
               <p className="mt-5 text-[0.58rem] uppercase tracking-[0.2em] text-[#d4b28c]">
                 Seguimiento real · Evidencia de campo · Control de calidad
               </p>
-            </div>
-          </FadeIn>
+            </FadeIn>
+          </div>
 
           <Stagger className="grid gap-4 lg:grid-cols-[1.35fr_.65fr]" delay={0.06} inView>
             <FadeInItem>
@@ -271,10 +272,10 @@ export default function Home() {
             <FadeIn inView className="flex min-h-0 flex-col gap-8 lg:gap-10 lg:py-2">
               <div>
                 <span className="eyebrow">Portal privado</span>
-                <h2 className="heading-section mt-10 text-balance">
+                <SlideTitle from="left" delay={0.06} className="heading-section mt-10 text-balance">
                   Tu obra.
                   <span className="font-editorial block italic text-[#d4b28c]">Sin puntos ciegos.</span>
-                </h2>
+                </SlideTitle>
               </div>
 
               <div className="max-w-lg space-y-5 text-sm font-light leading-7 text-white/45">
@@ -329,26 +330,30 @@ export default function Home() {
 
       <section className="bg-[#d8c7b3] py-24 text-[#0a0a0a] md:py-36">
         <div className="container-reypa grid gap-14 lg:grid-cols-[.7fr_1.3fr]">
-          <FadeIn inView>
-            <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
-              <span className="h-px w-10 bg-black/60" /> Preguntas frecuentes
-            </span>
-            <h2 className="heading-section mt-10">
+          <div>
+            <FadeIn inView>
+              <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
+                <span className="h-px w-10 bg-black/60" /> Preguntas frecuentes
+              </span>
+            </FadeIn>
+            <SlideTitle from="left" delay={0.08} className="heading-section mt-10">
               Antes de
               <span className="font-editorial block italic text-black/55">comenzar.</span>
-            </h2>
-            <p className="mt-7 max-w-sm text-sm leading-7 text-black/52">
-              Resolvemos las preguntas más habituales sobre diseño, costos, tiempos y
-              seguimiento. Para un caso particular, conversemos directamente.
-            </p>
-            <a
-              href="mailto:arqreypacontacto@gmail.com"
-              className="group mt-9 inline-flex items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em]"
-            >
-              Hacer otra pregunta
-              <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
-            </a>
-          </FadeIn>
+            </SlideTitle>
+            <FadeIn inView delay={0.15}>
+              <p className="mt-7 max-w-sm text-sm leading-7 text-black/52">
+                Resolvemos las preguntas más habituales sobre diseño, costos, tiempos y
+                seguimiento. Para un caso particular, conversemos directamente.
+              </p>
+              <a
+                href="mailto:arqreypacontacto@gmail.com"
+                className="group mt-9 inline-flex items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em]"
+              >
+                Hacer otra pregunta
+                <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
+              </a>
+            </FadeIn>
+          </div>
 
           <Stagger className="border-t border-black/20" delay={0.04} inView>
             {[
