@@ -168,8 +168,8 @@ export default function ServiciosPage() {
       </section>
 
       <section className="bg-[#0a0a0a] py-24 md:py-36">
-        <div className="container-reypa grid gap-12 lg:grid-cols-[.72fr_1fr] lg:items-stretch">
-          <div className="relative min-h-[28rem] w-full overflow-hidden rounded-2xl border border-white/10 bg-[#121212] lg:min-h-0 lg:max-w-md">
+        <div className="container-reypa grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:items-stretch">
+          <div className="relative aspect-[3/4] w-full overflow-hidden rounded-2xl border-[3px] border-white/20 bg-[#0a0a0a] shadow-[0_40px_100px_rgba(0,0,0,0.45)] sm:aspect-[4/5] lg:aspect-auto lg:min-h-full lg:self-stretch">
             <video
               src="/video/AQMRwYR-7odwkxuYptMByjkRZWbhnebEIrITEk84RQF9k2Kd8fQdChU1QrQNBz-NDlT5lo40UQt48MyrpZTBlpJvlvHf3k89g6YXrRS6QQ.mp4"
               autoPlay
@@ -178,8 +178,9 @@ export default function ServiciosPage() {
               muted
               playsInline
               preload="auto"
-              className="absolute inset-0 size-full object-contain"
+              className="absolute inset-0 size-full object-cover object-center"
             />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/50 to-transparent" />
           </div>
           <div className="flex flex-col justify-center">
             <span className="eyebrow">Ejecución en campo</span>
@@ -198,7 +199,7 @@ export default function ServiciosPage() {
                 ["Coordinación", "Comunicación directa con responsables de obra."],
                 ["Control", "Seguimiento de calendario y presupuesto."],
               ].map(([title, text]) => (
-                <div key={title} className="rounded-xl border border-white/10 p-5">
+                <div key={title} className="rounded-xl border-[3px] border-white/15 p-5">
                   <p className="text-xs text-[#d4b28c]">{title}</p>
                   <p className="mt-3 text-xs leading-5 text-white/35">{text}</p>
                 </div>
