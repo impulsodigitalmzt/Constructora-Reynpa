@@ -124,6 +124,7 @@ export default function PortalOverviewCharts({
                   isAnimationActive={!compact}
                   animationDuration={1100}
                   animationBegin={120}
+                  animationEasing="ease-out"
                 >
                   {stageData.map((item) => (
                     <Cell

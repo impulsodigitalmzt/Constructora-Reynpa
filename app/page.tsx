@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownRight, ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-react";
 import DesignCarousel from "@/components/DesignCarousel";
+import ArrowLink from "@/components/motion/ArrowLink";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
 
 const values = [
@@ -260,12 +261,12 @@ export default function Home() {
               Accede a avances, videos, presupuesto y próximas actividades desde un panel
               privado diseñado para mantenerte informado en tiempo real.
             </p>
-            <Link
+            <ArrowLink
               href="/portal-cliente"
-              className="group inline-flex items-center gap-4 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
+              className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
             >
-              Explorar experiencia <ArrowRight size={16} className="transition-transform duration-500 group-hover:translate-x-2" />
-            </Link>
+              Explorar experiencia
+            </ArrowLink>
           </div>
 
           <PortalPreviewCard />

@@ -64,6 +64,12 @@ button {
 .font-editorial {
   font-family: Georgia, "Times New Roman", serif;
   font-weight: 400;
+  letter-spacing: -0.028em;
+  font-feature-settings: "kern" 1, "liga" 1;
+}
+
+.tracking-luxury {
+  letter-spacing: -0.04em;
 }
 
 .eyebrow {
@@ -249,6 +255,21 @@ button {
   }
 }
 
+@keyframes reypa-ripple {
+  from {
+    transform: translate(-50%, -50%) scale(0.2);
+    opacity: 0.55;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(18);
+    opacity: 0;
+  }
+}
+
+.animate-reypa-ripple {
+  animation: reypa-ripple 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
 @media (min-width: 768px) {
   .container-reypa {
     width: min(100% - 5rem, 86rem);
@@ -260,11 +281,10 @@ button {
     scroll-behavior: auto;
   }
 
-  *,
-  *::before,
-  *::after {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
+  .animate-rise,
+  .animate-rise-delayed,
+  .animate-scroll,
+  .animate-reypa-ripple {
+    animation: none !important;
   }
 }

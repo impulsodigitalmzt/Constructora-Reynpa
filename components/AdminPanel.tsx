@@ -10,6 +10,7 @@ import {
   type AdminVisualMode,
   getAdminTheme,
 } from "@/components/admin/admin-theme";
+import RippleButton from "@/components/motion/RippleButton";
 import { useObraStore } from "@/hooks/useObraStore";
 import { ADMIN_DEMO, isAdminSessionActive, setAdminSession } from "@/lib/obra-store";
 
@@ -132,9 +133,9 @@ export default function AdminPanel() {
                   {error}
                 </p>
               ) : null}
-              <button type="submit" className={`${theme.btnPrimary} w-full`}>
+              <RippleButton type="submit" className={`${theme.btnPrimary} w-full`}>
                 <LockKeyhole size={15} /> Entrar
-              </button>
+              </RippleButton>
               <p className={`break-all text-center text-xs ${theme.muted}`}>
                 {ADMIN_DEMO.user} · {ADMIN_DEMO.password}
               </p>

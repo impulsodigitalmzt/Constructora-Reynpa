@@ -17,6 +17,9 @@ import {
 import { useObraStore } from "@/hooks/useObraStore";
 import { type PortalChartTheme, usePortalChartMode } from "@/hooks/usePortalChartMode";
 import { getSpentTotal, withCostPercents } from "@/lib/obra-store";
+import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
+import KpiCard3D from "@/components/motion/KpiCard3D";
+import RevealHeading from "@/components/motion/RevealHeading";
 
 /** Colores brillantes para gráficas (alta visibilidad) */
 const CHART = {
@@ -117,7 +120,7 @@ function DonutGauge({
   ];
 
   return (
-    <article className={theme.card}>
+    <KpiCard3D className={theme.card}>
       <div className="mb-2 flex items-center justify-between gap-2">
         <p className={`text-[0.62rem] font-bold uppercase tracking-[0.14em] ${theme.body}`}>
           {label}
@@ -138,6 +141,9 @@ function DonutGauge({
               endAngle={-270}
               stroke="none"
               paddingAngle={1}
+              isAnimationActive
+              animationDuration={1100}
+              animationEasing="ease-out"
             >
               <Cell fill={color} />
               <Cell fill={track} />
@@ -150,7 +156,7 @@ function DonutGauge({
           </p>
         </div>
       </div>
-    </article>
+    </KpiCard3D>
   );
 }
 
@@ -191,51 +197,58 @@ export default function FinancialDashboard() {
 
   return (
     <section className="min-w-0 space-y-4 sm:space-y-5">
-      <div className="flex flex-col gap-4">
-        <div className="min-w-0">
-          <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
-            Control financiero y de avance
-          </p>
-          <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
-            Dashboard de obra
-          </h3>
-          <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
-            Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
-          </p>
-        </div>
-
-        <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
-          <div className={`${theme.card} !p-3 sm:!px-4 sm:!py-4`}>
-            <p className={`text-[0.58rem] font-bold uppercase tracking-[0.12em] sm:text-[0.68rem] sm:tracking-[0.14em] ${theme.muted}`}>
-              Presupuesto
+      <Stagger className="flex flex-col gap-4">
+        <FadeInItem>
+          <div className="min-w-0">
+            <p className="text-[0.58rem] uppercase tracking-[0.22em] text-[#d4b28c]">
+              Control financiero y de avance
             </p>
-            <p className={`mt-1.5 font-editorial text-2xl font-semibold tracking-tight sm:mt-2 sm:text-4xl ${theme.title}`}>
-              ${budgetMillions.toFixed(2)}
-              <span className={`ml-0.5 text-base sm:text-xl ${theme.muted}`}>M</span>
+            <RevealHeading className="mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
+              Dashboard de obra
+            </RevealHeading>
+            <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
+              Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
             </p>
           </div>
-          <div
-            className={`${theme.card} !p-3 sm:!px-4 sm:!py-4 ${
-              mode === "dark" ? "border-[#ff6b2c]/40" : "border-[#ff6b2c]/50"
-            }`}
-          >
-            <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#ff6b2c] sm:text-[0.68rem] sm:tracking-[0.14em]">
-              Ejercido
-            </p>
-            <p className="mt-1.5 font-editorial text-2xl font-semibold tracking-tight text-[#ff6b2c] sm:mt-2 sm:text-4xl">
-              ${spentMillions.toFixed(2)}
-              <span className="ml-0.5 text-base opacity-70 sm:text-xl">M</span>
-            </p>
-          </div>
-        </div>
-      </div>
+        </FadeInItem>
 
-      <div className="grid gap-4 sm:grid-cols-3">
+        <FadeInItem>
+          <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
+            <KpiCard3D className={`${theme.card} !p-3 sm:!px-4 sm:!py-4`}>
+              <p className={`text-[0.58rem] font-bold uppercase tracking-[0.12em] sm:text-[0.68rem] sm:tracking-[0.14em] ${theme.muted}`}>
+                Presupuesto
+              </p>
+              <p className={`mt-1.5 font-editorial text-2xl font-semibold tracking-luxury sm:mt-2 sm:text-4xl ${theme.title}`}>
+                ${budgetMillions.toFixed(2)}
+                <span className={`ml-0.5 text-base sm:text-xl ${theme.muted}`}>M</span>
+              </p>
+            </KpiCard3D>
+            <KpiCard3D
+              className={`${theme.card} !p-3 sm:!px-4 sm:!py-4 ${
+                mode === "dark" ? "border-[#ff6b2c]/40" : "border-[#ff6b2c]/50"
+              }`}
+            >
+              <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#ff6b2c] sm:text-[0.68rem] sm:tracking-[0.14em]">
+                Ejercido
+              </p>
+              <p className="mt-1.5 font-editorial text-2xl font-semibold tracking-luxury text-[#ff6b2c] sm:mt-2 sm:text-4xl">
+                ${spentMillions.toFixed(2)}
+                <span className="ml-0.5 text-base opacity-70 sm:text-xl">M</span>
+              </p>
+            </KpiCard3D>
+          </div>
+        </FadeInItem>
+      </Stagger>
+
+      <Stagger className="grid gap-4 sm:grid-cols-3" delay={0.1}>
         {kpiGauges.map((gauge) => (
-          <DonutGauge key={gauge.label} {...gauge} theme={theme} track={gaugeTrack} />
+          <FadeInItem key={gauge.label}>
+            <DonutGauge {...gauge} theme={theme} track={gaugeTrack} />
+          </FadeInItem>
         ))}
-      </div>
+      </Stagger>
 
+      <FadeIn delay={0.2} y={24}>
       <div className="grid gap-5 xl:grid-cols-[1.35fr_0.85fr]">
         <article className={theme.card}>
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
@@ -396,6 +409,7 @@ export default function FinancialDashboard() {
           </ul>
         </article>
       </div>
+      </FadeIn>
     </section>
   );
 }

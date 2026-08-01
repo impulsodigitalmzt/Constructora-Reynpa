@@ -12,12 +12,19 @@ import {
   TrendingUp,
   Wallet,
 } from "lucide-react";
-import { type FormEvent, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
+import { type FormEvent, useRef, useState } from "react";
 import FinancialDashboard from "@/components/FinancialDashboard";
 import PortalOverviewCharts from "@/components/PortalOverviewCharts";
+import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
+import KpiCard3D from "@/components/motion/KpiCard3D";
+import RevealHeading from "@/components/motion/RevealHeading";
 import { useObraStore } from "@/hooks/useObraStore";
 import { type PortalChartTheme, usePortalChartMode } from "@/hooks/usePortalChartMode";
+import { tabSlide } from "@/lib/motion";
 import { formatDeliveryLabel, getDaysElapsed, getSpentTotal } from "@/lib/obra-store";
+
+const TAB_ORDER = { overview: 0, finance: 1, updates: 2 } as const;
 
 const videos = [
   {
@@ -53,6 +60,7 @@ function videoSrc(file: string) {
 export default function PortalDashboard() {
   const [authenticated, setAuthenticated] = useState(false);
   const [view, setView] = useState<"overview" | "finance" | "updates">("overview");
+  const directionRef = useRef(0);
   const { state } = useObraStore();
   const { mode: chartMode, theme: chartTheme, toggle: toggleChartMode } = usePortalChartMode();
   const spent = getSpentTotal(state);
@@ -69,6 +77,11 @@ export default function PortalDashboard() {
     month: "short",
     year: "numeric",
   });
+
+  const changeView = (next: "overview" | "finance" | "updates") => {
+    directionRef.current = TAB_ORDER[next] >= TAB_ORDER[view] ? 1 : -1;
+    setView(next);
+  };
 
   const enterDemo = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -213,7 +226,7 @@ export default function PortalDashboard() {
             <button
               key={tab.id}
               type="button"
-              onClick={() => setView(tab.id)}
+              onClick={() => changeView(tab.id)}
               className={`shrink-0 flex-1 rounded-xl px-4 py-3 text-[0.62rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 ${
                 view === tab.id
                   ? "bg-[#d4b28c] text-black shadow-[0_8px_24px_rgba(212,178,140,0.28)]"
@@ -226,145 +239,190 @@ export default function PortalDashboard() {
         </div>
       </div>
 
-      {view === "overview" ? (
-        <div className="p-4 md:p-7">
-          <div className="mb-7 flex items-end justify-between gap-4">
-            <div>
-              <p className="text-[0.58rem] uppercase tracking-[0.18em] text-white/25">Bienvenido de nuevo, Daniel</p>
-              <h2 className="font-editorial mt-2 text-2xl sm:text-3xl">Estado del proyecto</h2>
-              <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/45">
-                Presupuesto total
-              </p>
-              <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl md:text-5xl">
-                {currencyFull.format(state.budgetTotal)}
-              </p>
-            </div>
-            <span className="hidden items-center gap-2 text-[0.55rem] uppercase tracking-[0.16em] text-[#d4b28c] sm:flex">
-              <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_12px_#d4b28c]" /> Actualizado
-            </span>
-          </div>
+      <div className="relative overflow-hidden">
+        <AnimatePresence mode="wait" custom={directionRef.current}>
+          {view === "overview" ? (
+            <motion.div
+              key="overview"
+              custom={directionRef.current}
+              variants={tabSlide}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="p-4 md:p-7"
+            >
+              <Stagger className="mb-7 flex items-end justify-between gap-4">
+                <FadeInItem>
+                  <div>
+                    <p className="text-[0.58rem] uppercase tracking-[0.22em] text-white/25">
+                      Bienvenido de nuevo, Daniel
+                    </p>
+                    <RevealHeading className="mt-2 text-2xl sm:text-3xl">Estado del proyecto</RevealHeading>
+                    <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/45">
+                      Presupuesto total
+                    </p>
+                    <p className="mt-1 font-editorial text-3xl tracking-luxury text-[#d4b28c] sm:text-4xl md:text-5xl">
+                      {currencyFull.format(state.budgetTotal)}
+                    </p>
+                  </div>
+                </FadeInItem>
+                <FadeInItem>
+                  <span className="hidden items-center gap-2 text-[0.55rem] uppercase tracking-[0.16em] text-[#d4b28c] sm:flex">
+                    <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_12px_#d4b28c]" /> Actualizado
+                  </span>
+                </FadeInItem>
+              </Stagger>
 
-          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
-            <Metric
-              icon={TrendingUp}
-              label="Avance general"
-              value={`${state.progress}%`}
-              note="+7% este mes"
-              theme={chartTheme}
-            />
-            <Metric
-              icon={Clock3}
-              label="Días transcurridos"
-              value={`${daysElapsed}`}
-              note={`Desde ${startLabel}`}
-              theme={chartTheme}
-            />
-            <Metric
-              icon={CalendarDays}
-              label="Entrega estimada"
-              value={deliveryLabel}
-              note="En tiempo"
-              theme={chartTheme}
-            />
-            <Metric
-              icon={Wallet}
-              label="Ejercido"
-              value={currencyFull.format(spent)}
-              note={`${progressShare}% del presupuesto`}
-              theme={chartTheme}
-            />
-          </div>
+              <Stagger className="grid grid-cols-2 gap-3 xl:grid-cols-4" delay={0.12}>
+                <FadeInItem>
+                  <Metric
+                    icon={TrendingUp}
+                    label="Avance general"
+                    value={`${state.progress}%`}
+                    note="+7% este mes"
+                    theme={chartTheme}
+                  />
+                </FadeInItem>
+                <FadeInItem>
+                  <Metric
+                    icon={Clock3}
+                    label="Días transcurridos"
+                    value={`${daysElapsed}`}
+                    note={`Desde ${startLabel}`}
+                    theme={chartTheme}
+                  />
+                </FadeInItem>
+                <FadeInItem>
+                  <Metric
+                    icon={CalendarDays}
+                    label="Entrega estimada"
+                    value={deliveryLabel}
+                    note="En tiempo"
+                    theme={chartTheme}
+                  />
+                </FadeInItem>
+                <FadeInItem>
+                  <Metric
+                    icon={Wallet}
+                    label="Ejercido"
+                    value={currencyFull.format(spent)}
+                    note={`${progressShare}% del presupuesto`}
+                    theme={chartTheme}
+                  />
+                </FadeInItem>
+              </Stagger>
 
-          <PortalOverviewCharts />
-        </div>
-      ) : view === "finance" ? (
-        <div className="p-4 md:p-7">
-          <FinancialDashboard />
-        </div>
-      ) : (
-        <div className="p-4 md:p-7">
-          <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
-            <div>
-              <p className="text-[0.58rem] uppercase tracking-[0.18em] text-white/25">Bitácora audiovisual</p>
-              <h2 className="font-editorial mt-2 text-3xl">Avances recientes</h2>
-            </div>
-            <p className="text-[0.58rem] uppercase tracking-[0.16em] text-[#d4b28c]">
-              {state.evidences.length + videos.length} evidencias
-            </p>
-          </div>
+              <FadeIn className="mt-5" delay={0.28} y={28}>
+                <PortalOverviewCharts />
+              </FadeIn>
+            </motion.div>
+          ) : view === "finance" ? (
+            <motion.div
+              key="finance"
+              custom={directionRef.current}
+              variants={tabSlide}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="p-4 md:p-7"
+            >
+              <FinancialDashboard />
+            </motion.div>
+          ) : (
+            <motion.div
+              key="updates"
+              custom={directionRef.current}
+              variants={tabSlide}
+              initial="enter"
+              animate="center"
+              exit="exit"
+              className="p-4 md:p-7"
+            >
+              <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+                <div>
+                  <p className="text-[0.58rem] uppercase tracking-[0.22em] text-white/25">Bitácora audiovisual</p>
+                  <RevealHeading className="mt-2 text-3xl">Avances recientes</RevealHeading>
+                </div>
+                <p className="text-[0.58rem] uppercase tracking-[0.16em] text-[#d4b28c]">
+                  {state.evidences.length + videos.length} evidencias
+                </p>
+              </div>
 
-          {state.evidences.length > 0 ? (
-            <div className="mb-8">
-              <p className="mb-4 text-[0.56rem] uppercase tracking-[0.18em] text-[#d4b28c]">
-                Publicadas desde campo
-              </p>
-              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-                {state.evidences.map((item) => (
-                  <article
-                    key={item.id}
-                    className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]"
-                  >
-                    <div className="relative aspect-[4/5] bg-neutral-900">
-                      {item.type === "image" ? (
-                        // eslint-disable-next-line @next/next/no-img-element
-                        <img
-                          src={item.dataUrl}
-                          alt={item.description}
-                          className="size-full object-cover"
-                        />
-                      ) : (
+              {state.evidences.length > 0 ? (
+                <div className="mb-8">
+                  <p className="mb-4 text-[0.56rem] uppercase tracking-[0.18em] text-[#d4b28c]">
+                    Publicadas desde campo
+                  </p>
+                  <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+                    {state.evidences.map((item) => (
+                      <FadeInItem key={item.id}>
+                        <article className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                          <div className="relative aspect-[4/5] bg-neutral-900">
+                            {item.type === "image" ? (
+                              // eslint-disable-next-line @next/next/no-img-element
+                              <img
+                                src={item.dataUrl}
+                                alt={item.description}
+                                className="size-full object-cover"
+                              />
+                            ) : (
+                              <video
+                                src={item.dataUrl}
+                                controls
+                                playsInline
+                                className="size-full object-cover"
+                              />
+                            )}
+                            <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-[#d4b28c] px-3 py-2 text-[0.58rem] font-bold uppercase tracking-[0.12em] text-black">
+                              Nueva
+                            </span>
+                          </div>
+                          <div className="p-4">
+                            <p className="text-sm font-semibold text-[#0a0a0a]">{item.description}</p>
+                            <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
+                              {new Date(item.createdAt).toLocaleString("es-MX")} · {item.author}
+                            </p>
+                          </div>
+                        </article>
+                      </FadeInItem>
+                    ))}
+                  </Stagger>
+                </div>
+              ) : null}
+
+              <Stagger className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3" delay={0.1}>
+                {videos.map((video, index) => (
+                  <FadeInItem key={video.file}>
+                    <article className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)] transition duration-500 hover:-translate-y-1 hover:shadow-[0_20px_40px_rgba(0,0,0,0.35)]">
+                      <div className="group relative aspect-[4/5] bg-neutral-900">
                         <video
-                          src={item.dataUrl}
+                          src={videoSrc(video.file)}
+                          autoPlay
+                          muted
+                          loop
                           controls
                           playsInline
-                          className="size-full object-cover"
+                          preload="metadata"
+                          className="size-full object-cover grayscale-[15%] transition duration-500 group-hover:grayscale-0"
                         />
-                      )}
-                      <span className="pointer-events-none absolute left-3 top-3 rounded-full bg-[#d4b28c] px-3 py-2 text-[0.58rem] font-bold uppercase tracking-[0.12em] text-black">
-                        Nueva
-                      </span>
-                    </div>
-                    <div className="p-4">
-                      <p className="text-sm font-semibold text-[#0a0a0a]">{item.description}</p>
-                      <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
-                        {new Date(item.createdAt).toLocaleString("es-MX")} · {item.author}
-                      </p>
-                    </div>
-                  </article>
+                        <span className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full bg-black/65 px-3 py-2 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur">
+                          <Play size={10} fill="currentColor" /> Evidencia {String(index + 1).padStart(2, "0")}
+                        </span>
+                      </div>
+                      <div className="p-4">
+                        <p className="text-sm font-semibold text-[#0a0a0a]">{video.title}</p>
+                        <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
+                          {28 - index * 2} Jul 2026 · Equipo REYPA
+                        </p>
+                      </div>
+                    </article>
+                  </FadeInItem>
                 ))}
-              </div>
-            </div>
-          ) : null}
-
-          <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {videos.map((video, index) => (
-              <article key={video.file} className="group overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] shadow-[0_8px_24px_rgba(0,0,0,0.25)]">
-                <div className="group relative aspect-[4/5] bg-neutral-900">
-                  <video
-                    src={videoSrc(video.file)}
-                    autoPlay
-                    muted
-                    loop
-                    controls
-                    playsInline
-                    preload="metadata"
-                    className="size-full object-cover grayscale-[15%] transition duration-500 group-hover:grayscale-0"
-                  />
-                  <span className="pointer-events-none absolute left-3 top-3 flex items-center gap-2 rounded-full bg-black/65 px-3 py-2 text-[0.6rem] font-bold uppercase tracking-[0.12em] text-white backdrop-blur">
-                    <Play size={10} fill="currentColor" /> Evidencia {String(index + 1).padStart(2, "0")}
-                  </span>
-                </div>
-                <div className="p-4">
-                  <p className="text-sm font-semibold text-[#0a0a0a]">{video.title}</p>
-                  <p className="mt-1 text-[0.58rem] font-medium text-[#555]">
-                    {28 - index * 2} Jul 2026 · Equipo REYPA
-                  </p>
-                </div>
-              </article>
-            ))}
-          </div>
-        </div>
-      )}
+              </Stagger>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -383,7 +441,7 @@ function Metric({
   theme: PortalChartTheme;
 }) {
   return (
-    <article className={theme.card}>
+    <KpiCard3D className={`${theme.card} h-full`}>
       <div className="flex items-center justify-between gap-2">
         <span className={`text-[0.58rem] font-bold uppercase tracking-[0.1em] sm:text-[0.62rem] sm:tracking-[0.12em] ${theme.muted}`}>
           {label}
@@ -394,6 +452,6 @@ function Metric({
         {value}
       </p>
       <p className="mt-2 text-[0.65rem] font-semibold text-[#027a48] sm:text-[0.68rem]">{note}</p>
-    </article>
+    </KpiCard3D>
   );
 }

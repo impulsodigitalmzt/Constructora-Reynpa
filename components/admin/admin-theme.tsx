@@ -60,7 +60,7 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
       tabActive: "bg-[#101828] text-white shadow-sm",
       tabIdle: "bg-white text-[#667085] ring-1 ring-black/[0.06] hover:text-[#101828]",
       btnPrimary:
-        "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#101828] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#1d2939]",
+        "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#101828] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-white transition hover:bg-[#1d2939] hover:shadow-[0_12px_28px_rgba(16,24,40,0.2)]",
       btnSecondary:
         "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-white px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#344054] ring-1 ring-black/[0.08]",
       btnGhost:
@@ -91,7 +91,7 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
     tabActive: "bg-[#d4b28c] text-black shadow-sm",
     tabIdle: "bg-white/[0.04] text-white/50 ring-1 ring-white/10 hover:text-white",
     btnPrimary:
-      "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#d4b28c] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-black",
+      "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#d4b28c] px-5 text-[0.72rem] font-semibold uppercase tracking-[0.1em] text-black transition hover:bg-[#e0c4a0] hover:shadow-[0_12px_32px_rgba(212,178,140,0.28)]",
     btnSecondary:
       "inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-transparent px-4 text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/70 ring-1 ring-white/15",
     btnGhost:

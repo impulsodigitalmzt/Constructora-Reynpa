@@ -15,6 +15,7 @@ import {
 import { FormEvent, useRef, useState } from "react";
 import { CurrencyInput } from "@/components/admin/CurrencyInput";
 import { useAdminTheme } from "@/components/admin/admin-theme";
+import RippleButton from "@/components/motion/RippleButton";
 import {
   BITACORA_TIPOS,
   type BitacoraEntry,
@@ -332,7 +333,7 @@ function MetricsTab({
               : "bg-gradient-to-t from-[#121212] via-[#121212]/95 to-transparent sm:bg-none"
           } pb-1 pt-5 sm:p-0`}
         >
-          <button
+          <RippleButton
             type="button"
             onClick={() => {
               save({ ...state });
@@ -341,7 +342,7 @@ function MetricsTab({
             className={`${t.btnPrimary} w-full shadow-lg shadow-black/10 sm:w-auto`}
           >
             <Save size={16} /> Guardar y publicar
-          </button>
+          </RippleButton>
         </div>
       </div>
     </div>
@@ -480,7 +481,7 @@ function EvidenceTab({
             className={t.textarea}
           />
         </label>
-        <button
+        <RippleButton
           type="button"
           disabled={publishing}
           onClick={publishEvidence}
@@ -488,7 +489,7 @@ function EvidenceTab({
         >
           <ImagePlus size={16} />
           {publishing ? "Publicando…" : "Publicar evidencia"}
-        </button>
+        </RippleButton>
       </div>
 
       <div
@@ -627,9 +628,9 @@ function BitacoraTab({
             required
           />
         </label>
-        <button type="submit" className={`${t.btnPrimary} w-full`}>
+        <RippleButton type="submit" className={`${t.btnPrimary} w-full`}>
           <Save size={16} /> Registrar
-        </button>
+        </RippleButton>
       </form>
 
       <ul className="space-y-2.5">
@@ -732,9 +733,9 @@ function ChangeOrdersTab({
             required
           />
         </label>
-        <button type="submit" className={`${t.btnPrimary} w-full`}>
+        <RippleButton type="submit" className={`${t.btnPrimary} w-full`}>
           <Save size={16} /> Registrar solicitud
-        </button>
+        </RippleButton>
       </form>
 
       <ul className="space-y-2.5">
@@ -879,9 +880,9 @@ function MaterialsTab({
           // eslint-disable-next-line @next/next/no-img-element
           <img src={ticketPreview} alt="Ticket" className="max-h-40 w-full rounded-xl object-cover" />
         ) : null}
-        <button type="submit" className={`${t.btnPrimary} w-full`}>
+        <RippleButton type="submit" className={`${t.btnPrimary} w-full`}>
           <Save size={16} /> Registrar recepción
-        </button>
+        </RippleButton>
       </form>
 
       <ul className="grid grid-cols-2 gap-3">
