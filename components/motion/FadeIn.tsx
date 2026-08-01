@@ -106,7 +106,7 @@ export function FadeInItem({
   if (reduce) return <div className={className}>{children}</div>;
 
   return (
-    <motion.div className={`min-h-0 h-full ${className ?? ""}`} variants={fadeUp}>
+    <motion.div className={className} variants={fadeUp}>
       {children}
     </motion.div>
   );

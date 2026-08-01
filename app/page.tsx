@@ -78,7 +78,7 @@ export default function Home() {
           </div>
 
           <Stagger className="mt-20 grid gap-3 md:grid-cols-12" delay={0.05} inView>
-            <FadeInItem className="md:col-span-7 md:row-span-2 md:min-h-0">
+            <FadeInItem className="h-full min-h-0 md:col-span-7 md:row-span-2">
               <HoverLift3D className="h-full">
                 <article className="luxury-card group relative h-full min-h-[26rem] overflow-hidden rounded-2xl">
                   <Image
@@ -98,7 +98,7 @@ export default function Home() {
             </FadeInItem>
 
             {values.slice(0, 2).map(({ icon: Icon, number, title, text }) => (
-              <FadeInItem key={title} className="md:col-span-5">
+              <FadeInItem key={title} className="h-full md:col-span-5">
                 <HoverLift3D className="h-full">
                   <article className="luxury-card flex h-full min-h-[13rem] flex-col justify-between rounded-2xl p-7 md:p-9">
                     <div className="flex items-start justify-between">
@@ -114,7 +114,7 @@ export default function Home() {
               </FadeInItem>
             ))}
 
-            <FadeInItem className="md:col-span-5">
+            <FadeInItem className="h-full md:col-span-5">
               <HoverLift3D className="h-full">
                 <article className="luxury-card group relative h-full min-h-64 overflow-hidden rounded-2xl">
                   <video
@@ -143,7 +143,7 @@ export default function Home() {
               </HoverLift3D>
             </FadeInItem>
 
-            <FadeInItem className="md:col-span-7">
+            <FadeInItem className="h-full md:col-span-7">
               <HoverLift3D className="h-full">
                 <article className="luxury-card grid-lines flex h-full min-h-64 flex-col justify-end rounded-2xl p-7 md:p-9">
                   <span className="mb-5 inline-block h-px w-16 bg-[#d4b28c]" />
