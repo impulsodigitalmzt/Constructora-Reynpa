@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import PortalDashboard from "@/components/PortalDashboard";
+import SlideTitle from "@/components/motion/SlideTitle";
 import { LockKeyhole } from "lucide-react";
 
 export const metadata: Metadata = {
@@ -28,10 +29,10 @@ export default function PortalClientePage() {
           <div className="grid gap-12 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
             <div>
               <span className="eyebrow">Experiencia cliente</span>
-              <h1 className="heading-display mt-12 text-balance">
+              <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 text-balance">
                 Tu obra.
-                <span className="font-editorial block pl-[8vw] italic text-[#d4b28c]">Clara y conectada.</span>
-              </h1>
+                <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">Clara y conectada.</span>
+              </SlideTitle>
             </div>
             <div>
               <p className="max-w-lg border-l border-[#d4b28c]/40 pl-6 text-sm font-light leading-7 text-white/42">
@@ -64,9 +65,9 @@ export default function PortalClientePage() {
             <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
               <span className="h-px w-10 bg-black/60" /> Evidencia desde obra
             </span>
-            <h2 className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
+            <SlideTitle from="left" className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
               No tienes que imaginar el avance. Puedes verlo.
-            </h2>
+            </SlideTitle>
             <p className="mt-8 max-w-lg text-sm leading-7 text-black/55">
               Cada actualización del portal combina información de avance con fotografías y
               videos capturados en sitio. Esto permite entender qué se ejecutó, qué está en
@@ -108,10 +109,10 @@ export default function PortalClientePage() {
         <div className="container-reypa grid gap-12 md:grid-cols-[.7fr_1.3fr]">
           <span className="eyebrow self-start">Cómo funciona</span>
           <div>
-            <h2 className="heading-section text-balance">
+            <SlideTitle from="right" className="heading-section text-balance">
               Información útil.
               <span className="font-editorial block italic text-[#d4b28c]">Nada de ruido.</span>
-            </h2>
+            </SlideTitle>
             <div className="mt-14 grid gap-4 sm:grid-cols-2">
               <div className="luxury-card rounded-2xl p-7">
                 <span className="text-[0.58rem] tracking-[0.2em] text-[#d4b28c]">01</span>

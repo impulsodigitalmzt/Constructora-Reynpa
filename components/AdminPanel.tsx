@@ -13,6 +13,7 @@ import {
 import RippleButton from "@/components/motion/RippleButton";
 import { FadeIn } from "@/components/motion/FadeIn";
 import HoverLift3D from "@/components/motion/HoverLift3D";
+import SlideTitle from "@/components/motion/SlideTitle";
 import RevealHeading from "@/components/motion/RevealHeading";
 import { useObraStore } from "@/hooks/useObraStore";
 import { ADMIN_DEMO, isAdminSessionActive, setAdminSession } from "@/lib/obra-store";
@@ -105,7 +106,9 @@ export default function AdminPanel() {
             <HoverLift3D>
               <div className={`mx-auto w-full max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
                 <div className={`border-b px-4 py-4 sm:px-5 sm:py-5 ${theme.hairline}`}>
-                  <h2 className={`text-lg font-semibold sm:text-xl ${theme.title}`}>Acceso interno</h2>
+                  <SlideTitle from="left" className={`text-lg font-semibold sm:text-xl ${theme.title}`}>
+                    Acceso interno
+                  </SlideTitle>
                   <p className={`mt-1 text-sm ${theme.muted}`}>
                     Interfaz clara para operar a la luz del día.
                   </p>
@@ -158,9 +161,9 @@ export default function AdminPanel() {
                       <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${theme.accent}`}>
                         {state.projectCode}
                       </p>
-                      <h2 className={`mt-1 font-editorial text-2xl tracking-tight sm:text-4xl ${theme.title}`}>
+                      <SlideTitle from="left" className={`mt-1 font-editorial text-2xl tracking-tight sm:text-4xl ${theme.title}`}>
                         {state.projectName}
-                      </h2>
+                      </SlideTitle>
                       <p className={`mt-1 text-sm ${theme.muted}`}>Actualización desde campo</p>
                     </div>
                     <div className="flex flex-wrap gap-2">

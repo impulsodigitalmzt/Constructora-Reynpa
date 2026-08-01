@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
+import SlideTitle from "@/components/motion/SlideTitle";
 
 const fields = [
   { id: "nombre", label: "Nombre completo", type: "text", placeholder: "Tu nombre", required: true },
@@ -68,9 +69,9 @@ export default function ContactForm() {
         <span className="text-[0.58rem] font-semibold uppercase tracking-[0.22em] text-[#d4b28c]">
           Formulario de contacto
         </span>
-        <h2 className="font-editorial mt-4 text-3xl text-white md:text-4xl">
+        <SlideTitle from="left" className="font-editorial mt-4 text-3xl text-white md:text-4xl">
           Cuéntanos tu proyecto.
-        </h2>
+        </SlideTitle>
         <p className="mt-3 max-w-lg text-sm font-light leading-6 text-white/45">
           Completa tus datos y te contactamos para agendar una primera conversación.
         </p>

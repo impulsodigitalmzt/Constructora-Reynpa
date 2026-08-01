@@ -203,7 +203,7 @@ export default function FinancialDashboard() {
             <p className="text-[0.58rem] uppercase tracking-[0.22em] text-[#d4b28c]">
               Control financiero y de avance
             </p>
-            <RevealHeading className="mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
+            <RevealHeading className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
               Dashboard de obra
             </RevealHeading>
             <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">

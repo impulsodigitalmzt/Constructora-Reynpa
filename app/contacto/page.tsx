@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import { Mail, MapPin, Phone } from "lucide-react";
 import ContactForm from "@/components/ContactForm";
+import SlideTitle from "@/components/motion/SlideTitle";
 
 export const metadata: Metadata = {
   title: "Contacto",
@@ -52,10 +53,10 @@ export default function ContactoPage() {
         <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/50" />
         <div className="container-reypa relative z-10">
           <span className="eyebrow">Contacto</span>
-          <h1 className="heading-display mt-12 max-w-5xl text-balance">
+          <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 max-w-5xl text-balance">
             Hablemos de
-            <span className="font-editorial block pl-[6vw] italic text-[#d4b28c]">tu proyecto.</span>
-          </h1>
+            <span className="font-editorial block whitespace-nowrap pl-[6vw] italic text-[#d4b28c]">tu proyecto.</span>
+          </SlideTitle>
           <p className="mt-10 max-w-xl border-l border-[#d4b28c]/50 pl-6 text-sm font-light leading-7 text-white/45">
             Completa el formulario o escríbenos por teléfono, WhatsApp o correo. Estamos en
             Mazatlán, Sinaloa.
@@ -67,10 +68,10 @@ export default function ContactoPage() {
         <div className="container-reypa grid gap-12 lg:grid-cols-[.85fr_1.15fr] lg:items-start">
           <div>
             <span className="eyebrow">Canales directos</span>
-            <h2 className="heading-section mt-8 text-balance">
+            <SlideTitle from="left" className="heading-section mt-8 text-balance">
               Estamos
               <span className="font-editorial block italic text-[#d4b28c]">cerca.</span>
-            </h2>
+            </SlideTitle>
             <p className="mt-6 max-w-sm text-sm font-light leading-7 text-white/45">
               Elige el medio que te resulte más cómodo. Respondemos con claridad y sin rodeos.
             </p>

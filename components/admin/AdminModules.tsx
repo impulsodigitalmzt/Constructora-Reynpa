@@ -18,6 +18,7 @@ import { CurrencyInput } from "@/components/admin/CurrencyInput";
 import { useAdminTheme } from "@/components/admin/admin-theme";
 import { FadeIn } from "@/components/motion/FadeIn";
 import HoverLift3D from "@/components/motion/HoverLift3D";
+import SlideTitle from "@/components/motion/SlideTitle";
 import RippleButton from "@/components/motion/RippleButton";
 import {
   BITACORA_TIPOS,
@@ -270,7 +271,9 @@ function MetricsTab({
       <section className={`min-w-0 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
         <div className="mb-4 flex items-end justify-between gap-3">
           <div>
-            <h2 className={`text-lg font-semibold tracking-tight ${t.title}`}>Avance por etapa</h2>
+            <SlideTitle from="left" distance={36} className={`text-lg font-semibold tracking-tight ${t.title}`}>
+              Avance por etapa
+            </SlideTitle>
             <p className={`mt-1 text-sm ${t.muted}`}>Alimenta el donut del portal</p>
           </div>
         </div>
@@ -325,9 +328,9 @@ function MetricsTab({
           className="flex w-full items-center justify-between gap-3 px-5 py-4 text-left sm:px-6"
         >
           <div>
-            <h2 className={`text-lg font-semibold tracking-tight ${t.title}`}>
+            <SlideTitle from="left" distance={36} className={`text-lg font-semibold tracking-tight ${t.title}`}>
               Costos por categoría
-            </h2>
+            </SlideTitle>
             <p className={`mt-1 text-sm ${t.muted}`}>
               {state.costs.length} rubros · toca para {costsOpen ? "ocultar" : "editar"}
             </p>
@@ -494,7 +497,9 @@ function EvidenceTab({
   return (
     <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-lg font-semibold ${t.title}`}>Evidencias desde campo</h2>
+        <SlideTitle from="left" distance={36} className={`text-lg font-semibold ${t.title}`}>
+          Evidencias desde campo
+        </SlideTitle>
         <p className={`mt-1 text-sm ${t.muted}`}>Foto o video con bitácora breve</p>
       </div>
 
@@ -618,7 +623,9 @@ function BitacoraTab({
   return (
     <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-lg font-semibold ${t.title}`}>Bitácora de obra</h2>
+        <SlideTitle from="left" distance={36} className={`text-lg font-semibold ${t.title}`}>
+          Bitácora de obra
+        </SlideTitle>
         <p className={`mt-1 text-sm ${t.muted}`}>Registro rápido de incidencias</p>
       </div>
 
@@ -738,7 +745,9 @@ function ChangeOrdersTab({
     <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div className="flex items-start justify-between gap-3">
         <div>
-          <h2 className={`text-lg font-semibold ${t.title}`}>Órdenes de cambio</h2>
+          <SlideTitle from="left" distance={36} className={`text-lg font-semibold ${t.title}`}>
+            Órdenes de cambio
+          </SlideTitle>
           <p className={`mt-1 text-sm ${t.muted}`}>Extras fuera de contrato</p>
         </div>
         <div className="rounded-xl bg-[#ecfdf3] px-3 py-2 text-right">
@@ -876,7 +885,9 @@ function MaterialsTab({
   return (
     <section className={`min-w-0 space-y-5 rounded-2xl p-4 sm:p-6 ${t.surface}`}>
       <div>
-        <h2 className={`text-lg font-semibold ${t.title}`}>Recepción de materiales</h2>
+        <SlideTitle from="left" distance={36} className={`text-lg font-semibold ${t.title}`}>
+          Recepción de materiales
+        </SlideTitle>
         <p className={`mt-1 text-sm ${t.muted}`}>Remisiones y tickets</p>
       </div>
 

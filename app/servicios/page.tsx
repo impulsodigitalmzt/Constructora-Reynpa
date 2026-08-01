@@ -9,6 +9,7 @@ import {
   WalletCards,
 } from "lucide-react";
 import ArrowLink from "@/components/motion/ArrowLink";
+import SlideTitle from "@/components/motion/SlideTitle";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
 import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
 
@@ -82,10 +83,10 @@ export default function ServiciosPage() {
         <div className="container-reypa relative z-10">
           <span className="eyebrow relative z-10">Servicios integrales</span>
           <div className="relative z-10 mt-12 grid gap-12 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
-            <h1 className="heading-display text-balance">
+            <SlideTitle as="h1" from="left" inView={false} className="heading-display text-balance">
               De la idea
-              <span className="font-editorial block pl-[8vw] italic text-[#d4b28c]">a la materia.</span>
-            </h1>
+              <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">a la materia.</span>
+            </SlideTitle>
             <p className="max-w-md text-sm font-light leading-7 text-white/45">
               Un solo equipo acompaña todo el proceso. Menos fricción, mayor coordinación y
               decisiones que conservan la esencia del proyecto.
@@ -123,7 +124,9 @@ export default function ServiciosPage() {
                 )}
               </div>
               <div className="flex min-h-[13.5rem] flex-col bg-[#171717] p-6 md:p-7">
-                <h2 className="font-editorial text-2xl leading-tight md:text-3xl">{title}</h2>
+                <SlideTitle from={index % 2 === 0 ? "left" : "right"} className="font-editorial text-2xl leading-tight md:text-3xl">
+                  {title}
+                </SlideTitle>
                 <span className="my-4 block h-px w-12 bg-[#d4b28c]/70 transition-all duration-700 group-hover:w-20 group-hover:bg-[#d4b28c]" />
                 <p className="max-w-xl text-sm font-light leading-6 text-white/45">{text}</p>
               </div>
@@ -139,10 +142,10 @@ export default function ServiciosPage() {
               <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
                 <span className="h-px w-10 bg-black/60" /> Proceso de trabajo
               </span>
-              <h2 className="heading-section mt-10">
+              <SlideTitle from="left" className="heading-section mt-10">
                 Orden para
                 <span className="font-editorial block italic text-black/55">construir mejor.</span>
-              </h2>
+              </SlideTitle>
               <p className="mt-8 max-w-md text-sm leading-7 text-black/55">
                 Organizamos el proyecto en etapas claras. Cada fase produce información,
                 decisiones y entregables concretos antes de avanzar a la siguiente.
@@ -185,9 +188,9 @@ export default function ServiciosPage() {
           </div>
           <div className="flex flex-col justify-center">
             <span className="eyebrow">Ejecución en campo</span>
-            <h2 className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
+            <SlideTitle from="right" className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
               Del plano a la realidad, sin perder la intención.
-            </h2>
+            </SlideTitle>
             <p className="mt-8 text-sm font-light leading-7 text-white/45">
               La obra es el momento en que todas las decisiones se encuentran. Nuestro equipo
               coordina proveedores, especialidades, materiales y tiempos para mantener la
@@ -219,10 +222,10 @@ export default function ServiciosPage() {
                   <span className="h-px w-10 bg-black/60" /> Portal de obra{" "}
                   <TechTerm n={1}>SaaS</TechTerm>
                 </span>
-                <h2 className="heading-section mt-10 text-balance text-[#0a0a0a]">
+                <SlideTitle from="left" className="heading-section mt-10 text-balance text-[#0a0a0a]">
                   Control visible.
                   <span className="font-editorial block italic text-black/55">Confianza real.</span>
-                </h2>
+                </SlideTitle>
               </div>
 
               <div className="max-w-lg space-y-5 text-sm font-light leading-7 text-black/55">

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+import SlideTitle from "@/components/motion/SlideTitle";
 
 export const metadata: Metadata = {
   title: "Nosotros",
@@ -73,10 +74,10 @@ export default function NosotrosPage() {
         </span>
         <div className="container-reypa relative z-10">
           <span className="eyebrow">El estudio</span>
-          <h1 className="heading-display animate-rise mt-12 max-w-6xl text-balance">
+          <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 max-w-6xl text-balance">
             Arquitectura que
-            <span className="font-editorial block pl-[8vw] italic text-[#d4b28c]">parte de ti.</span>
-          </h1>
+            <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">parte de ti.</span>
+          </SlideTitle>
           <div className="mt-14 flex max-w-2xl items-start gap-5 border-l border-[#d4b28c]/50 pl-6">
             <p className="text-sm font-light leading-7 text-white/45 md:text-base">
               Un estudio en Mazatlán donde la escucha, el rigor técnico y la sensibilidad material
@@ -113,9 +114,9 @@ export default function NosotrosPage() {
 
             <div className="pt-8 lg:col-span-4 lg:col-start-9 lg:pt-20">
               <span className="eyebrow">Nuestra historia</span>
-              <h2 className="font-editorial mt-10 text-4xl leading-[1.02] text-white/95 md:text-5xl">
+              <SlideTitle from="right" className="font-editorial mt-10 text-4xl leading-[1.02] text-white/95 md:text-5xl">
                 Diseñamos relaciones antes que edificios.
-              </h2>
+              </SlideTitle>
               <div className="mt-9 space-y-6 text-sm font-light leading-7 text-white/45">
                 <p>
                   REYPA nace de una visión compartida: hacer que diseñar y construir sea una
@@ -154,10 +155,10 @@ export default function NosotrosPage() {
         <div className="container-reypa">
           <div className="mb-14 max-w-3xl">
             <span className="eyebrow">Presencia en obra</span>
-            <h2 className="heading-section mt-8">
+            <SlideTitle from="left" className="heading-section mt-8">
               Del escritorio
               <span className="font-editorial italic text-[#d4b28c]"> al terreno.</span>
-            </h2>
+            </SlideTitle>
             <p className="mt-6 text-sm font-light leading-7 text-white/42">
               Supervisamos avances, resolvemos detalles en sitio y documentamos el proceso para
               que el cliente siempre sepa qué está ocurriendo y por qué.
@@ -229,9 +230,9 @@ export default function NosotrosPage() {
               <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
                 <span className="h-px w-10 bg-black/60" /> Nuestra manera de pensar
               </span>
-              <h2 className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
+              <SlideTitle from="left" className="font-editorial mt-9 text-4xl leading-[1.02] md:text-6xl">
                 Antes de proyectar, entendemos cómo quieres vivir.
-              </h2>
+              </SlideTitle>
               <div className="mt-9 space-y-5 text-sm leading-7 text-black/55">
                 <p>
                   Cada proyecto comienza con preguntas: qué necesitas hoy, cómo imaginas el
@@ -306,10 +307,10 @@ export default function NosotrosPage() {
           <div className="grid gap-12 lg:grid-cols-[1fr_1.1fr] lg:items-center">
             <div>
               <span className="eyebrow">Diseño con atmósfera</span>
-              <h2 className="heading-section mt-8">
+              <SlideTitle from="left" className="heading-section mt-8">
                 Espacios que se sienten
                 <span className="font-editorial italic text-[#d4b28c]"> habitables.</span>
-              </h2>
+              </SlideTitle>
               <div className="mt-8 space-y-5 text-sm font-light leading-7 text-white/42">
                 <p>
                   Más allá de la distribución, cuidamos la experiencia cotidiana: la luz que
@@ -372,10 +373,10 @@ export default function NosotrosPage() {
           <div className="grid gap-10 lg:grid-cols-12 lg:items-end">
             <div className="lg:col-span-5">
               <span className="eyebrow">Mazatlán · Sinaloa</span>
-              <h2 className="heading-section mt-8">
+              <SlideTitle from="left" className="heading-section mt-8">
                 Arquitectura
                 <span className="font-editorial block italic text-[#d4b28c]">para este clima.</span>
-              </h2>
+              </SlideTitle>
             </div>
             <p className="max-w-xl text-sm font-light leading-7 text-white/42 lg:col-span-6 lg:col-start-7">
               Diseñamos pensando en sol, humedad, brisa y orientación. Cada proyecto responde
@@ -436,10 +437,10 @@ export default function NosotrosPage() {
       <section className="border-t border-white/10 bg-[#0a0a0a] py-24 md:py-40">
         <div className="container-reypa">
           <div className="mb-16 grid gap-8 md:grid-cols-[1.3fr_.7fr] md:items-end">
-            <h2 className="heading-section">
+            <SlideTitle from="left" className="heading-section">
               Una práctica guiada
               <span className="font-editorial block italic text-[#d4b28c]">por principios.</span>
-            </h2>
+            </SlideTitle>
             <p className="max-w-sm text-sm font-light leading-7 text-white/40 md:justify-self-end">
               Tres ideas que atraviesan cada conversación, plano y decisión en obra.
             </p>
@@ -478,9 +479,9 @@ export default function NosotrosPage() {
             <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
               <span className="h-px w-10 bg-black/60" /> Hablemos de tu proyecto
             </span>
-            <h2 className="font-editorial mt-8 text-4xl leading-[1.05] md:text-6xl">
+            <SlideTitle from="left" className="font-editorial mt-8 text-4xl leading-[1.05] md:text-6xl">
               Si buscas arquitectura con claridad y cercanía, empecemos por escucharte.
-            </h2>
+            </SlideTitle>
             <p className="mt-6 max-w-xl text-sm leading-7 text-black/55">
               Cuéntanos qué espacio imaginas. Te acompañamos desde la primera idea hasta la
               entrega, con un proceso transparente y un equipo que cuida cada detalle.

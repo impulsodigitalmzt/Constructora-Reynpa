@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import ProjectGallery from "@/components/ProjectGallery";
+import SlideTitle from "@/components/motion/SlideTitle";
 
 export const metadata: Metadata = {
   title: "Proyectos",
@@ -28,10 +29,10 @@ export default function ProyectosPage() {
         <div className="container-reypa relative z-10 grid gap-12 lg:grid-cols-[1.3fr_.7fr] lg:items-end">
           <div>
             <span className="eyebrow">Obra seleccionada</span>
-            <h1 className="heading-display mt-12 text-balance">
+            <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 text-balance">
               Ideas que se
-              <span className="font-editorial block pl-[7vw] italic text-[#d4b28c]">vuelven espacio.</span>
-            </h1>
+              <span className="font-editorial block whitespace-nowrap pl-[7vw] italic text-[#d4b28c]">vuelven espacio.</span>
+            </SlideTitle>
           </div>
           <p className="max-w-md border-l border-[#d4b28c]/40 pl-6 text-sm font-light leading-7 text-white/42">
             Explora una selección de visualizaciones y procesos constructivos reales. Del
@@ -52,10 +53,10 @@ export default function ProyectosPage() {
                 prioriza iluminación, amplitud y funcionalidad cotidiana.
               </p>
             </div>
-            <h2 className="heading-section">
+            <SlideTitle from="right" className="heading-section">
               Del concepto
               <span className="font-editorial block italic text-black/55">a la experiencia.</span>
-            </h2>
+            </SlideTitle>
           </div>
 
           <div className="grid gap-4 lg:grid-cols-12">

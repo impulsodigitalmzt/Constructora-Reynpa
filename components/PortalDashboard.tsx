@@ -129,7 +129,7 @@ export default function PortalDashboard() {
                 </FadeInItem>
                 <FadeInItem>
                   <p className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Bienvenido</p>
-                  <RevealHeading className="mt-3 text-4xl">Accede a tu proyecto.</RevealHeading>
+                  <RevealHeading className="font-editorial mt-3 text-4xl">Accede a tu proyecto.</RevealHeading>
                   <p className="mt-4 text-sm font-light leading-6 text-white/35">
                     Consulta avances, presupuesto y evidencias en un mismo lugar.
                   </p>
@@ -265,7 +265,7 @@ export default function PortalDashboard() {
                     <p className="text-[0.58rem] uppercase tracking-[0.22em] text-white/25">
                       Bienvenido de nuevo, Daniel
                     </p>
-                    <RevealHeading className="mt-2 text-2xl sm:text-3xl">Estado del proyecto</RevealHeading>
+                    <RevealHeading className="font-editorial mt-2 text-2xl sm:text-3xl">Estado del proyecto</RevealHeading>
                     <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/45">
                       Presupuesto total
                     </p>
@@ -349,7 +349,7 @@ export default function PortalDashboard() {
               <div className="mb-6 flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                 <div>
                   <p className="text-[0.58rem] uppercase tracking-[0.22em] text-white/25">Bitácora audiovisual</p>
-                  <RevealHeading className="mt-2 text-3xl">Avances recientes</RevealHeading>
+                  <RevealHeading className="font-editorial mt-2 text-3xl">Avances recientes</RevealHeading>
                 </div>
                 <p className="text-[0.58rem] uppercase tracking-[0.16em] text-[#d4b28c]">
                   {state.evidences.length + videos.length} evidencias
