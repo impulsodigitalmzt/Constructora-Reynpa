@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowDownRight, ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-react";
 import DesignCarousel from "@/components/DesignCarousel";
+import PortalPreviewCard from "@/components/PortalPreviewCard";
 
 const values = [
   {
@@ -267,33 +268,7 @@ export default function Home() {
             </Link>
           </div>
 
-          <div className="glass relative rounded-2xl p-4 shadow-2xl md:p-6">
-            <div className="mb-5 flex items-center justify-between border-b border-white/10 pb-4">
-              <div>
-                <p className="text-xs font-medium">Residencia Lomas</p>
-                <p className="mt-1 text-[0.55rem] uppercase tracking-[0.18em] text-white/30">REY–024 · En ejecución</p>
-              </div>
-              <span className="size-2 rounded-full bg-[#d4b28c] shadow-[0_0_15px_#d4b28c]" />
-            </div>
-            <div className="grid gap-3 sm:grid-cols-3">
-              {[
-                ["68%", "Avance general"],
-                ["61%", "Presupuesto"],
-                ["18 OCT", "Entrega estimada"],
-              ].map(([value, label]) => (
-                <div key={label} className="rounded-xl border border-white/8 bg-black/30 p-5">
-                  <p className="text-2xl font-light tracking-tight">{value}</p>
-                  <p className="mt-7 text-[0.52rem] uppercase tracking-[0.18em] text-white/30">{label}</p>
-                </div>
-              ))}
-            </div>
-            <div className="mt-3 rounded-xl border border-white/8 bg-black/30 p-5">
-              <div className="mb-3 flex justify-between text-[0.58rem] uppercase tracking-[0.15em] text-white/35">
-                <span>Estructura</span><span>82%</span>
-              </div>
-              <div className="h-px bg-white/10"><div className="h-px w-[82%] bg-[#d4b28c]" /></div>
-            </div>
-          </div>
+          <PortalPreviewCard />
         </div>
       </section>
 
