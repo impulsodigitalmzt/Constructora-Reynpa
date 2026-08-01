@@ -15,6 +15,7 @@ export type AdminTheme = {
   muted: string;
   label: string;
   input: string;
+  select: string;
   /** % / SPI / CPI · 2–4 dígitos */
   inputPct: string;
   /** Montos MXN · hasta ~7 dígitos */
@@ -49,6 +50,7 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
       muted: "text-[#667085]",
       label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-[#667085]",
       input: `${inputBaseSun} w-full px-3.5`,
+      select: `${inputBaseSun} w-full px-3.5 [&_option]:bg-white [&_option]:text-[#101828]`,
       inputPct: `${inputBaseSun} w-[4.25rem] max-w-full shrink-0 px-2 text-center tabular-nums`,
       inputAmt: `${inputBaseSun} w-full max-w-[10.5rem] shrink-0 px-3 text-right tabular-nums`,
       textarea:
@@ -72,13 +74,14 @@ export function getAdminTheme(mode: AdminVisualMode): AdminTheme {
 
   return {
     mode,
-    page: "bg-[#121212]",
+    page: "bg-[#121212] [color-scheme:dark]",
     surface: "border border-white/10 bg-[#1a1a1a]",
     elevated: "border border-white/10 bg-[#1f1f1f] shadow-[0_12px_40px_rgba(0,0,0,0.35)]",
     title: "text-white",
     muted: "text-white/55",
     label: "mb-1.5 block text-[0.68rem] font-semibold uppercase tracking-[0.08em] text-white/45",
     input: `${inputBaseDark} w-full px-3.5`,
+    select: `${inputBaseDark} w-full px-3.5 [color-scheme:light] [&_option]:bg-white [&_option]:text-[#101828]`,
     inputPct: `${inputBaseDark} w-[4.25rem] max-w-full shrink-0 px-2 text-center tabular-nums`,
     inputAmt: `${inputBaseDark} w-full max-w-[10.5rem] shrink-0 px-3 text-right tabular-nums`,
     textarea:

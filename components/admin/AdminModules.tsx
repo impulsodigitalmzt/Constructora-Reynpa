@@ -602,10 +602,14 @@ function BitacoraTab({
             <select
               value={tipo}
               onChange={(event) => setTipo(event.target.value as BitacoraTipo)}
-              className={t.input}
+              className={t.select}
             >
               {BITACORA_TIPOS.map((item) => (
-                <option key={item.id} value={item.id}>
+                <option
+                  key={item.id}
+                  value={item.id}
+                  style={{ color: "#101828", backgroundColor: "#ffffff" }}
+                >
                   {item.label}
                 </option>
               ))}
