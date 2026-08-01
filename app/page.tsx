@@ -1,14 +1,17 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import { motion } from "framer-motion";
 import { ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-react";
 import DesignCarousel from "@/components/DesignCarousel";
 import ArrowLink from "@/components/motion/ArrowLink";
 import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
 import HoverLift3D from "@/components/motion/HoverLift3D";
 import LandingHero from "@/components/motion/LandingHero";
-import RevealHeading from "@/components/motion/RevealHeading";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
 import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
+import { easeLux } from "@/lib/motion";
 
 const values = [
   {
@@ -67,13 +70,11 @@ export default function Home() {
                 precisión y una relación honesta con quien la habita.
               </p>
             </div>
-            <RevealHeading className="heading-section text-balance text-white/95" as="h2">
+            <h2 className="heading-section text-balance text-white/95">
               La confianza también
-            </RevealHeading>
+              <span className="font-editorial block italic text-[#d4b28c]">se diseña.</span>
+            </h2>
           </FadeIn>
-          <p className="font-editorial mt-2 text-right text-3xl italic text-[#d4b28c] md:text-5xl lg:-mt-10 lg:pl-[35%]">
-            se diseña.
-          </p>
 
           <Stagger className="mt-20 grid auto-rows-[minmax(13rem,auto)] gap-3 md:grid-cols-12" delay={0.05} inView>
             <FadeInItem className="md:col-span-7 md:row-span-2">
@@ -157,7 +158,7 @@ export default function Home() {
 
       <section className="bg-[#d8c7b3] py-24 text-[#0a0a0a] md:py-36">
         <div className="container-reypa">
-          <div className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
+          <FadeIn inView className="grid gap-10 lg:grid-cols-[.7fr_1.3fr]">
             <div>
               <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
                 <span className="h-px w-10 bg-black/60" /> Lo que hacemos
@@ -171,29 +172,35 @@ export default function Home() {
               Una sola visión.
               <span className="font-editorial block italic text-black/55">De principio a fin.</span>
             </h2>
-          </div>
+          </FadeIn>
 
-          <div className="mt-16 border-t border-black/20">
+          <Stagger className="mt-16 border-t border-black/20" delay={0.04} inView>
             {[
               ["01", "Proyecto arquitectónico", "Concepto, distribución, volumetría y visualización para definir un espacio coherente con tu forma de vivir."],
               ["02", "Proyecto ejecutivo", "Planos, especificaciones y detalles técnicos que convierten el diseño en instrucciones claras para construir."],
               ["03", "Diseño interior", "Materiales, iluminación, mobiliario y atmósferas que dan identidad y continuidad a cada ambiente."],
               ["04", "Construcción y supervisión", "Coordinación de obra, control de calidad, presupuesto y seguimiento documental en cada etapa."],
             ].map(([number, title, text]) => (
-              <article key={number} className="group grid gap-5 border-b border-black/20 py-8 transition-all duration-500 hover:pl-3 md:grid-cols-[.15fr_.65fr_1.2fr] md:items-center">
-                <span className="text-[0.58rem] tracking-[0.2em] text-black/40">{number}</span>
-                <h3 className="font-editorial text-2xl md:text-3xl">{title}</h3>
-                <p className="max-w-2xl text-sm leading-7 text-black/55">{text}</p>
-              </article>
+              <FadeInItem key={number}>
+                <article className="group grid gap-5 border-b border-black/20 py-8 transition-all duration-500 hover:pl-3 md:grid-cols-[.15fr_.65fr_1.2fr] md:items-center">
+                  <span className="text-[0.58rem] tracking-[0.2em] text-black/40">{number}</span>
+                  <h3 className="font-editorial text-2xl md:text-3xl">{title}</h3>
+                  <p className="max-w-2xl text-sm leading-7 text-black/55">{text}</p>
+                </article>
+              </FadeInItem>
             ))}
-          </div>
-          <Link
-            href="/servicios"
-            className="group mt-10 inline-flex items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em]"
-          >
-            Conocer todos los servicios
-            <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
-          </Link>
+          </Stagger>
+          <FadeIn inView delay={0.1}>
+            <motion.div whileHover={{ x: 4 }} transition={{ duration: 0.35, ease: easeLux }}>
+              <Link
+                href="/servicios"
+                className="group mt-10 inline-flex items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em]"
+              >
+                Conocer todos los servicios
+                <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
+              </Link>
+            </motion.div>
+          </FadeIn>
         </div>
       </section>
 
@@ -201,7 +208,7 @@ export default function Home() {
 
       <section className="bg-[#0a0a0a] py-24 md:py-40">
         <div className="container-reypa">
-          <div className="mb-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
+          <FadeIn inView className="mb-14 grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-end">
             <h2 className="heading-section">
               La obra también
               <span className="font-editorial block italic text-[#d4b28c]">cuenta una historia.</span>
@@ -216,37 +223,45 @@ export default function Home() {
                 Seguimiento real · Evidencia de campo · Control de calidad
               </p>
             </div>
-          </div>
+          </FadeIn>
 
-          <div className="grid gap-4 lg:grid-cols-[1.35fr_.65fr]">
-            <div className="relative min-h-[34rem] overflow-hidden rounded-2xl border border-white/10 bg-[#121212]">
-              <video
-                src="/video/AQNdaEgBPA6NKJD444IZJB76Lxxd6hvCkMaVJV93gZEcjOqfMr25jJW3ggnRl1rWNFnDte-YhIeD5KY0mEMIkpoijQpKK_qssSUZLk0TPA.mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                className="size-full min-h-[34rem] object-cover"
-              />
-              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-7 pt-24">
-                <span className="text-[0.56rem] uppercase tracking-[0.23em] text-[#d4b28c]">Bitácora de obra</span>
-                <p className="font-editorial mt-3 text-3xl italic">Cada avance queda visible.</p>
-              </div>
-            </div>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
-              {[
-                ["/foto/OBRA/530242268_1349573190502525_852000528287082247_n.jpg", "Ejecución"],
-                ["/foto/OBRA/747625965_17900286720499562_7975554370235012092_n.jpg", "Supervisión"],
-              ].map(([src, label]) => (
-                <div key={src} className="group relative min-h-64 overflow-hidden rounded-2xl bg-[#1a1a1a]">
-                  <Image src={src} alt={`${label} de obra REYPA`} fill sizes="(max-width: 1024px) 50vw, 30vw" className="object-cover transition duration-700 group-hover:scale-105" />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
-                  <span className="absolute bottom-5 left-5 text-[0.56rem] uppercase tracking-[0.22em] text-white/70">{label} · REYPA</span>
+          <Stagger className="grid gap-4 lg:grid-cols-[1.35fr_.65fr]" delay={0.06} inView>
+            <FadeInItem>
+              <HoverLift3D className="h-full" intensity={5}>
+                <div className="relative min-h-[34rem] overflow-hidden rounded-2xl border border-white/10 bg-[#121212]">
+                  <video
+                    src="/video/AQNdaEgBPA6NKJD444IZJB76Lxxd6hvCkMaVJV93gZEcjOqfMr25jJW3ggnRl1rWNFnDte-YhIeD5KY0mEMIkpoijQpKK_qssSUZLk0TPA.mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="metadata"
+                    className="size-full min-h-[34rem] object-cover"
+                  />
+                  <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-7 pt-24">
+                    <span className="text-[0.56rem] uppercase tracking-[0.23em] text-[#d4b28c]">Bitácora de obra</span>
+                    <p className="font-editorial mt-3 text-3xl italic">Cada avance queda visible.</p>
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
+              </HoverLift3D>
+            </FadeInItem>
+            <FadeInItem>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-1">
+                {[
+                  ["/foto/OBRA/530242268_1349573190502525_852000528287082247_n.jpg", "Ejecución"],
+                  ["/foto/OBRA/747625965_17900286720499562_7975554370235012092_n.jpg", "Supervisión"],
+                ].map(([src, label]) => (
+                  <HoverLift3D key={src} intensity={6}>
+                    <div className="group relative min-h-64 overflow-hidden rounded-2xl bg-[#1a1a1a]">
+                      <Image src={src} alt={`${label} de obra REYPA`} fill sizes="(max-width: 1024px) 50vw, 30vw" className="object-cover transition duration-700 group-hover:scale-105" />
+                      <div className="absolute inset-0 bg-gradient-to-t from-black/75 to-transparent" />
+                      <span className="absolute bottom-5 left-5 text-[0.56rem] uppercase tracking-[0.22em] text-white/70">{label} · REYPA</span>
+                    </div>
+                  </HoverLift3D>
+                ))}
+              </div>
+            </FadeInItem>
+          </Stagger>
         </div>
       </section>
 
@@ -314,7 +329,7 @@ export default function Home() {
 
       <section className="bg-[#d8c7b3] py-24 text-[#0a0a0a] md:py-36">
         <div className="container-reypa grid gap-14 lg:grid-cols-[.7fr_1.3fr]">
-          <div>
+          <FadeIn inView>
             <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
               <span className="h-px w-10 bg-black/60" /> Preguntas frecuentes
             </span>
@@ -333,9 +348,9 @@ export default function Home() {
               Hacer otra pregunta
               <ArrowRight size={15} className="transition-transform duration-500 group-hover:translate-x-2" />
             </a>
-          </div>
+          </FadeIn>
 
-          <div className="border-t border-black/20">
+          <Stagger className="border-t border-black/20" delay={0.04} inView>
             {[
               ["¿Cómo inicia un proyecto con REYPA?", "Comenzamos con una conversación y una visita al sitio. Revisamos necesidades, alcance, ubicación, presupuesto estimado y expectativas para preparar una propuesta de trabajo adecuada."],
               ["¿Pueden encargarse del diseño y la construcción?", "Sí. Integramos proyecto arquitectónico, ejecutivo, diseño interior, presupuesto, trámites y construcción. También podemos participar únicamente en las etapas que el cliente necesite."],
@@ -345,23 +360,25 @@ export default function Home() {
               ["¿Cómo puedo seguir el avance de mi obra?", "Los clientes activos consultan avances, presupuesto, próximas actividades, fotografías y videos desde el Portal de Obra, además de mantener comunicación directa con el equipo."],
               ["¿En qué zona trabajan?", "Nuestra base está en Mazatlán, Sinaloa. Evaluamos proyectos en otras ubicaciones según alcance, necesidades de supervisión y condiciones del sitio."],
             ].map(([question, answer], index) => (
-              <details key={question} className="group border-b border-black/20">
-                <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-7">
-                  <span className="flex items-center gap-5">
-                    <span className="hidden text-[0.55rem] tracking-[0.2em] text-black/35 sm:block">
-                      {String(index + 1).padStart(2, "0")}
+              <FadeInItem key={question}>
+                <details className="group border-b border-black/20">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-6 py-7">
+                    <span className="flex items-center gap-5">
+                      <span className="hidden text-[0.55rem] tracking-[0.2em] text-black/35 sm:block">
+                        {String(index + 1).padStart(2, "0")}
+                      </span>
+                      <span className="font-editorial text-xl md:text-2xl">{question}</span>
                     </span>
-                    <span className="font-editorial text-xl md:text-2xl">{question}</span>
-                  </span>
-                  <span className="relative size-8 shrink-0 rounded-full border border-black/20 transition-colors group-open:bg-black group-open:text-[#d8c7b3]">
-                    <span className="absolute left-1/2 top-1/2 h-px w-3 -translate-x-1/2 -translate-y-1/2 bg-current" />
-                    <span className="absolute left-1/2 top-1/2 h-3 w-px -translate-x-1/2 -translate-y-1/2 bg-current transition-transform group-open:rotate-90 group-open:opacity-0" />
-                  </span>
-                </summary>
-                <p className="max-w-2xl pb-7 pl-0 text-sm leading-7 text-black/55 sm:pl-11">{answer}</p>
-              </details>
+                    <span className="relative size-8 shrink-0 rounded-full border border-black/20 transition-colors group-open:bg-black group-open:text-[#d8c7b3]">
+                      <span className="absolute left-1/2 top-1/2 h-px w-3 -translate-x-1/2 -translate-y-1/2 bg-current" />
+                      <span className="absolute left-1/2 top-1/2 h-3 w-px -translate-x-1/2 -translate-y-1/2 bg-current transition-transform group-open:rotate-90 group-open:opacity-0" />
+                    </span>
+                  </summary>
+                  <p className="max-w-2xl pb-7 pl-0 text-sm leading-7 text-black/55 sm:pl-11">{answer}</p>
+                </details>
+              </FadeInItem>
             ))}
-          </div>
+          </Stagger>
         </div>
       </section>
     </>

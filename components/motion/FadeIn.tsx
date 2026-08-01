@@ -35,7 +35,7 @@ export function Stagger({
         variants={variants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.18 }}
+        viewport={{ once: true, amount: 0.12, margin: "0px 0px -10% 0px" }}
       >
         {children}
       </motion.div>
@@ -81,7 +81,7 @@ export function FadeIn({
         variants={variants}
         initial="hidden"
         whileInView="show"
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0.12, margin: "0px 0px -10% 0px" }}
       >
         {children}
       </motion.div>
