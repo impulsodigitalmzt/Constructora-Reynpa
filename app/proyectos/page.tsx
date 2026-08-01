@@ -26,15 +26,15 @@ export default function ProyectosPage() {
         <span className="pointer-events-none absolute -bottom-16 right-0 select-none text-[clamp(8rem,25vw,26rem)] font-semibold leading-none tracking-[-0.09em] text-white/[0.022]">
           04
         </span>
-        <div className="container-reypa relative z-10 grid gap-12 lg:grid-cols-[1.3fr_.7fr] lg:items-end">
-          <div>
+        <div className="container-reypa relative z-10 grid gap-8 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,.7fr)] lg:items-end lg:gap-12">
+          <div className="min-w-0">
             <span className="eyebrow">Obra seleccionada</span>
             <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 text-balance">
               Ideas que se
               <span className="font-editorial hero-italic text-[#d4b28c]">vuelven espacio.</span>
             </SlideTitle>
           </div>
-          <p className="max-w-md border-l border-[#d4b28c]/40 pl-6 text-sm font-light leading-7 text-white/42">
+          <p className="min-w-0 max-w-md border-l border-[#d4b28c]/40 pl-6 text-sm font-light leading-7 text-white/42">
             Explora una selección de visualizaciones y procesos constructivos reales. Del
             concepto digital al avance tangible en obra.
           </p>

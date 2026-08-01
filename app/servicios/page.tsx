@@ -82,12 +82,12 @@ export default function ServiciosPage() {
         <div className="absolute inset-0 grid-lines opacity-15" />
         <div className="container-reypa relative z-10">
           <span className="eyebrow relative z-10">Servicios integrales</span>
-          <div className="relative z-10 mt-12 grid gap-12 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
-            <SlideTitle as="h1" from="left" inView={false} className="heading-display text-balance">
+          <div className="relative z-10 mt-12 grid gap-8 lg:grid-cols-[minmax(0,1.25fr)_minmax(0,.75fr)] lg:items-end lg:gap-12">
+            <SlideTitle as="h1" from="left" inView={false} className="min-w-0 heading-display text-balance">
               De la idea
               <span className="font-editorial hero-italic text-[#d4b28c]">a la materia.</span>
             </SlideTitle>
-            <p className="max-w-md text-sm font-light leading-7 text-white/45">
+            <p className="min-w-0 max-w-md text-sm font-light leading-7 text-white/45">
               Un solo equipo acompaña todo el proceso. Menos fricción, mayor coordinación y
               decisiones que conservan la esencia del proyecto.
             </p>

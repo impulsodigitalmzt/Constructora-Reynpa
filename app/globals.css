@@ -116,7 +116,7 @@ button {
   font-style: italic;
 }
 
-@media (min-width: 480px) {
+@media (min-width: 768px) {
   .hero-italic {
     white-space: nowrap;
   }
