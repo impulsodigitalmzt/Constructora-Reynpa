@@ -62,16 +62,6 @@ export default function Navbar() {
             className="pointer-events-none object-cover object-center"
             aria-hidden="true"
           />
-          <div
-            className={`pointer-events-none absolute inset-0 transition-colors duration-500 ${
-              scrolled ? "bg-black/55" : "bg-black/40"
-            }`}
-            aria-hidden="true"
-          />
-          <div
-            className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/10 via-transparent to-black/25"
-            aria-hidden="true"
-          />
 
           <Link
             href="/"
