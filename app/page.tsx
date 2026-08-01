@@ -251,62 +251,65 @@ export default function Home() {
       </section>
 
       <section className="noise border-y border-white/10 bg-[#121212] py-28 md:py-44">
-        <div className="container-reypa relative z-10 grid gap-16 lg:grid-cols-[.9fr_1.1fr] lg:items-stretch">
-          <FadeIn inView className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
-            <div>
-              <span className="eyebrow">Portal privado</span>
-              <h2 className="heading-section mt-10 text-balance">
-                Tu obra.
-                <span className="font-editorial block italic text-[#d4b28c]">Sin puntos ciegos.</span>
-              </h2>
-            </div>
+        <div className="container-reypa relative z-10">
+          <div className="grid gap-16 lg:grid-cols-[.9fr_1.1fr] lg:items-stretch">
+            <FadeIn inView className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
+              <div>
+                <span className="eyebrow">Portal privado</span>
+                <h2 className="heading-section mt-10 text-balance">
+                  Tu obra.
+                  <span className="font-editorial block italic text-[#d4b28c]">Sin puntos ciegos.</span>
+                </h2>
+              </div>
 
-            <div className="max-w-lg space-y-5 text-sm font-light leading-7 text-white/45">
-              <p>
-                Accede a avances, videos, presupuesto y próximas actividades desde un panel
-                privado diseñado para mantenerte informado en tiempo real.
-              </p>
-              <p>
-                Consulta el avance físico por etapas, el dinero ejercido frente al presupuesto
-                total y la evidencia audiovisual publicada desde campo. Cada métrica se
-                actualiza cuando el equipo de obra registra cambios en el panel interno.
-              </p>
-              <p>
-                Así reduces la incertidumbre entre visitas: sabes qué se construyó, qué está
-                en proceso, cuánto se ha invertido y qué falta por entregar, con la misma
-                claridad que tendrías en una reunión de supervisión.
-              </p>
-              <ul className="space-y-3 border-t border-white/10 pt-5 text-[0.78rem] leading-6 text-white/40">
-                <li className="flex gap-3">
-                  <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
-                  Resumen ejecutivo con avance, plazos y presupuesto en una sola vista.
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
-                  <span>
-                    Finanzas claras: ejercido por <TechTerm n={1}>rubro</TechTerm>,{" "}
-                    <TechTerm n={2}>SPI</TechTerm>/<TechTerm n={3}>CPI</TechTerm> y curva de costos.
-                  </span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
-                  Evidencias con foto y video para validar cada etapa sin desplazarte.
-                </li>
-              </ul>
-              <TechFootnotes ids={["rubro", "spi", "cpi"]} tone="dark" />
-            </div>
+              <div className="max-w-lg space-y-5 text-sm font-light leading-7 text-white/45">
+                <p>
+                  Accede a avances, videos, presupuesto y próximas actividades desde un panel
+                  privado diseñado para mantenerte informado en tiempo real.
+                </p>
+                <p>
+                  Consulta el avance físico por etapas, el dinero ejercido frente al presupuesto
+                  total y la evidencia audiovisual publicada desde campo. Cada métrica se
+                  actualiza cuando el equipo de obra registra cambios en el panel interno.
+                </p>
+                <p>
+                  Así reduces la incertidumbre entre visitas: sabes qué se construyó, qué está
+                  en proceso, cuánto se ha invertido y qué falta por entregar, con la misma
+                  claridad que tendrías en una reunión de supervisión.
+                </p>
+                <ul className="space-y-3 border-t border-white/10 pt-5 text-[0.78rem] leading-6 text-white/40">
+                  <li className="flex gap-3">
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
+                    Resumen ejecutivo con avance, plazos y presupuesto en una sola vista.
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
+                    <span>
+                      Finanzas claras: ejercido por <TechTerm n={1}>rubro</TechTerm>,{" "}
+                      <TechTerm n={2}>SPI</TechTerm>/<TechTerm n={3}>CPI</TechTerm> y curva de costos.
+                    </span>
+                  </li>
+                  <li className="flex gap-3">
+                    <span className="mt-2 size-1 shrink-0 rounded-full bg-[#d4b28c]" />
+                    Evidencias con foto y video para validar cada etapa sin desplazarte.
+                  </li>
+                </ul>
+              </div>
 
-            <ArrowLink
-              href="/portal-cliente"
-              className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
-            >
-              Explorar experiencia
-            </ArrowLink>
-          </FadeIn>
+              <ArrowLink
+                href="/portal-cliente"
+                className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
+              >
+                Explorar experiencia
+              </ArrowLink>
+            </FadeIn>
 
-          <FadeIn inView delay={0.12}>
-            <PortalPreviewCard />
-          </FadeIn>
+            <FadeIn inView delay={0.12}>
+              <PortalPreviewCard />
+            </FadeIn>
+          </div>
+
+          <TechFootnotes ids={["rubro", "spi", "cpi"]} tone="dark" wide />
         </div>
       </section>
 
