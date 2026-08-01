@@ -91,7 +91,7 @@ export function AdminTabs({
             onClick={() => changeTab(id)}
             whileHover={{ y: -1, scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className={`inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-3 text-[0.62rem] font-semibold uppercase tracking-[0.08em] transition sm:gap-2 sm:px-3.5 sm:text-[0.68rem] ${
+            className={`inline-flex min-h-11 shrink-0 items-center gap-1.5 rounded-full px-3 text-[0.62rem] font-semibold uppercase tracking-[0.08em] transition sm:gap-2 sm:px-3.5 sm:text-[0.68rem] ${
               tab === id ? t.tabActive : t.tabIdle
             }`}
           >
@@ -554,7 +554,7 @@ function EvidenceTab({
       </div>
 
       {state.evidences.length > 0 ? (
-        <ul className="grid grid-cols-2 gap-3">
+        <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
           {state.evidences.map((item) => (
             <li key={item.id} className={`overflow-hidden rounded-xl ${t.elevated}`}>
               {item.type === "image" ? (
@@ -573,7 +573,7 @@ function EvidenceTab({
                       evidences: state.evidences.filter((entry) => entry.id !== item.id),
                     })
                   }
-                  className={`grid size-8 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
+                  className={`grid size-10 min-h-11 min-w-11 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
                   aria-label="Eliminar"
                 >
                   <Trash2 size={14} />
@@ -691,7 +691,7 @@ function BitacoraTab({
                     bitacora: state.bitacora.filter((item) => item.id !== entry.id),
                   })
                 }
-                className={`grid size-8 place-items-center rounded-lg ${t.btnGhost}`}
+                className={`grid size-10 min-h-11 min-w-11 place-items-center rounded-lg ${t.btnGhost}`}
                 aria-label="Eliminar"
               >
                 <Trash2 size={14} />
@@ -824,7 +824,7 @@ function ChangeOrdersTab({
                     changeOrders: state.changeOrders.filter((item) => item.id !== order.id),
                   })
                 }
-                className={`ml-auto grid size-8 place-items-center rounded-lg ${t.btnGhost}`}
+                className={`ml-auto grid size-10 min-h-11 min-w-11 place-items-center rounded-lg ${t.btnGhost}`}
                 aria-label="Eliminar"
               >
                 <Trash2 size={14} />
@@ -932,7 +932,7 @@ function MaterialsTab({
         </RippleButton>
       </form>
 
-      <ul className="grid grid-cols-2 gap-3">
+      <ul className="grid grid-cols-1 gap-3 sm:grid-cols-2">
         {state.materials.map((item) => (
           <li key={item.id} className={`overflow-hidden rounded-xl ${t.elevated}`}>
             {item.ticketDataUrl ? (
@@ -956,7 +956,7 @@ function MaterialsTab({
                     materials: state.materials.filter((entry) => entry.id !== item.id),
                   })
                 }
-                className={`grid size-8 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
+                className={`grid size-10 min-h-11 min-w-11 shrink-0 place-items-center rounded-lg ${t.btnGhost}`}
                 aria-label="Eliminar"
               >
                 <Trash2 size={14} />

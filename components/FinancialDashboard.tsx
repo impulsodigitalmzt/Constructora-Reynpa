@@ -348,7 +348,7 @@ export default function FinancialDashboard() {
               <BarChart
                 layout="vertical"
                 data={costBreakdown}
-                margin={{ top: 0, right: 18, left: 8, bottom: 0 }}
+                margin={{ top: 0, right: 12, left: 0, bottom: 0 }}
               >
                 <CartesianGrid stroke={theme.grid} horizontal={false} />
                 <XAxis
@@ -362,10 +362,11 @@ export default function FinancialDashboard() {
                 <YAxis
                   type="category"
                   dataKey="name"
-                  width={88}
-                  tick={{ fill: theme.tick, fontSize: 10, fontWeight: 600 }}
+                  width={72}
+                  tick={{ fill: theme.tick, fontSize: 9, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
+                  interval={0}
                 />
                 <Tooltip
                   content={({ active, payload }) => {

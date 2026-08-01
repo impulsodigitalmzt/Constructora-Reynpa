@@ -42,7 +42,7 @@ export default function ContactForm() {
 
   if (sent) {
     return (
-      <div className="flex min-h-[28rem] flex-col items-start justify-center rounded-2xl border border-white/12 bg-[#171717] p-8 md:p-10">
+      <div className="flex min-h-[22rem] flex-col items-start justify-center rounded-2xl border border-white/12 bg-[#171717] p-6 sm:min-h-[28rem] sm:p-8 md:p-10">
         <CheckCircle2 className="text-[#d4b28c]" size={34} strokeWidth={1.3} />
         <h3 className="font-editorial mt-8 text-3xl text-white">Mensaje listo para enviar.</h3>
         <p className="mt-4 max-w-md text-sm font-light leading-7 text-white/45">
@@ -52,7 +52,7 @@ export default function ContactForm() {
         <button
           type="button"
           onClick={() => setSent(false)}
-          className="mt-8 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#d4b28c] transition hover:text-white"
+          className="mt-8 inline-flex min-h-11 items-center text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-[#d4b28c] transition hover:text-white"
         >
           Enviar otro mensaje
         </button>

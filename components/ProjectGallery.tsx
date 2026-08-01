@@ -111,11 +111,11 @@ export default function ProjectGallery() {
             {category === "design" ? "Imaginamos antes de construir." : "La materia toma forma."}
           </p>
         </div>
-        <div className="flex gap-7">
+        <div className="flex flex-wrap gap-4 sm:gap-7">
         <button
           type="button"
           onClick={() => selectCategory("design")}
-          className={`group relative pb-3 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-500 ${
+          className={`group relative min-h-11 pb-3 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-500 ${
             category === "design" ? "text-[#d4b28c]" : "text-white/35 hover:text-white"
           }`}
         >
@@ -125,7 +125,7 @@ export default function ProjectGallery() {
         <button
           type="button"
           onClick={() => selectCategory("build")}
-          className={`group relative pb-3 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-500 ${
+          className={`group relative min-h-11 pb-3 text-[0.6rem] font-semibold uppercase tracking-[0.2em] transition-colors duration-500 ${
             category === "build" ? "text-[#d4b28c]" : "text-white/35 hover:text-white"
           }`}
         >
