@@ -91,7 +91,7 @@ export default function ContactForm() {
               type={field.type}
               required={field.required}
               placeholder={field.placeholder}
-              className="h-12 w-full rounded-xl border border-white/12 bg-black/30 px-4 text-sm font-light text-white outline-none transition placeholder:text-white/25 focus:border-[#d4b28c]/60"
+              className="h-12 w-full rounded-xl border-2 border-white/22 bg-[#2c2c2c] px-4 text-sm font-light text-white outline-none transition placeholder:text-white/45 hover:border-white/35 focus:border-[#d4b28c] focus:bg-[#323232] focus:ring-4 focus:ring-[#d4b28c]/15"
             />
           </label>
         ))}
@@ -106,7 +106,7 @@ export default function ContactForm() {
             required
             rows={5}
             placeholder="Describe el tipo de proyecto, ubicación aproximada y lo que necesitas."
-            className="w-full resize-none rounded-xl border border-white/12 bg-black/30 px-4 py-3 text-sm font-light text-white outline-none transition placeholder:text-white/25 focus:border-[#d4b28c]/60"
+            className="w-full resize-none rounded-xl border-2 border-white/22 bg-[#2c2c2c] px-4 py-3 text-sm font-light text-white outline-none transition placeholder:text-white/45 hover:border-white/35 focus:border-[#d4b28c] focus:bg-[#323232] focus:ring-4 focus:ring-[#d4b28c]/15"
           />
         </label>
       </div>
