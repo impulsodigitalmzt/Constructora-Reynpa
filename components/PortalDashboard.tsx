@@ -204,7 +204,7 @@ export default function PortalDashboard() {
               className={`shrink-0 flex-1 rounded-xl px-4 py-3 text-[0.62rem] font-semibold uppercase tracking-[0.16em] transition-all duration-300 sm:px-5 ${
                 view === tab.id
                   ? "bg-[#d4b28c] text-black shadow-[0_8px_24px_rgba(212,178,140,0.28)]"
-                  : "text-white/45 hover:bg-white/[0.06] hover:text-white"
+                  : "bg-white/[0.08] text-white/85 ring-1 ring-white/20 hover:bg-white/[0.14] hover:text-white"
               }`}
             >
               {tab.label}
@@ -215,17 +215,23 @@ export default function PortalDashboard() {
 
       {view === "overview" ? (
         <div className="p-4 md:p-7">
-          <div className="mb-7 flex items-end justify-between">
+          <div className="mb-7 flex items-end justify-between gap-4">
             <div>
               <p className="text-[0.58rem] uppercase tracking-[0.18em] text-white/25">Bienvenido de nuevo, Daniel</p>
               <h2 className="font-editorial mt-2 text-2xl sm:text-3xl">Estado del proyecto</h2>
+              <p className="mt-3 text-[0.62rem] font-semibold uppercase tracking-[0.14em] text-white/45">
+                Presupuesto total
+              </p>
+              <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl md:text-5xl">
+                {currencyFull.format(state.budgetTotal)}
+              </p>
             </div>
             <span className="hidden items-center gap-2 text-[0.55rem] uppercase tracking-[0.16em] text-[#d4b28c] sm:flex">
               <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_12px_#d4b28c]" /> Actualizado
             </span>
           </div>
 
-          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+          <div className="grid grid-cols-2 gap-3 xl:grid-cols-4">
             <Metric
               icon={TrendingUp}
               label="Avance general"
@@ -244,46 +250,12 @@ export default function PortalDashboard() {
               value={deliveryLabel}
               note="En tiempo"
             />
-            <article className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:col-span-2 sm:p-5 xl:col-span-3">
-              <div className="mb-4 flex items-center justify-between gap-2">
-                <span className="text-[0.58rem] font-bold uppercase tracking-[0.1em] text-[#555]">
-                  Presupuesto vs ejercido
-                </span>
-                <Wallet size={17} className="shrink-0 text-[#ff6b2c]" />
-              </div>
-              <div className="grid gap-4 sm:grid-cols-2">
-                <div>
-                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
-                    Ejercido
-                  </p>
-                  <p className="mt-1 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:text-3xl">
-                    {currencyFull.format(spent)}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
-                    Presupuesto total
-                  </p>
-                  <p className="mt-1 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:text-3xl">
-                    {currencyFull.format(state.budgetTotal)}
-                  </p>
-                </div>
-              </div>
-              <div className="mt-4">
-                <div className="mb-2 flex justify-between text-[0.65rem] font-semibold text-[#1a1a1a]">
-                  <span>{progressShare}% ejercido</span>
-                  <span className="text-[#027a48]">
-                    Disponible {currencyFull.format(Math.max(state.budgetTotal - spent, 0))}
-                  </span>
-                </div>
-                <div className="h-2.5 overflow-hidden rounded-full bg-[#d0d0d0]">
-                  <div
-                    className="h-full rounded-full bg-gradient-to-r from-[#ff6b2c] to-[#f5c542] transition-all duration-700"
-                    style={{ width: `${Math.min(progressShare, 100)}%` }}
-                  />
-                </div>
-              </div>
-            </article>
+            <Metric
+              icon={Wallet}
+              label="Ejercido"
+              value={currencyFull.format(spent)}
+              note={`${progressShare}% del presupuesto`}
+            />
           </div>
 
           <PortalOverviewCharts />
@@ -399,7 +371,9 @@ function Metric({
         </span>
         <Icon size={17} className="shrink-0 text-[#ff6b2c]" />
       </div>
-      <p className="mt-4 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-6 sm:text-3xl">{value}</p>
+      <p className="mt-4 break-words text-xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-6 sm:text-2xl xl:text-[1.65rem]">
+        {value}
+      </p>
       <p className="mt-2 text-[0.65rem] font-semibold text-[#027a48] sm:text-[0.68rem]">{note}</p>
     </article>
   );
