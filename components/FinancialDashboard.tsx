@@ -1,5 +1,6 @@
 "use client";
 
+import { Moon, Sun } from "lucide-react";
 import {
   Bar,
   BarChart,
@@ -15,6 +16,7 @@ import {
   YAxis,
 } from "recharts";
 import { useObraStore } from "@/hooks/useObraStore";
+import { type PortalChartTheme, usePortalChartMode } from "@/hooks/usePortalChartMode";
 import { getSpentTotal, withCostPercents } from "@/lib/obra-store";
 
 /** Colores brillantes para gráficas (alta visibilidad) */
@@ -25,7 +27,8 @@ const CHART = {
   programado: "#ff4d6d",
   ejecutado: "#22c55e",
   costos: "#38bdf8",
-  track: "#cfcfcf",
+  trackSun: "#cfcfcf",
+  trackDark: "#2a2a2a",
 } as const;
 
 const COST_BRIGHT: Record<string, string> = {
@@ -35,9 +38,6 @@ const COST_BRIGHT: Record<string, string> = {
   subcontratistas: "#a855f7",
   manoObraForanea: "#f43f5e",
 };
-
-const cardClass =
-  "min-w-0 overflow-hidden rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:p-5";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -56,26 +56,28 @@ function ChartTooltip({
   payload,
   label,
   suffix = "",
+  theme,
 }: {
   active?: boolean;
   payload?: TooltipPayload[];
   label?: string;
   suffix?: string;
+  theme: PortalChartTheme;
 }) {
   if (!active || !payload?.length) return null;
 
   return (
-    <div className="rounded-xl border-2 border-[#b8b8b8] bg-white px-3 py-2.5 shadow-xl">
+    <div className={theme.tooltip}>
       {label ? (
-        <p className="mb-2 text-[0.55rem] font-bold uppercase tracking-[0.14em] text-[#8a6a3d]">
+        <p className="mb-2 text-[0.55rem] font-bold uppercase tracking-[0.14em] text-[#d4b28c]">
           {label}
         </p>
       ) : null}
       <div className="space-y-1.5">
         {payload.map((entry) => (
-          <p key={String(entry.name)} className="flex items-center gap-2 text-xs text-[#1a1a1a]">
+          <p key={String(entry.name)} className={`flex items-center gap-2 text-xs ${theme.tooltipTitle}`}>
             <span className="size-2.5 rounded-full" style={{ background: entry.color }} />
-            <span className="text-[#555]">{entry.name}:</span>
+            <span className={theme.tooltipBody}>{entry.name}:</span>
             <span className="font-semibold">
               {typeof entry.value === "number"
                 ? suffix === "m"
@@ -98,12 +100,16 @@ function DonutGauge({
   displayValue,
   color,
   note,
+  theme,
+  track,
 }: {
   label: string;
   value: number;
   displayValue?: string;
   color: string;
   note: string;
+  theme: PortalChartTheme;
+  track: string;
 }) {
   const capped = Math.min(value, 100);
   const data = [
@@ -112,12 +118,12 @@ function DonutGauge({
   ];
 
   return (
-    <article className={cardClass}>
+    <article className={theme.card}>
       <div className="mb-2 flex items-center justify-between gap-2">
-        <p className="text-[0.62rem] font-bold uppercase tracking-[0.14em] text-[#1a1a1a]">
+        <p className={`text-[0.62rem] font-bold uppercase tracking-[0.14em] ${theme.body}`}>
           {label}
         </p>
-        <span className="text-[0.55rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
+        <span className={`text-[0.55rem] font-semibold uppercase tracking-[0.1em] ${theme.muted}`}>
           {note}
         </span>
       </div>
@@ -135,12 +141,12 @@ function DonutGauge({
               paddingAngle={1}
             >
               <Cell fill={color} />
-              <Cell fill={CHART.track} />
+              <Cell fill={track} />
             </Pie>
           </PieChart>
         </ResponsiveContainer>
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
-          <p className="text-3xl font-semibold tracking-tight text-[#0a0a0a]">
+          <p className={`text-3xl font-semibold tracking-tight ${theme.title}`}>
             {displayValue ?? `${value}%`}
           </p>
         </div>
@@ -151,6 +157,7 @@ function DonutGauge({
 
 export default function FinancialDashboard() {
   const { state } = useObraStore();
+  const { mode, theme, toggle } = usePortalChartMode();
   const totalCost = getSpentTotal(state);
   const costBreakdown = withCostPercents(state).map((item) => ({
     ...item,
@@ -158,6 +165,7 @@ export default function FinancialDashboard() {
   }));
   const budgetMillions = state.budgetTotal / 1_000_000;
   const spentMillions = totalCost / 1_000_000;
+  const gaugeTrack = mode === "dark" ? CHART.trackDark : CHART.trackSun;
 
   const kpiGauges = [
     {
@@ -185,28 +193,44 @@ export default function FinancialDashboard() {
   return (
     <section className="min-w-0 space-y-4 sm:space-y-5">
       <div className="flex flex-col gap-4">
-        <div className="min-w-0">
-          <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
-            Control financiero y de avance
-          </p>
-          <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
-            Dashboard de obra
-          </h3>
-          <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
-            Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
-          </p>
-        </div>
-        <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
-          <div className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] px-3 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem] sm:px-4 sm:py-4">
-            <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#555] sm:text-[0.68rem] sm:tracking-[0.14em]">
-              Presupuesto
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+          <div className="min-w-0">
+            <p className="text-[0.58rem] uppercase tracking-[0.18em] text-[#d4b28c]">
+              Control financiero y de avance
             </p>
-            <p className="mt-1.5 font-editorial text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:mt-2 sm:text-4xl">
-              ${budgetMillions.toFixed(2)}
-              <span className="ml-0.5 text-base text-[#555] sm:text-xl">M</span>
+            <h3 className="font-editorial mt-2 text-2xl text-white sm:text-3xl md:text-4xl">
+              Dashboard de obra
+            </h3>
+            <p className="mt-2 max-w-xl text-sm font-light leading-6 text-white/50">
+              Datos en vivo desde el panel de residentes. {state.projectName} · {state.projectCode}.
             </p>
           </div>
-          <div className="min-w-0 rounded-2xl border-[3px] border-[#ff6b2c]/50 bg-[#e9e9e9] px-3 py-3 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:min-w-[10.5rem] sm:px-4 sm:py-4">
+          <button
+            type="button"
+            onClick={toggle}
+            className={theme.toggleBtn}
+            aria-label={mode === "sun" ? "Modo oscuro" : "Modo día"}
+          >
+            {mode === "sun" ? <Moon size={14} /> : <Sun size={14} />}
+            <span>{mode === "sun" ? "Oscuro" : "Día"}</span>
+          </button>
+        </div>
+
+        <div className="grid w-full grid-cols-2 gap-2 sm:max-w-md sm:w-auto sm:gap-3">
+          <div className={`${theme.card} !p-3 sm:!px-4 sm:!py-4`}>
+            <p className={`text-[0.58rem] font-bold uppercase tracking-[0.12em] sm:text-[0.68rem] sm:tracking-[0.14em] ${theme.muted}`}>
+              Presupuesto
+            </p>
+            <p className={`mt-1.5 font-editorial text-2xl font-semibold tracking-tight sm:mt-2 sm:text-4xl ${theme.title}`}>
+              ${budgetMillions.toFixed(2)}
+              <span className={`ml-0.5 text-base sm:text-xl ${theme.muted}`}>M</span>
+            </p>
+          </div>
+          <div
+            className={`${theme.card} !p-3 sm:!px-4 sm:!py-4 ${
+              mode === "dark" ? "border-[#ff6b2c]/40" : "border-[#ff6b2c]/50"
+            }`}
+          >
             <p className="text-[0.58rem] font-bold uppercase tracking-[0.12em] text-[#ff6b2c] sm:text-[0.68rem] sm:tracking-[0.14em]">
               Ejercido
             </p>
@@ -220,42 +244,42 @@ export default function FinancialDashboard() {
 
       <div className="grid gap-4 sm:grid-cols-3">
         {kpiGauges.map((gauge) => (
-          <DonutGauge key={gauge.label} {...gauge} />
+          <DonutGauge key={gauge.label} {...gauge} theme={theme} track={gaugeTrack} />
         ))}
       </div>
 
       <div className="grid gap-5 xl:grid-cols-[1.35fr_0.85fr]">
-        <article className={`${cardClass} md:p-6`}>
+        <article className={theme.card}>
           <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <h4 className="text-sm font-bold text-[#0a0a0a]">Curva de avance y costos</h4>
-              <p className="mt-1 text-[0.62rem] font-medium text-[#555]">
+              <h4 className={`text-sm font-bold ${theme.title}`}>Curva de avance y costos</h4>
+              <p className={`mt-1 text-[0.62rem] font-medium ${theme.muted}`}>
                 Comparativa mensual · Enero a Diciembre
               </p>
             </div>
             <div className="flex flex-wrap gap-3 text-[0.58rem] font-bold uppercase tracking-[0.1em]">
-              <LegendDot color={CHART.programado} label="Programado" />
-              <LegendDot color={CHART.ejecutado} label="Ejecutado" />
-              <LegendDot color={CHART.costos} label="Costos reales" />
+              <LegendDot color={CHART.programado} label="Programado" className={theme.body} />
+              <LegendDot color={CHART.ejecutado} label="Ejecutado" className={theme.body} />
+              <LegendDot color={CHART.costos} label="Costos reales" className={theme.body} />
             </div>
           </div>
           <div className="h-64 w-full sm:h-80">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={state.monthly} margin={{ top: 8, right: 8, left: -8, bottom: 0 }}>
-                <CartesianGrid stroke="rgba(0,0,0,0.08)" vertical={false} />
+                <CartesianGrid stroke={theme.grid} vertical={false} />
                 <XAxis
                   dataKey="month"
-                  tick={{ fill: "#444", fontSize: 11, fontWeight: 600 }}
+                  tick={{ fill: theme.tickMuted, fontSize: 11, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />
                 <YAxis
-                  tick={{ fill: "#666", fontSize: 11 }}
+                  tick={{ fill: theme.tickMuted, fontSize: 11 }}
                   axisLine={false}
                   tickLine={false}
                   tickFormatter={(value: number) => `$${value}M`}
                 />
-                <Tooltip content={<ChartTooltip suffix="m" />} />
+                <Tooltip content={<ChartTooltip suffix="m" theme={theme} />} />
                 <Line
                   type="monotone"
                   dataKey="programado"
@@ -289,11 +313,11 @@ export default function FinancialDashboard() {
           </div>
         </article>
 
-        <article className={`${cardClass} md:p-6`}>
+        <article className={theme.card}>
           <div className="mb-5 flex items-start justify-between gap-3">
             <div>
-              <h4 className="text-sm font-bold text-[#0a0a0a]">Desglose de costos</h4>
-              <p className="mt-1 text-[0.62rem] font-medium text-[#555]">
+              <h4 className={`text-sm font-bold ${theme.title}`}>Desglose de costos</h4>
+              <p className={`mt-1 text-[0.62rem] font-medium ${theme.muted}`}>
                 Total acumulado · {currency.format(totalCost)}
               </p>
             </div>
@@ -306,7 +330,7 @@ export default function FinancialDashboard() {
                     innerRadius="58%"
                     outerRadius="88%"
                     paddingAngle={2}
-                    stroke="#e9e9e9"
+                    stroke={theme.pieStroke}
                     strokeWidth={2}
                   >
                     {costBreakdown.map((item) => (
@@ -325,11 +349,11 @@ export default function FinancialDashboard() {
                 data={costBreakdown}
                 margin={{ top: 0, right: 18, left: 8, bottom: 0 }}
               >
-                <CartesianGrid stroke="rgba(0,0,0,0.06)" horizontal={false} />
+                <CartesianGrid stroke={theme.grid} horizontal={false} />
                 <XAxis
                   type="number"
                   domain={[0, Math.max(...costBreakdown.map((item) => item.percent), 50)]}
-                  tick={{ fill: "#555", fontSize: 10, fontWeight: 600 }}
+                  tick={{ fill: theme.tickMuted, fontSize: 10, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                   tickFormatter={(value: number) => `${value}%`}
@@ -338,7 +362,7 @@ export default function FinancialDashboard() {
                   type="category"
                   dataKey="name"
                   width={88}
-                  tick={{ fill: "#1a1a1a", fontSize: 10, fontWeight: 600 }}
+                  tick={{ fill: theme.tick, fontSize: 10, fontWeight: 600 }}
                   axisLine={false}
                   tickLine={false}
                 />
@@ -347,14 +371,14 @@ export default function FinancialDashboard() {
                     if (!active || !payload?.length) return null;
                     const item = payload[0]?.payload as (typeof costBreakdown)[number];
                     return (
-                      <div className="rounded-xl border-2 border-[#b8b8b8] bg-white px-3 py-2.5 text-xs shadow-xl">
+                      <div className={`${theme.tooltip} text-xs`}>
                         <p className="font-bold" style={{ color: item.color }}>
                           {item.name}
                         </p>
-                        <p className="mt-1 font-semibold text-[#0a0a0a]">
+                        <p className={`mt-1 font-semibold ${theme.tooltipTitle}`}>
                           {currency.format(item.amount)}
                         </p>
-                        <p className="mt-1 text-[#555]">{item.percent}% del ejercido</p>
+                        <p className={`mt-1 ${theme.tooltipBody}`}>{item.percent}% del ejercido</p>
                       </div>
                     );
                   }}
@@ -368,16 +392,16 @@ export default function FinancialDashboard() {
             </ResponsiveContainer>
           </div>
 
-          <ul className="mt-4 space-y-2.5 border-t-2 border-[#cfcfcf] pt-4">
+          <ul className={`mt-4 space-y-2.5 border-t-2 pt-4 ${theme.hairline}`}>
             {costBreakdown.map((item) => (
               <li key={item.name} className="flex items-center justify-between gap-3 text-xs">
-                <span className="flex items-center gap-2 font-semibold text-[#1a1a1a]">
+                <span className={`flex items-center gap-2 font-semibold ${theme.body}`}>
                   <i className="size-2.5 rounded-full" style={{ background: item.color }} />
                   {item.name}
                 </span>
-                <span className="text-right font-semibold text-[#0a0a0a]">
+                <span className={`text-right font-semibold ${theme.title}`}>
                   {currency.format(item.amount)}
-                  <span className="ml-2 text-[#555]">{item.percent}%</span>
+                  <span className={`ml-2 ${theme.muted}`}>{item.percent}%</span>
                 </span>
               </li>
             ))}
@@ -388,9 +412,17 @@ export default function FinancialDashboard() {
   );
 }
 
-function LegendDot({ color, label }: { color: string; label: string }) {
+function LegendDot({
+  color,
+  label,
+  className,
+}: {
+  color: string;
+  label: string;
+  className: string;
+}) {
   return (
-    <span className="inline-flex items-center gap-2 text-[#1a1a1a]">
+    <span className={`inline-flex items-center gap-2 ${className}`}>
       <i className="size-2.5 rounded-full" style={{ background: color }} />
       {label}
     </span>
