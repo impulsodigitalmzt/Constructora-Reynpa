@@ -209,23 +209,54 @@ export default function ServiciosPage() {
       </section>
 
       <section className="noise overflow-hidden border-y border-black/10 bg-[#d8c7b3] py-28 text-[#0a0a0a] md:py-44">
-        <div className="container-reypa relative z-10 grid gap-16 lg:grid-cols-[.75fr_1.25fr] lg:items-center">
-          <div>
-            <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
-              <span className="h-px w-10 bg-black/60" /> Portal de obra SaaS
-            </span>
-            <h2 className="heading-section mt-10 text-balance text-[#0a0a0a]">
-              Control visible.
-              <span className="font-editorial block italic text-black/55">Confianza real.</span>
-            </h2>
-            <p className="mt-8 max-w-lg text-sm font-light leading-7 text-black/55">
-              Nuestro Portal de Obra reúne progreso, presupuesto, evidencia visual y próximas
-              actividades. El cliente entiende qué está sucediendo, qué sigue y cómo evoluciona
-              su inversión.
-            </p>
+        <div className="container-reypa relative z-10 grid gap-16 lg:grid-cols-[.75fr_1.25fr] lg:items-stretch">
+          <div className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
+            <div>
+              <span className="inline-flex items-center gap-3 text-[0.6rem] font-semibold uppercase tracking-[0.25em]">
+                <span className="h-px w-10 bg-black/60" /> Portal de obra SaaS
+              </span>
+              <h2 className="heading-section mt-10 text-balance text-[#0a0a0a]">
+                Control visible.
+                <span className="font-editorial block italic text-black/55">Confianza real.</span>
+              </h2>
+            </div>
+
+            <div className="max-w-lg space-y-5 text-sm font-light leading-7 text-black/55">
+              <p>
+                Nuestro Portal de Obra reúne progreso, presupuesto, evidencia visual y próximas
+                actividades. El cliente entiende qué está sucediendo, qué sigue y cómo evoluciona
+                su inversión.
+              </p>
+              <p>
+                Desde una sola pantalla puedes revisar el avance global, los días transcurridos
+                desde el inicio, la fecha estimada de entrega y el monto ejercido frente al
+                presupuesto autorizado. Las gráficas desglosan etapas físicas y rubros
+                financieros para que cada decisión tenga contexto.
+              </p>
+              <p>
+                El residente actualiza métricas, bitácora y evidencias desde campo; tú las ves
+                al instante en el portal. Menos mensajes dispersos, más claridad operativa y
+                una experiencia de seguimiento a la altura de un proyecto de arquitectura.
+              </p>
+              <ul className="space-y-3 border-t border-black/15 pt-5 text-[0.78rem] leading-6 text-black/50">
+                <li className="flex gap-3">
+                  <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
+                  Vista Resumen con KPIs, donut de etapas y desglose presupuestario.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
+                  Módulo financiero con curvas de avance, costos y desempeño SPI/CPI.
+                </li>
+                <li className="flex gap-3">
+                  <span className="mt-2 size-1 shrink-0 rounded-full bg-black/70" />
+                  Galería de evidencias para validar avance sin depender solo del reporte oral.
+                </li>
+              </ul>
+            </div>
+
             <ArrowLink
               href="/portal-cliente"
-              className="mt-10 text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-black transition-colors hover:text-black/55"
+              className="text-[0.62rem] font-semibold uppercase tracking-[0.22em] text-black transition-colors hover:text-black/55"
             >
               Entrar al portal demo
             </ArrowLink>
