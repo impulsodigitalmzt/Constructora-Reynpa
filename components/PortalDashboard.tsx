@@ -93,7 +93,7 @@ export default function PortalDashboard() {
     return (
       <FadeIn>
         <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.65)]">
-          <div className="grid min-h-[42rem] lg:grid-cols-[1.05fr_.95fr]">
+          <div className="grid min-h-0 lg:min-h-[42rem] lg:grid-cols-[1.05fr_.95fr]">
             <div className="noise relative hidden overflow-hidden border-r border-white/10 lg:block">
               <video
                 src={videoSrc(videos[0].file)}
@@ -117,10 +117,10 @@ export default function PortalDashboard() {
               </div>
             </div>
 
-            <div className="flex items-center p-7 sm:p-12 lg:p-16">
+            <div className="flex items-center p-5 sm:p-12 lg:p-16">
               <Stagger className="mx-auto w-full max-w-sm" delay={0.1}>
                 <FadeInItem>
-                  <div className="mb-12 flex items-center justify-between">
+                  <div className="mb-8 flex items-center justify-between sm:mb-12">
                     <div className="grid size-12 place-items-center rounded-xl bg-[#d4b28c] text-sm font-bold text-black">R</div>
                     <span className="flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.2em] text-white/30">
                       <LockKeyhole size={12} /> Acceso seguro
@@ -129,7 +129,7 @@ export default function PortalDashboard() {
                 </FadeInItem>
                 <FadeInItem>
                   <p className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Bienvenido</p>
-                  <RevealHeading className="font-editorial mt-3 text-4xl">Accede a tu proyecto.</RevealHeading>
+                  <RevealHeading className="font-editorial mt-3 text-3xl sm:text-4xl">Accede a tu proyecto.</RevealHeading>
                   <p className="mt-4 text-sm font-light leading-6 text-white/35">
                     Consulta avances, presupuesto y evidencias en un mismo lugar.
                   </p>
@@ -281,7 +281,7 @@ export default function PortalDashboard() {
                 </FadeInItem>
               </Stagger>
 
-              <Stagger className="grid grid-cols-2 gap-3 xl:grid-cols-4" delay={0.12}>
+              <Stagger className="grid grid-cols-1 gap-3 sm:grid-cols-2 xl:grid-cols-4" delay={0.12}>
                 <FadeInItem>
                   <Metric
                     icon={TrendingUp}

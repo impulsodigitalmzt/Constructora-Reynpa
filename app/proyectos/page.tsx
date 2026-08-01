@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 export default function ProyectosPage() {
   return (
     <>
-      <section className="noise relative flex min-h-[72vh] items-end overflow-hidden bg-[#0a0a0a] pb-24 pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
+      <section className="noise relative flex min-h-[56vh] items-end overflow-hidden bg-[#0a0a0a] pb-16 pt-32 sm:min-h-[72vh] sm:pb-24 sm:pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
         <Image
           src="/foto/DISEÑOS/702695595_1607513581375150_7346377566660941231_n.jpg"
           alt=""
@@ -31,7 +31,7 @@ export default function ProyectosPage() {
             <span className="eyebrow">Obra seleccionada</span>
             <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 text-balance">
               Ideas que se
-              <span className="font-editorial block whitespace-nowrap pl-[7vw] italic text-[#d4b28c]">vuelven espacio.</span>
+              <span className="font-editorial hero-italic text-[#d4b28c]">vuelven espacio.</span>
             </SlideTitle>
           </div>
           <p className="max-w-md border-l border-[#d4b28c]/40 pl-6 text-sm font-light leading-7 text-white/42">
@@ -60,7 +60,7 @@ export default function ProyectosPage() {
           </div>
 
           <div className="grid gap-4 lg:grid-cols-12">
-            <div className="group relative min-h-[42rem] overflow-hidden rounded-2xl bg-black/10 lg:col-span-8">
+            <div className="group relative min-h-[22rem] overflow-hidden rounded-2xl bg-black/10 sm:min-h-[28rem] lg:col-span-8 lg:min-h-[42rem]">
               <Image
                 src="/foto/DISEÑOS/702625085_1607513934708448_3777016774527702021_n.jpg"
                 alt="Interior residencial diseñado por REYPA"

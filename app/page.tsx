@@ -38,10 +38,10 @@ const values = [
 export default function Home() {
   return (
     <>
-      <section className="relative grid min-h-screen overflow-hidden bg-[#0a0a0a] text-[#f4f4f5] lg:grid-cols-[.9fr_1.1fr]">
+      <section className="relative grid overflow-hidden bg-[#0a0a0a] text-[#f4f4f5] lg:min-h-screen lg:grid-cols-[.9fr_1.1fr]">
         <LandingHero />
 
-        <div className="relative min-h-[54vh] overflow-hidden bg-[#d8c7b3] lg:min-h-screen">
+        <div className="relative min-h-[40vh] overflow-hidden bg-[#d8c7b3] sm:min-h-[54vh] lg:min-h-screen">
           <Image
             src="/foto/DISEÑOS/702625085_1607513934708448_3777016774527702021_n.jpg"
             alt="Diseño interior contemporáneo desarrollado por REYPA Arquitectura"
@@ -51,11 +51,11 @@ export default function Home() {
             className="object-cover transition-transform duration-[1600ms] ease-out hover:scale-[1.025]"
           />
           <div className="pointer-events-none absolute inset-x-0 top-0 z-10 h-28 bg-gradient-to-b from-[#0a0a0a] via-[#0a0a0a]/55 to-transparent lg:inset-y-0 lg:left-0 lg:right-auto lg:h-auto lg:w-40 lg:bg-gradient-to-r lg:from-[#0a0a0a] lg:via-[#0a0a0a]/60 lg:to-transparent" />
-          <div className="absolute bottom-4 left-4 rounded-2xl bg-[#d8c7b3] px-5 py-4 text-[#0a0a0a]">
+          <div className="absolute bottom-4 left-4 max-w-[calc(100%-2rem)] rounded-2xl bg-[#d8c7b3] px-4 py-3 text-[#0a0a0a] sm:px-5 sm:py-4">
             <p className="text-[0.52rem] font-semibold uppercase tracking-[0.24em]">Diseño interior · REYPA</p>
-            <p className="font-editorial mt-1 text-lg italic">Habitar con intención.</p>
+            <p className="font-editorial mt-1 text-base italic sm:text-lg">Habitar con intención.</p>
           </div>
-          <div className="absolute right-5 top-24 flex items-center gap-3 text-[0.5rem] font-semibold uppercase tracking-[0.22em] text-black/55">
+          <div className="absolute right-4 top-20 hidden items-center gap-3 text-[0.5rem] font-semibold uppercase tracking-[0.22em] text-black/55 sm:flex sm:right-5 sm:top-24">
             <span className="h-px w-10 bg-black/50" /> Mazatlán, Sinaloa
           </div>
         </div>
@@ -229,7 +229,7 @@ export default function Home() {
           <Stagger className="grid gap-4 lg:grid-cols-[1.35fr_.65fr]" delay={0.06} inView>
             <FadeInItem>
               <HoverLift3D className="h-full" intensity={5}>
-                <div className="relative min-h-[34rem] overflow-hidden rounded-2xl border border-white/10 bg-[#121212]">
+                <div className="relative min-h-[22rem] overflow-hidden rounded-2xl border border-white/10 bg-[#121212] md:min-h-[34rem]">
                   <video
                     src="/video/AQNdaEgBPA6NKJD444IZJB76Lxxd6hvCkMaVJV93gZEcjOqfMr25jJW3ggnRl1rWNFnDte-YhIeD5KY0mEMIkpoijQpKK_qssSUZLk0TPA.mp4"
                     autoPlay
@@ -237,7 +237,7 @@ export default function Home() {
                     loop
                     playsInline
                     preload="metadata"
-                    className="size-full min-h-[34rem] object-cover"
+                    className="size-full min-h-[22rem] object-cover md:min-h-[34rem]"
                   />
                   <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-7 pt-24">
                     <span className="text-[0.56rem] uppercase tracking-[0.23em] text-[#d4b28c]">Bitácora de obra</span>

@@ -121,7 +121,7 @@ export default function DesignCarousel() {
       <div
         ref={trackRef}
         className="flex cursor-grab select-none gap-4 overflow-x-hidden pl-[max(1rem,calc((100vw-86rem)/2))] active:cursor-grabbing"
-        style={{ touchAction: "pan-y" }}
+        style={{ touchAction: "pan-x pan-y" }}
         onPointerDown={(event) => {
           draggingRef.current = true;
           startXRef.current = event.clientX;
@@ -142,8 +142,8 @@ export default function DesignCarousel() {
             key={`${file}-${index}`}
             className={`group relative shrink-0 overflow-hidden rounded-2xl bg-[#1a1a1a] ${
               index % 3 === 0
-                ? "h-[28rem] w-[78vw] sm:w-[30rem] md:h-[36rem]"
-                : "h-[28rem] w-[68vw] sm:w-[24rem] md:h-[36rem]"
+                ? "h-[22rem] w-[78vw] sm:h-[28rem] sm:w-[30rem] md:h-[36rem]"
+                : "h-[22rem] w-[68vw] sm:h-[28rem] sm:w-[24rem] md:h-[36rem]"
             }`}
           >
             <Image

@@ -67,7 +67,7 @@ const services = [
 export default function ServiciosPage() {
   return (
     <>
-      <section className="noise relative flex min-h-[72vh] items-end overflow-hidden bg-[#0a0a0a] pb-24 pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
+      <section className="noise relative flex min-h-[56vh] items-end overflow-hidden bg-[#0a0a0a] pb-16 pt-32 sm:min-h-[72vh] sm:pb-24 sm:pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
         <Image
           src="/foto/PLANEACION.jpg"
           alt=""
@@ -85,7 +85,7 @@ export default function ServiciosPage() {
           <div className="relative z-10 mt-12 grid gap-12 lg:grid-cols-[1.25fr_.75fr] lg:items-end">
             <SlideTitle as="h1" from="left" inView={false} className="heading-display text-balance">
               De la idea
-              <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">a la materia.</span>
+              <span className="font-editorial hero-italic text-[#d4b28c]">a la materia.</span>
             </SlideTitle>
             <p className="max-w-md text-sm font-light leading-7 text-white/45">
               Un solo equipo acompaña todo el proceso. Menos fricción, mayor coordinación y
@@ -196,14 +196,14 @@ export default function ServiciosPage() {
               coordina proveedores, especialidades, materiales y tiempos para mantener la
               calidad prevista desde el diseño.
             </p>
-            <div className="mt-9 grid grid-cols-2 gap-3">
+            <div className="mt-9 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {[
                 ["Supervisión", "Revisión continua de ejecución y acabados."],
                 ["Documentación", "Evidencia visual y reportes de avance."],
                 ["Coordinación", "Comunicación directa con responsables de obra."],
                 ["Control", "Seguimiento de calendario y presupuesto."],
               ].map(([title, text]) => (
-                <div key={title} className="rounded-xl border-[3px] border-white/15 p-5">
+                <div key={title} className="rounded-xl border-[3px] border-white/15 p-4 sm:p-5">
                   <p className="text-xs text-[#d4b28c]">{title}</p>
                   <p className="mt-3 text-xs leading-5 text-white/35">{text}</p>
                 </div>

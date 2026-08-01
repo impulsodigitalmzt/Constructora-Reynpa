@@ -39,7 +39,7 @@ const channels = [
 export default function ContactoPage() {
   return (
     <>
-      <section className="noise relative flex min-h-[68vh] items-end overflow-hidden bg-[#0a0a0a] pb-20 pt-40 md:min-h-[76vh] md:pb-24 md:pt-52">
+      <section className="noise relative flex min-h-[56vh] items-end overflow-hidden bg-[#0a0a0a] pb-16 pt-32 sm:min-h-[68vh] sm:pb-20 sm:pt-40 md:min-h-[76vh] md:pb-24 md:pt-52">
         <Image
           src="/foto/ESCUCHAR CLIENTE.jpg"
           alt=""
@@ -55,7 +55,7 @@ export default function ContactoPage() {
           <span className="eyebrow">Contacto</span>
           <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 max-w-5xl text-balance">
             Hablemos de
-            <span className="font-editorial block whitespace-nowrap pl-[6vw] italic text-[#d4b28c]">tu proyecto.</span>
+            <span className="font-editorial hero-italic text-[#d4b28c]">tu proyecto.</span>
           </SlideTitle>
           <p className="mt-10 max-w-xl border-l border-[#d4b28c]/50 pl-6 text-sm font-light leading-7 text-white/45">
             Completa el formulario o escríbenos por teléfono, WhatsApp o correo. Estamos en

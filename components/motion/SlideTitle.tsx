@@ -2,6 +2,7 @@
 
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 import { easeLux } from "@/lib/motion";
 
 type From = "left" | "right";
@@ -14,7 +15,7 @@ type Props = {
   from?: From;
   delay?: number;
   inView?: boolean;
-  /** Distancia del desplazamiento en px */
+  /** Distancia del desplazamiento en px (se reduce automáticamente en móvil) */
   distance?: number;
 };
 
@@ -35,7 +36,19 @@ export default function SlideTitle({
 }: Props) {
   const reduce = useReducedMotion();
   const MotionTag = motionTags[as];
-  const xFrom = from === "left" ? -distance : distance;
+  const [travel, setTravel] = useState(Math.min(distance, 40));
+
+  useEffect(() => {
+    const update = () => {
+      const narrow = window.matchMedia("(max-width: 640px)").matches;
+      setTravel(narrow ? Math.min(distance, 28) : distance);
+    };
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, [distance]);
+
+  const xFrom = from === "left" ? -travel : travel;
 
   if (reduce) {
     const Tag = as;
@@ -51,7 +64,7 @@ export default function SlideTitle({
   if (inView) {
     return (
       <MotionTag
-        className={className}
+        className={`max-w-full ${className}`}
         initial={{ opacity: 0, x: xFrom }}
         whileInView={{ opacity: 1, x: 0 }}
         viewport={{ once: true, amount: 0.35, margin: "0px 0px -8% 0px" }}
@@ -64,7 +77,7 @@ export default function SlideTitle({
 
   return (
     <MotionTag
-      className={className}
+      className={`max-w-full ${className}`}
       initial={{ opacity: 0, x: xFrom }}
       animate={{ opacity: 1, x: 0 }}
       transition={transition}

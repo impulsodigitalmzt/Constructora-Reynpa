@@ -9,28 +9,28 @@ export default function LandingHero() {
   const reduce = useReducedMotion();
 
   return (
-    <div className="relative z-10 flex min-h-[62vh] flex-col justify-end px-5 pb-12 pt-36 sm:px-10 lg:min-h-screen lg:px-[6vw] lg:pb-16">
+    <div className="relative z-10 flex min-h-[min(58vh,28rem)] flex-col justify-end overflow-x-clip px-5 pb-10 pt-32 sm:min-h-[62vh] sm:px-10 sm:pb-12 sm:pt-36 lg:min-h-screen lg:px-[6vw] lg:pb-16">
       <motion.span
-        className="mb-8 block text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#d4b28c]"
-        initial={reduce ? false : { opacity: 0, x: -40 }}
+        className="mb-6 block text-[0.55rem] font-medium uppercase tracking-[0.24em] text-[#d4b28c] sm:mb-8 sm:text-[0.6rem] sm:tracking-[0.3em]"
+        initial={reduce ? false : { opacity: 0, x: -28 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, ease: easeLux }}
       >
         Arquitectura · Interiorismo · Construcción
       </motion.span>
 
-      <h1 className="text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-luxury">
+      <h1 className="text-[clamp(2.75rem,12vw,8.2rem)] font-light leading-[.88] tracking-luxury sm:leading-[.84]">
         <motion.span
           className="block"
-          initial={reduce ? false : { opacity: 0, x: -64 }}
+          initial={reduce ? false : { opacity: 0, x: -40 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: easeLux, delay: 0.06 }}
         >
           Espacios
         </motion.span>
         <motion.span
-          className="font-editorial block whitespace-nowrap pl-[6vw] italic text-[#d4b28c]"
-          initial={reduce ? false : { opacity: 0, x: 64 }}
+          className="font-editorial hero-italic text-[#d4b28c]"
+          initial={reduce ? false : { opacity: 0, x: 36 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.9, ease: easeLux, delay: 0.18 }}
         >
@@ -39,8 +39,8 @@ export default function LandingHero() {
       </h1>
 
       <motion.p
-        className="mt-9 max-w-xl border-l border-[#d4b28c]/50 pl-5 text-sm font-light leading-7 text-white/50"
-        initial={reduce ? false : { opacity: 0, x: -36 }}
+        className="mt-7 max-w-xl border-l border-[#d4b28c]/50 pl-4 text-sm font-light leading-7 text-white/50 sm:mt-9 sm:pl-5"
+        initial={reduce ? false : { opacity: 0, x: -24 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.7, ease: easeLux, delay: 0.28 }}
       >
@@ -50,13 +50,13 @@ export default function LandingHero() {
       </motion.p>
 
       <motion.div
-        initial={reduce ? false : { opacity: 0, x: -28 }}
+        initial={reduce ? false : { opacity: 0, x: -20 }}
         animate={{ opacity: 1, x: 0 }}
         transition={{ duration: 0.65, ease: easeLux, delay: 0.38 }}
       >
         <Link
           href="/proyectos"
-          className="group mt-9 inline-flex w-fit items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
+          className="group mt-8 inline-flex min-h-11 w-fit items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c] sm:mt-9"
         >
           Descubrir proyectos
           <motion.span

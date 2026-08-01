@@ -12,7 +12,7 @@ export const metadata: Metadata = {
 export default function PortalClientePage() {
   return (
     <>
-      <section className="noise relative flex min-h-[72vh] items-end overflow-hidden bg-[#0a0a0a] pb-20 pt-40 md:min-h-[82vh] md:pb-28 md:pt-48">
+      <section className="noise relative flex min-h-[56vh] items-end overflow-hidden bg-[#0a0a0a] pb-16 pt-32 sm:min-h-[72vh] sm:pb-20 sm:pt-40 md:min-h-[82vh] md:pb-28 md:pt-48">
         <Image
           src="/foto/OBRA/747625965_17900286720499562_7975554370235012092_n.jpg"
           alt=""
@@ -31,7 +31,7 @@ export default function PortalClientePage() {
               <span className="eyebrow">Experiencia cliente</span>
               <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 text-balance">
                 Tu obra.
-                <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">Clara y conectada.</span>
+                <span className="font-editorial hero-italic text-[#d4b28c]">Clara y conectada.</span>
               </SlideTitle>
             </div>
             <div>
@@ -73,7 +73,7 @@ export default function PortalClientePage() {
               videos capturados en sitio. Esto permite entender qué se ejecutó, qué está en
               revisión y cuáles son las próximas actividades.
             </p>
-            <div className="mt-10 grid grid-cols-2 gap-3">
+            <div className="mt-10 grid grid-cols-1 gap-3 sm:grid-cols-2">
               {[
                 ["24/7", "Acceso al proyecto"],
                 ["100%", "Evidencia organizada"],
@@ -87,7 +87,7 @@ export default function PortalClientePage() {
               ))}
             </div>
           </div>
-          <div className="relative min-h-[28rem] w-full overflow-hidden rounded-2xl border border-black/15 bg-black lg:min-h-0 lg:max-w-md lg:justify-self-end">
+          <div className="relative min-h-[18rem] w-full overflow-hidden rounded-2xl border border-black/15 bg-black sm:min-h-[22rem] lg:min-h-0 lg:max-w-md lg:justify-self-end">
             <video
               src="/video/AQO7zqrBLunM_-AAN4WHpaT1zqtzOue-UyF083Xg_8pnZBty30YZ4REP1WPcnEbZYBYjx9yqOd_ewWPKXVA22ezJJLSGrEq8nkj_8pSneA.mp4"
               autoPlay

@@ -47,7 +47,7 @@ export default function Navbar() {
     <>
       <header className="fixed inset-x-0 top-0 z-50 px-3 pt-3 md:px-6 md:pt-4">
         <nav
-          className={`relative mx-auto flex h-[4.5rem] max-w-[86rem] items-center justify-between gap-2 overflow-hidden rounded-full border px-3 text-white shadow-lg transition-all duration-500 ease-out sm:px-5 ${
+          className={`relative mx-auto flex h-16 max-w-[86rem] items-center justify-between gap-2 overflow-hidden rounded-full border px-3 text-white shadow-lg transition-all duration-500 ease-out sm:h-[4.5rem] sm:px-5 ${
             scrolled
               ? "border-white/20 shadow-black/40"
               : "border-white/25 shadow-black/25"
@@ -137,7 +137,7 @@ export default function Navbar() {
             </Link>
           </div>
 
-          <div className="absolute left-1/2 z-10 hidden -translate-x-1/2 gap-1 min-[380px]:flex lg:hidden">
+          <div className="absolute left-1/2 z-10 hidden -translate-x-1/2 gap-1 sm:flex lg:hidden">
             <DesktopSocialLink
               href="https://www.facebook.com/profile.php?id=100063495704831"
               label="Facebook"
@@ -155,7 +155,7 @@ export default function Navbar() {
           <div className="relative z-10 flex items-center gap-1 lg:hidden">
             <Link
               href="/portal-cliente"
-              className="rounded-full bg-[#f4f4f5] px-3.5 py-2.5 text-[0.56rem] font-semibold uppercase tracking-[0.12em] text-[#0a0a0a] shadow-sm transition-transform active:scale-95"
+              className="inline-flex min-h-11 items-center rounded-full bg-[#f4f4f5] px-3.5 py-2.5 text-[0.56rem] font-semibold uppercase tracking-[0.12em] text-[#0a0a0a] shadow-sm transition-transform active:scale-95"
               aria-label="Portal de clientes"
             >
               Portal
@@ -163,7 +163,7 @@ export default function Navbar() {
             <button
               type="button"
               onClick={() => setOpen(true)}
-              className="grid size-11 place-items-center rounded-full text-white transition-colors hover:bg-white/10"
+              className="grid size-11 min-h-11 min-w-11 place-items-center rounded-full text-white transition-colors hover:bg-white/10"
               aria-expanded={open}
               aria-controls="mobile-navigation-drawer"
               aria-label="Abrir menú"
@@ -194,7 +194,7 @@ function DesktopSocialLink({
       target="_blank"
       rel="noreferrer"
       aria-label={label}
-      className="grid size-9 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/10 hover:text-white"
+      className="grid size-10 min-h-10 min-w-10 place-items-center rounded-full text-white/85 transition-colors hover:bg-white/10 hover:text-white"
     >
       {children}
     </a>

@@ -57,7 +57,7 @@ const milestones = [
 export default function NosotrosPage() {
   return (
     <>
-      <section className="noise relative flex min-h-[72vh] items-end overflow-hidden bg-[#0a0a0a] pb-24 pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
+      <section className="noise relative flex min-h-[56vh] items-end overflow-hidden bg-[#0a0a0a] pb-16 pt-32 sm:min-h-[72vh] sm:pb-24 sm:pt-40 md:min-h-[82vh] md:pb-28 md:pt-52">
         <Image
           src="/foto/OBRA/530242268_1349573190502525_852000528287082247_n.jpg"
           alt=""
@@ -76,7 +76,7 @@ export default function NosotrosPage() {
           <span className="eyebrow">El estudio</span>
           <SlideTitle as="h1" from="left" inView={false} className="heading-display mt-12 max-w-6xl text-balance">
             Arquitectura que
-            <span className="font-editorial block whitespace-nowrap pl-[8vw] italic text-[#d4b28c]">parte de ti.</span>
+            <span className="font-editorial hero-italic text-[#d4b28c]">parte de ti.</span>
           </SlideTitle>
           <div className="mt-14 flex max-w-2xl items-start gap-5 border-l border-[#d4b28c]/50 pl-6">
             <p className="text-sm font-light leading-7 text-white/45 md:text-base">
@@ -103,7 +103,7 @@ export default function NosotrosPage() {
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-transparent to-black/10" />
               </div>
-              <div className="glass absolute -bottom-7 right-3 flex items-center gap-5 rounded-xl px-5 py-4 md:-right-10 md:bottom-10">
+              <div className="glass absolute bottom-3 right-3 flex max-w-[calc(100%-1.5rem)] items-center gap-4 rounded-xl px-4 py-3 sm:gap-5 sm:px-5 sm:py-4 md:bottom-10 md:right-3 lg:-right-6">
                 <span className="font-editorial text-3xl italic text-[#d4b28c]">R.</span>
                 <div>
                   <p className="text-[0.58rem] font-semibold uppercase tracking-[0.22em]">Equipo REYPA</p>
@@ -166,7 +166,7 @@ export default function NosotrosPage() {
           </div>
 
           <div className="grid gap-4 lg:grid-cols-12">
-            <div className="relative min-h-[22rem] overflow-hidden rounded-2xl bg-[#1a1a1a] lg:col-span-8 lg:min-h-[34rem]">
+            <div className="relative min-h-[16rem] overflow-hidden rounded-2xl bg-[#1a1a1a] lg:col-span-8 lg:min-h-[34rem]">
               <video
                 className="absolute inset-0 h-full w-full object-cover"
                 autoPlay
@@ -449,7 +449,7 @@ export default function NosotrosPage() {
             {principles.map(({ title, text, image, alt }, index) => (
               <article
                 key={title}
-                className="group relative aspect-[4/5] min-h-[30rem] overflow-hidden rounded-2xl bg-[#1a1a1a]"
+                className="group relative aspect-[4/5] min-h-[22rem] overflow-hidden rounded-2xl bg-[#1a1a1a] md:min-h-[30rem]"
               >
                 <Image
                   src={image}
