@@ -3,17 +3,18 @@
 import {
   Bell,
   CalendarDays,
-  CircleDollarSign,
+  Clock3,
   LockKeyhole,
   Mail,
   Play,
   TrendingUp,
+  Wallet,
 } from "lucide-react";
 import { type FormEvent, useState } from "react";
 import FinancialDashboard from "@/components/FinancialDashboard";
 import PortalOverviewCharts from "@/components/PortalOverviewCharts";
 import { useObraStore } from "@/hooks/useObraStore";
-import { getSpentTotal } from "@/lib/obra-store";
+import { formatDeliveryLabel, getDaysElapsed, getSpentTotal } from "@/lib/obra-store";
 
 const videos = [
   {
@@ -51,9 +52,19 @@ export default function PortalDashboard() {
   const [view, setView] = useState<"overview" | "finance" | "updates">("overview");
   const { state } = useObraStore();
   const spent = getSpentTotal(state);
-  const spentMillions = (spent / 1_000_000).toFixed(2);
-  const budgetMillions = (state.budgetTotal / 1_000_000).toFixed(1);
+  const currencyFull = new Intl.NumberFormat("es-MX", {
+    style: "currency",
+    currency: "MXN",
+    maximumFractionDigits: 0,
+  });
   const progressShare = Math.round((spent / Math.max(state.budgetTotal, 1)) * 100);
+  const daysElapsed = getDaysElapsed(state.startDate);
+  const deliveryLabel = formatDeliveryLabel(state.deliveryDate);
+  const startLabel = new Date(`${state.startDate}T12:00:00`).toLocaleDateString("es-MX", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  });
 
   const enterDemo = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -214,15 +225,65 @@ export default function PortalDashboard() {
             </span>
           </div>
 
-          <div className="grid gap-3 md:grid-cols-3">
-            <Metric icon={TrendingUp} label="Avance general" value={`${state.progress}%`} note="+7% este mes" />
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             <Metric
-              icon={CircleDollarSign}
-              label="Presupuesto ejercido"
-              value={`${progressShare}%`}
-              note={`$${spentMillions}M de $${budgetMillions}M`}
+              icon={TrendingUp}
+              label="Avance general"
+              value={`${state.progress}%`}
+              note="+7% este mes"
             />
-            <Metric icon={CalendarDays} label="Entrega estimada" value="18 Oct" note="En tiempo" />
+            <Metric
+              icon={Clock3}
+              label="Días transcurridos"
+              value={`${daysElapsed}`}
+              note={`Desde ${startLabel}`}
+            />
+            <Metric
+              icon={CalendarDays}
+              label="Entrega estimada"
+              value={deliveryLabel}
+              note="En tiempo"
+            />
+            <article className="min-w-0 rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.25)] sm:col-span-2 sm:p-5 xl:col-span-3">
+              <div className="mb-4 flex items-center justify-between gap-2">
+                <span className="text-[0.58rem] font-bold uppercase tracking-[0.1em] text-[#555]">
+                  Presupuesto vs ejercido
+                </span>
+                <Wallet size={17} className="shrink-0 text-[#ff6b2c]" />
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2">
+                <div>
+                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
+                    Ejercido
+                  </p>
+                  <p className="mt-1 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:text-3xl">
+                    {currencyFull.format(spent)}
+                  </p>
+                </div>
+                <div>
+                  <p className="text-[0.62rem] font-semibold uppercase tracking-[0.1em] text-[#555]">
+                    Presupuesto total
+                  </p>
+                  <p className="mt-1 text-2xl font-semibold tracking-tight text-[#0a0a0a] sm:text-3xl">
+                    {currencyFull.format(state.budgetTotal)}
+                  </p>
+                </div>
+              </div>
+              <div className="mt-4">
+                <div className="mb-2 flex justify-between text-[0.65rem] font-semibold text-[#1a1a1a]">
+                  <span>{progressShare}% ejercido</span>
+                  <span className="text-[#027a48]">
+                    Disponible {currencyFull.format(Math.max(state.budgetTotal - spent, 0))}
+                  </span>
+                </div>
+                <div className="h-2.5 overflow-hidden rounded-full bg-[#d0d0d0]">
+                  <div
+                    className="h-full rounded-full bg-gradient-to-r from-[#ff6b2c] to-[#f5c542] transition-all duration-700"
+                    style={{ width: `${Math.min(progressShare, 100)}%` }}
+                  />
+                </div>
+              </div>
+            </article>
           </div>
 
           <PortalOverviewCharts />

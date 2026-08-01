@@ -64,6 +64,8 @@ export type ObraState = {
   spi: number;
   cpi: number;
   budgetTotal: number;
+  startDate: string;
+  deliveryDate: string;
   costs: CostCategory[];
   monthly: MonthlyPoint[];
   stages: StageProgress[];
@@ -106,6 +108,8 @@ export const defaultObraState = (): ObraState => ({
   spi: 0.96,
   cpi: 1.04,
   budgetTotal: 3000000,
+  startDate: "2026-02-10",
+  deliveryDate: "2026-10-18",
   costs: [
     {
       id: "materiales",
@@ -190,6 +194,21 @@ export const defaultObraState = (): ObraState => ({
 
 export function getSpentTotal(state: ObraState) {
   return state.costs.reduce((sum, item) => sum + item.amount, 0);
+}
+
+export function getDaysElapsed(startDate: string, toDate = new Date()) {
+  const start = new Date(`${startDate}T12:00:00`);
+  if (Number.isNaN(start.getTime())) return 0;
+  const end = new Date(toDate);
+  end.setHours(12, 0, 0, 0);
+  const diff = Math.floor((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
+  return Math.max(0, diff);
+}
+
+export function formatDeliveryLabel(deliveryDate: string) {
+  const date = new Date(`${deliveryDate}T12:00:00`);
+  if (Number.isNaN(date.getTime())) return "—";
+  return date.toLocaleDateString("es-MX", { day: "numeric", month: "short" });
 }
 
 export function getBudgetByRubro(state: ObraState) {

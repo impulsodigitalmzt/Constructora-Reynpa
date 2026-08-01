@@ -207,6 +207,24 @@ function MetricsTab({
                 className={t.inputAmt}
               />
             </label>
+            <label className="col-span-2 block sm:col-span-1">
+              <span className={t.label}>Inicio de obra</span>
+              <input
+                type="date"
+                value={state.startDate}
+                onChange={(event) => save({ ...state, startDate: event.target.value })}
+                className={`${t.input} w-full max-w-[10.5rem]`}
+              />
+            </label>
+            <label className="col-span-2 block sm:col-span-1">
+              <span className={t.label}>Entrega estimada</span>
+              <input
+                type="date"
+                value={state.deliveryDate}
+                onChange={(event) => save({ ...state, deliveryDate: event.target.value })}
+                className={`${t.input} w-full max-w-[10.5rem]`}
+              />
+            </label>
           </div>
         </div>
       </section>

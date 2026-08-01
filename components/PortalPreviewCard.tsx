@@ -1,16 +1,22 @@
 "use client";
 
-import { CalendarDays, CircleDollarSign, TrendingUp } from "lucide-react";
+import { CalendarDays, Clock3, TrendingUp, Wallet } from "lucide-react";
 import Link from "next/link";
 import { useObraStore } from "@/hooks/useObraStore";
-import { getSpentTotal } from "@/lib/obra-store";
+import { formatDeliveryLabel, getDaysElapsed, getSpentTotal } from "@/lib/obra-store";
+
+const currencyFull = new Intl.NumberFormat("es-MX", {
+  style: "currency",
+  currency: "MXN",
+  maximumFractionDigits: 0,
+});
 
 export default function PortalPreviewCard() {
   const { state } = useObraStore();
   const spent = getSpentTotal(state);
-  const spentMillions = (spent / 1_000_000).toFixed(2);
-  const budgetMillions = (state.budgetTotal / 1_000_000).toFixed(1);
   const progressShare = Math.round((spent / Math.max(state.budgetTotal, 1)) * 100);
+  const daysElapsed = getDaysElapsed(state.startDate);
+  const deliveryLabel = formatDeliveryLabel(state.deliveryDate);
   const estructura = state.stages.find((stage) => stage.label === "Estructura");
   const estructuraValue = estructura?.value ?? 0;
   const estructuraColor = estructura?.color || "#f5c542";
@@ -46,9 +52,7 @@ export default function PortalPreviewCard() {
             <span
               key={tab}
               className={`shrink-0 rounded-lg px-3 py-2 text-[0.58rem] font-semibold uppercase tracking-[0.12em] ${
-                index === 0
-                  ? "bg-[#d4b28c] text-black"
-                  : "text-white/40"
+                index === 0 ? "bg-[#d4b28c] text-black" : "text-white/40"
               }`}
             >
               {tab}
@@ -58,15 +62,6 @@ export default function PortalPreviewCard() {
       </div>
 
       <div className="space-y-3 p-4 md:p-5">
-        <div className="mb-1 flex items-end justify-between gap-2">
-          <div>
-            <p className="text-[0.52rem] uppercase tracking-[0.16em] text-white/30">
-              Estado del proyecto
-            </p>
-            <p className="font-editorial mt-1 text-lg text-white">Vista ejecutiva</p>
-          </div>
-        </div>
-
         <div className="grid gap-2.5 sm:grid-cols-3">
           <PreviewMetric
             icon={TrendingUp}
@@ -75,39 +70,62 @@ export default function PortalPreviewCard() {
             note="+7% este mes"
           />
           <PreviewMetric
-            icon={CircleDollarSign}
-            label="Presupuesto ejercido"
-            value={`${progressShare}%`}
-            note={`$${spentMillions}M de $${budgetMillions}M`}
+            icon={Clock3}
+            label="Días transcurridos"
+            value={`${daysElapsed}`}
+            note="Desde el inicio"
           />
           <PreviewMetric
             icon={CalendarDays}
             label="Entrega estimada"
-            value="18 Oct"
+            value={deliveryLabel}
             note="En tiempo"
           />
         </div>
 
         <div className="rounded-2xl border-[3px] border-[#b8b8b8] bg-[#e9e9e9] p-4 shadow-[0_8px_24px_rgba(0,0,0,0.2)]">
-          <div className="mb-2.5 flex items-center justify-between gap-2 text-[0.68rem] font-bold uppercase tracking-[0.1em] text-[#1a1a1a]">
-            <span className="flex items-center gap-2">
-              <i className="size-2 rounded-full" style={{ background: estructuraColor }} />
-              Estructura
+          <div className="mb-3 flex items-center justify-between gap-2">
+            <span className="text-[0.58rem] font-bold uppercase tracking-[0.1em] text-[#555]">
+              Presupuesto vs ejercido
             </span>
-            <span className="tabular-nums">{estructuraValue}%</span>
+            <Wallet size={14} className="text-[#ff6b2c]" />
           </div>
-          <div className="h-2 overflow-hidden rounded-full bg-[#d0d0d0]">
+          <div className="grid grid-cols-2 gap-3">
+            <div>
+              <p className="text-[0.55rem] font-semibold uppercase tracking-[0.08em] text-[#555]">
+                Ejercido
+              </p>
+              <p className="mt-1 text-base font-semibold text-[#0a0a0a] sm:text-lg">
+                {currencyFull.format(spent)}
+              </p>
+            </div>
+            <div>
+              <p className="text-[0.55rem] font-semibold uppercase tracking-[0.08em] text-[#555]">
+                Presupuesto
+              </p>
+              <p className="mt-1 text-base font-semibold text-[#0a0a0a] sm:text-lg">
+                {currencyFull.format(state.budgetTotal)}
+              </p>
+            </div>
+          </div>
+          <div className="mt-3 h-2 overflow-hidden rounded-full bg-[#d0d0d0]">
             <div
-              className="h-full rounded-full transition-all duration-700"
+              className="h-full rounded-full bg-gradient-to-r from-[#ff6b2c] to-[#f5c542]"
+              style={{ width: `${Math.min(progressShare, 100)}%` }}
+            />
+          </div>
+          <p className="mt-2 text-[0.55rem] font-semibold text-[#027a48]">
+            {progressShare}% ejercido · Estructura {estructuraValue}%
+          </p>
+          <div className="mt-2 h-1.5 overflow-hidden rounded-full bg-[#d0d0d0]">
+            <div
+              className="h-full rounded-full"
               style={{
                 width: `${estructuraValue}%`,
                 background: `linear-gradient(90deg, #b8925f 0%, ${estructuraColor} 100%)`,
               }}
             />
           </div>
-          <p className="mt-2 text-[0.58rem] font-medium text-[#555]">
-            Sincronizado desde panel de residentes
-          </p>
         </div>
       </div>
     </Link>
