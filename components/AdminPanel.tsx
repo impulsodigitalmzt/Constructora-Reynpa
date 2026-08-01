@@ -11,6 +11,9 @@ import {
   getAdminTheme,
 } from "@/components/admin/admin-theme";
 import RippleButton from "@/components/motion/RippleButton";
+import { FadeIn } from "@/components/motion/FadeIn";
+import HoverLift3D from "@/components/motion/HoverLift3D";
+import RevealHeading from "@/components/motion/RevealHeading";
 import { useObraStore } from "@/hooks/useObraStore";
 import { ADMIN_DEMO, isAdminSessionActive, setAdminSession } from "@/lib/obra-store";
 
@@ -77,14 +80,14 @@ export default function AdminPanel() {
   return (
     <AdminThemeProvider theme={theme}>
       <div className={`min-w-0 overflow-x-hidden rounded-2xl px-3 py-4 sm:rounded-3xl sm:px-6 sm:py-6 ${theme.page}`}>
-        <div className="mb-4 flex items-start justify-between gap-3 sm:mb-5">
+        <FadeIn className="mb-4 flex items-start justify-between gap-3 sm:mb-5">
           <div className="min-w-0">
             <p className={`text-[0.65rem] font-semibold uppercase tracking-[0.12em] sm:text-[0.68rem] ${theme.accent}`}>
               Residentes · campo
             </p>
-            <h1 className={`mt-1 text-xl font-semibold tracking-tight sm:text-3xl ${theme.title}`}>
+            <RevealHeading className={`mt-1 text-xl font-semibold tracking-tight sm:text-3xl ${theme.title}`} as="h1">
               Panel de obra
-            </h1>
+            </RevealHeading>
           </div>
           <button
             type="button"
@@ -95,75 +98,83 @@ export default function AdminPanel() {
             {mode === "sun" ? <Moon size={15} /> : <Sun size={15} />}
             <span className="hidden sm:inline">{mode === "sun" ? "Oscuro" : "Sol"}</span>
           </button>
-        </div>
+        </FadeIn>
 
         {!authenticated ? (
-          <div className={`mx-auto w-full max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
-            <div className={`border-b px-4 py-4 sm:px-5 sm:py-5 ${theme.hairline}`}>
-              <h2 className={`text-lg font-semibold sm:text-xl ${theme.title}`}>Acceso interno</h2>
-              <p className={`mt-1 text-sm ${theme.muted}`}>
-                Interfaz clara para operar a la luz del día.
-              </p>
-            </div>
-            <form onSubmit={login} className="space-y-3.5 p-4 sm:p-5">
-              <label className="block">
-                <span className={theme.label}>Usuario</span>
-                <input
-                  name="user"
-                  type="email"
-                  required
-                  defaultValue={ADMIN_DEMO.user}
-                  className={theme.input}
-                  autoComplete="username"
-                />
-              </label>
-              <label className="block">
-                <span className={theme.label}>Contraseña</span>
-                <input
-                  name="password"
-                  type="password"
-                  required
-                  defaultValue={ADMIN_DEMO.password}
-                  className={theme.input}
-                  autoComplete="current-password"
-                />
-              </label>
-              {error ? (
-                <p className={`rounded-xl px-3 py-2 text-sm font-medium ${theme.statusErr}`}>
-                  {error}
-                </p>
-              ) : null}
-              <RippleButton type="submit" className={`${theme.btnPrimary} w-full`}>
-                <LockKeyhole size={15} /> Entrar
-              </RippleButton>
-              <p className={`break-all text-center text-xs ${theme.muted}`}>
-                {ADMIN_DEMO.user} · {ADMIN_DEMO.password}
-              </p>
-            </form>
-          </div>
+          <FadeIn delay={0.08}>
+            <HoverLift3D>
+              <div className={`mx-auto w-full max-w-md overflow-hidden rounded-2xl ${theme.elevated}`}>
+                <div className={`border-b px-4 py-4 sm:px-5 sm:py-5 ${theme.hairline}`}>
+                  <h2 className={`text-lg font-semibold sm:text-xl ${theme.title}`}>Acceso interno</h2>
+                  <p className={`mt-1 text-sm ${theme.muted}`}>
+                    Interfaz clara para operar a la luz del día.
+                  </p>
+                </div>
+                <form onSubmit={login} className="space-y-3.5 p-4 sm:p-5">
+                  <label className="block">
+                    <span className={theme.label}>Usuario</span>
+                    <input
+                      name="user"
+                      type="email"
+                      required
+                      defaultValue={ADMIN_DEMO.user}
+                      className={theme.input}
+                      autoComplete="username"
+                    />
+                  </label>
+                  <label className="block">
+                    <span className={theme.label}>Contraseña</span>
+                    <input
+                      name="password"
+                      type="password"
+                      required
+                      defaultValue={ADMIN_DEMO.password}
+                      className={theme.input}
+                      autoComplete="current-password"
+                    />
+                  </label>
+                  {error ? (
+                    <p className={`rounded-xl px-3 py-2 text-sm font-medium ${theme.statusErr}`}>
+                      {error}
+                    </p>
+                  ) : null}
+                  <RippleButton type="submit" className={`${theme.btnPrimary} w-full`}>
+                    <LockKeyhole size={15} /> Entrar
+                  </RippleButton>
+                  <p className={`break-all text-center text-xs ${theme.muted}`}>
+                    {ADMIN_DEMO.user} · {ADMIN_DEMO.password}
+                  </p>
+                </form>
+              </div>
+            </HoverLift3D>
+          </FadeIn>
         ) : (
           <div className="min-w-0 space-y-4">
-            <header className={`rounded-2xl p-4 sm:p-5 ${theme.elevated}`}>
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-                <div className="min-w-0">
-                  <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${theme.accent}`}>
-                    {state.projectCode}
-                  </p>
-                  <h2 className={`mt-1 font-editorial text-2xl tracking-tight sm:text-4xl ${theme.title}`}>
-                    {state.projectName}
-                  </h2>
-                  <p className={`mt-1 text-sm ${theme.muted}`}>Actualización desde campo</p>
-                </div>
-                <div className="flex flex-wrap gap-2">
-                  <Link href="/portal-cliente" className={`${theme.btnSecondary} flex-1 sm:flex-none`}>
-                    Portal cliente
-                  </Link>
-                  <button type="button" onClick={logout} className={`${theme.btnGhost} flex-1 sm:flex-none`}>
-                    <LogOut size={14} /> Salir
-                  </button>
-                </div>
-              </div>
-            </header>
+            <FadeIn>
+              <HoverLift3D>
+                <header className={`rounded-2xl p-4 sm:p-5 ${theme.elevated}`}>
+                  <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                    <div className="min-w-0">
+                      <p className={`text-[0.68rem] font-semibold uppercase tracking-[0.1em] ${theme.accent}`}>
+                        {state.projectCode}
+                      </p>
+                      <h2 className={`mt-1 font-editorial text-2xl tracking-tight sm:text-4xl ${theme.title}`}>
+                        {state.projectName}
+                      </h2>
+                      <p className={`mt-1 text-sm ${theme.muted}`}>Actualización desde campo</p>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      <Link href="/portal-cliente" className={`${theme.btnSecondary} flex-1 sm:flex-none`}>
+                        Portal cliente
+                      </Link>
+                      <button type="button" onClick={logout} className={`${theme.btnGhost} flex-1 sm:flex-none`}>
+                        <LogOut size={14} /> Salir
+                      </button>
+                    </div>
+                  </div>
+                </header>
+              </HoverLift3D>
+            </FadeIn>
 
             {status ? (
               <div

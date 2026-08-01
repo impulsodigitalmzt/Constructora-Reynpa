@@ -19,6 +19,7 @@ import PortalOverviewCharts from "@/components/PortalOverviewCharts";
 import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
 import KpiCard3D from "@/components/motion/KpiCard3D";
 import RevealHeading from "@/components/motion/RevealHeading";
+import RippleButton from "@/components/motion/RippleButton";
 import { useObraStore } from "@/hooks/useObraStore";
 import { type PortalChartTheme, usePortalChartMode } from "@/hooks/usePortalChartMode";
 import { tabSlide } from "@/lib/motion";
@@ -90,85 +91,92 @@ export default function PortalDashboard() {
 
   if (!authenticated) {
     return (
-      <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.65)]">
-        <div className="grid min-h-[42rem] lg:grid-cols-[1.05fr_.95fr]">
-          <div className="noise relative hidden overflow-hidden border-r border-white/10 lg:block">
-            <video
-              src={videoSrc(videos[0].file)}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="metadata"
-              className="absolute inset-0 size-full object-cover opacity-50"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/25 to-black/25" />
-            <div className="absolute inset-x-0 bottom-0 z-10 p-10">
-              <span className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Portal privado REYPA</span>
-              <p className="font-editorial mt-5 max-w-md text-4xl leading-tight">
-                La tranquilidad de saber exactamente dónde está tu obra.
-              </p>
-              <div className="mt-8 flex items-center gap-3 text-[0.58rem] uppercase tracking-[0.18em] text-white/40">
-                <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_14px_#d4b28c]" />
-                Sistema operativo
+      <FadeIn>
+        <div className="relative mx-auto max-w-6xl overflow-hidden rounded-[1.5rem] border border-white/10 bg-[#0d0d0d] shadow-[0_60px_160px_rgba(0,0,0,.65)]">
+          <div className="grid min-h-[42rem] lg:grid-cols-[1.05fr_.95fr]">
+            <div className="noise relative hidden overflow-hidden border-r border-white/10 lg:block">
+              <video
+                src={videoSrc(videos[0].file)}
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                className="absolute inset-0 size-full object-cover opacity-50"
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0a] via-black/25 to-black/25" />
+              <div className="absolute inset-x-0 bottom-0 z-10 p-10">
+                <span className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Portal privado REYPA</span>
+                <p className="font-editorial mt-5 max-w-md text-4xl leading-tight tracking-luxury">
+                  La tranquilidad de saber exactamente dónde está tu obra.
+                </p>
+                <div className="mt-8 flex items-center gap-3 text-[0.58rem] uppercase tracking-[0.18em] text-white/40">
+                  <span className="size-1.5 rounded-full bg-[#d4b28c] shadow-[0_0_14px_#d4b28c]" />
+                  Sistema operativo
+                </div>
               </div>
             </div>
-          </div>
 
-          <div className="flex items-center p-7 sm:p-12 lg:p-16">
-            <div className="mx-auto w-full max-w-sm">
-              <div className="mb-12 flex items-center justify-between">
-                <div className="grid size-12 place-items-center rounded-xl bg-[#d4b28c] text-sm font-bold text-black">R</div>
-                <span className="flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.2em] text-white/30">
-                  <LockKeyhole size={12} /> Acceso seguro
-                </span>
-              </div>
-              <p className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Bienvenido</p>
-              <h2 className="font-editorial mt-3 text-4xl">Accede a tu proyecto.</h2>
-              <p className="mt-4 text-sm font-light leading-6 text-white/35">
-                Consulta avances, presupuesto y evidencias en un mismo lugar.
-              </p>
+            <div className="flex items-center p-7 sm:p-12 lg:p-16">
+              <Stagger className="mx-auto w-full max-w-sm" delay={0.1}>
+                <FadeInItem>
+                  <div className="mb-12 flex items-center justify-between">
+                    <div className="grid size-12 place-items-center rounded-xl bg-[#d4b28c] text-sm font-bold text-black">R</div>
+                    <span className="flex items-center gap-2 text-[0.55rem] uppercase tracking-[0.2em] text-white/30">
+                      <LockKeyhole size={12} /> Acceso seguro
+                    </span>
+                  </div>
+                </FadeInItem>
+                <FadeInItem>
+                  <p className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">Bienvenido</p>
+                  <RevealHeading className="mt-3 text-4xl">Accede a tu proyecto.</RevealHeading>
+                  <p className="mt-4 text-sm font-light leading-6 text-white/35">
+                    Consulta avances, presupuesto y evidencias en un mismo lugar.
+                  </p>
+                </FadeInItem>
 
-              <form className="mt-10 space-y-5" onSubmit={enterDemo}>
-                <label className="block">
-                  <span className="mb-2 block text-[0.56rem] uppercase tracking-[0.2em] text-white/35">Correo electrónico</span>
-                  <span className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.025] px-4 transition-colors focus-within:border-[#d4b28c]/50">
-                    <Mail size={15} className="text-white/25" />
-                    <input
-                      type="email"
-                      defaultValue="cliente@reypa.mx"
-                      className="h-13 w-full bg-transparent text-sm font-light text-white outline-none placeholder:text-white/20"
-                      aria-label="Correo electrónico"
-                    />
-                  </span>
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-[0.56rem] uppercase tracking-[0.2em] text-white/35">Contraseña</span>
-                  <span className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.025] px-4 transition-colors focus-within:border-[#d4b28c]/50">
-                    <LockKeyhole size={15} className="text-white/25" />
-                    <input
-                      type="password"
-                      defaultValue="reypa-demo"
-                      className="h-13 w-full bg-transparent text-sm font-light text-white outline-none"
-                      aria-label="Contraseña"
-                    />
-                  </span>
-                </label>
-                <button
-                  type="submit"
-                  className="group relative mt-3 w-full overflow-hidden rounded-xl bg-[#f4f4f5] px-5 py-4 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-black transition-all duration-500 hover:bg-[#d4b28c]"
-                >
-                  <span className="absolute inset-y-0 -left-12 w-8 rotate-12 bg-white/70 blur-lg transition-all duration-700 group-hover:left-[120%]" />
-                  <span className="relative">Entrar al proyecto demo</span>
-                </button>
-              </form>
-              <p className="mt-6 text-center text-[0.55rem] leading-5 text-white/20">
-                Experiencia demostrativa. No se almacenan credenciales.
-              </p>
+                <FadeInItem>
+                  <form className="mt-10 space-y-5" onSubmit={enterDemo}>
+                    <label className="block">
+                      <span className="mb-2 block text-[0.56rem] uppercase tracking-[0.2em] text-white/35">Correo electrónico</span>
+                      <span className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.025] px-4 transition-colors focus-within:border-[#d4b28c]/50">
+                        <Mail size={15} className="text-white/25" />
+                        <input
+                          type="email"
+                          defaultValue="cliente@reypa.mx"
+                          className="h-13 w-full bg-transparent text-sm font-light text-white outline-none placeholder:text-white/20"
+                          aria-label="Correo electrónico"
+                        />
+                      </span>
+                    </label>
+                    <label className="block">
+                      <span className="mb-2 block text-[0.56rem] uppercase tracking-[0.2em] text-white/35">Contraseña</span>
+                      <span className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.025] px-4 transition-colors focus-within:border-[#d4b28c]/50">
+                        <LockKeyhole size={15} className="text-white/25" />
+                        <input
+                          type="password"
+                          defaultValue="reypa-demo"
+                          className="h-13 w-full bg-transparent text-sm font-light text-white outline-none"
+                          aria-label="Contraseña"
+                        />
+                      </span>
+                    </label>
+                    <RippleButton
+                      type="submit"
+                      className="mt-3 w-full rounded-xl bg-[#f4f4f5] px-5 py-4 text-[0.62rem] font-semibold uppercase tracking-[0.2em] text-black hover:bg-[#d4b28c]"
+                    >
+                      Entrar al proyecto demo
+                    </RippleButton>
+                  </form>
+                  <p className="mt-6 text-center text-[0.55rem] leading-5 text-white/20">
+                    Experiencia demostrativa. No se almacenan credenciales.
+                  </p>
+                </FadeInItem>
+              </Stagger>
             </div>
           </div>
         </div>
-      </div>
+      </FadeIn>
     );
   }
 

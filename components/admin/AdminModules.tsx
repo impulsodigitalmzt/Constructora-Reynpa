@@ -13,8 +13,11 @@ import {
   Video,
 } from "lucide-react";
 import { FormEvent, useRef, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import { CurrencyInput } from "@/components/admin/CurrencyInput";
 import { useAdminTheme } from "@/components/admin/admin-theme";
+import { FadeIn } from "@/components/motion/FadeIn";
+import HoverLift3D from "@/components/motion/HoverLift3D";
 import RippleButton from "@/components/motion/RippleButton";
 import {
   BITACORA_TIPOS,
@@ -29,6 +32,7 @@ import {
   fileToDataUrl,
   getSpentTotal,
 } from "@/lib/obra-store";
+import { tabSlide } from "@/lib/motion";
 
 const currency = new Intl.NumberFormat("es-MX", {
   style: "currency",
@@ -39,6 +43,14 @@ const currency = new Intl.NumberFormat("es-MX", {
 const STAGE_ACCENTS = ["#12b76a", "#2e90fa", "#f5a524", "#f79009", "#9e77ed"];
 
 type TabId = "metricas" | "evidencias" | "bitacora" | "extras" | "materiales";
+
+const TAB_ORDER: Record<TabId, number> = {
+  metricas: 0,
+  evidencias: 1,
+  bitacora: 2,
+  extras: 3,
+  materiales: 4,
+};
 
 const TABS: { id: TabId; label: string; icon: typeof HardHat }[] = [
   { id: "metricas", label: "Métricas", icon: HardHat },
@@ -61,34 +73,55 @@ export function AdminTabs({
 }) {
   const t = useAdminTheme();
   const [tab, setTab] = useState<TabId>("metricas");
+  const directionRef = useRef(0);
+
+  const changeTab = (next: TabId) => {
+    directionRef.current = TAB_ORDER[next] >= TAB_ORDER[tab] ? 1 : -1;
+    setTab(next);
+  };
 
   return (
     <div className="min-w-0 space-y-5 pb-8">
       <nav className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden">
         {TABS.map(({ id, label, icon: Icon }) => (
-          <button
+          <motion.button
             key={id}
             type="button"
-            onClick={() => setTab(id)}
+            onClick={() => changeTab(id)}
+            whileHover={{ y: -1, scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
             className={`inline-flex min-h-10 shrink-0 items-center gap-1.5 rounded-full px-3 text-[0.62rem] font-semibold uppercase tracking-[0.08em] transition sm:gap-2 sm:px-3.5 sm:text-[0.68rem] ${
               tab === id ? t.tabActive : t.tabIdle
             }`}
           >
             <Icon size={14} className="shrink-0" />
             {label}
-          </button>
+          </motion.button>
         ))}
       </nav>
 
-      {tab === "metricas" ? <MetricsTab state={state} save={save} onStatus={onStatus} /> : null}
-      {tab === "evidencias" ? (
-        <EvidenceTab state={state} save={save} onStatus={onStatus} onError={onError} />
-      ) : null}
-      {tab === "bitacora" ? <BitacoraTab state={state} save={save} onStatus={onStatus} /> : null}
-      {tab === "extras" ? <ChangeOrdersTab state={state} save={save} onStatus={onStatus} /> : null}
-      {tab === "materiales" ? (
-        <MaterialsTab state={state} save={save} onStatus={onStatus} onError={onError} />
-      ) : null}
+      <div className="relative min-w-0 overflow-hidden">
+        <AnimatePresence mode="wait" custom={directionRef.current}>
+          <motion.div
+            key={tab}
+            custom={directionRef.current}
+            variants={tabSlide}
+            initial="enter"
+            animate="center"
+            exit="exit"
+          >
+            {tab === "metricas" ? <MetricsTab state={state} save={save} onStatus={onStatus} /> : null}
+            {tab === "evidencias" ? (
+              <EvidenceTab state={state} save={save} onStatus={onStatus} onError={onError} />
+            ) : null}
+            {tab === "bitacora" ? <BitacoraTab state={state} save={save} onStatus={onStatus} /> : null}
+            {tab === "extras" ? <ChangeOrdersTab state={state} save={save} onStatus={onStatus} /> : null}
+            {tab === "materiales" ? (
+              <MaterialsTab state={state} save={save} onStatus={onStatus} onError={onError} />
+            ) : null}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </div>
   );
 }
@@ -108,31 +141,32 @@ function MetricsTab({
 
   return (
     <div className="space-y-5">
-      {/* Hero métricas */}
-      <section className={`overflow-hidden rounded-2xl ${t.elevated}`}>
-        <div
-          className={`px-5 py-5 sm:px-6 ${
-            t.mode === "sun"
-              ? "bg-gradient-to-br from-[#101828] via-[#1d2939] to-[#344054] text-white"
-              : "bg-gradient-to-br from-[#2a241c] via-[#1a1a1a] to-[#121212] text-white"
-          }`}
-        >
-          <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#d4b28c]">
-            Métricas rápidas
-          </p>
-          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:grid-cols-4 sm:gap-4">
-            <div className="min-w-0">
-              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">Avance</p>
-              <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl">
-                {state.progress}%
+      <FadeIn>
+        <HoverLift3D>
+          <section className={`overflow-hidden rounded-2xl ${t.elevated}`}>
+            <div
+              className={`px-5 py-5 sm:px-6 ${
+                t.mode === "sun"
+                  ? "bg-gradient-to-br from-[#101828] via-[#1d2939] to-[#344054] text-white"
+                  : "bg-gradient-to-br from-[#2a241c] via-[#1a1a1a] to-[#121212] text-white"
+              }`}
+            >
+              <p className="text-[0.68rem] font-semibold uppercase tracking-[0.14em] text-[#d4b28c]">
+                Métricas rápidas
               </p>
-            </div>
-            <div className="min-w-0">
-              <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">SPI</p>
-              <p className="mt-1 font-editorial text-3xl tracking-tight sm:text-4xl">
-                {state.spi.toFixed(2)}
-              </p>
-            </div>
+              <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:grid-cols-4 sm:gap-4">
+                <div className="min-w-0">
+                  <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">Avance</p>
+                  <p className="mt-1 font-editorial text-3xl tracking-tight text-[#d4b28c] sm:text-4xl">
+                    {state.progress}%
+                  </p>
+                </div>
+                <div className="min-w-0">
+                  <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">SPI</p>
+                  <p className="mt-1 font-editorial text-3xl tracking-tight sm:text-4xl">
+                    {state.spi.toFixed(2)}
+                  </p>
+                </div>
             <div className="min-w-0">
               <p className="text-[0.6rem] uppercase tracking-[0.1em] text-white/45">CPI</p>
               <p className="mt-1 font-editorial text-3xl tracking-tight sm:text-4xl">
@@ -229,6 +263,8 @@ function MetricsTab({
           </div>
         </div>
       </section>
+        </HoverLift3D>
+      </FadeIn>
 
       {/* Etapas */}
       <section className={`min-w-0 rounded-2xl p-4 sm:p-6 ${t.surface}`}>

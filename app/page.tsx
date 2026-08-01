@@ -1,8 +1,12 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowDownRight, ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-react";
+import { ArrowRight, BarChart3, Eye, ShieldCheck } from "lucide-react";
 import DesignCarousel from "@/components/DesignCarousel";
 import ArrowLink from "@/components/motion/ArrowLink";
+import { FadeIn, FadeInItem, Stagger } from "@/components/motion/FadeIn";
+import HoverLift3D from "@/components/motion/HoverLift3D";
+import LandingHero from "@/components/motion/LandingHero";
+import RevealHeading from "@/components/motion/RevealHeading";
 import PortalPreviewCard from "@/components/PortalPreviewCard";
 import TechFootnotes, { TechTerm } from "@/components/TechFootnotes";
 
@@ -31,29 +35,7 @@ export default function Home() {
   return (
     <>
       <section className="relative grid min-h-screen overflow-hidden bg-[#0a0a0a] text-[#f4f4f5] lg:grid-cols-[.9fr_1.1fr]">
-        <div className="relative z-10 flex min-h-[62vh] flex-col justify-end px-5 pb-12 pt-36 sm:px-10 lg:min-h-screen lg:px-[6vw] lg:pb-16">
-          <span className="animate-rise mb-8 block text-[0.6rem] font-medium uppercase tracking-[0.3em] text-[#d4b28c]">
-            Arquitectura · Interiorismo · Construcción
-          </span>
-          <h1 className="animate-rise-delayed text-[clamp(3.6rem,7.2vw,8.2rem)] font-light leading-[.84] tracking-[-0.07em]">
-            Espacios
-            <span className="font-editorial block pl-[6vw] italic text-[#d4b28c]">que viven.</span>
-          </h1>
-          <p className="mt-9 max-w-xl border-l border-[#d4b28c]/50 pl-5 text-sm font-light leading-7 text-white/50">
-            En REYPA convertimos ideas, necesidades y aspiraciones en espacios funcionales,
-            sensibles y duraderos. Acompañamos cada decisión desde el primer trazo hasta la
-            entrega final.
-          </p>
-          <Link
-            href="/proyectos"
-            className="group mt-9 inline-flex w-fit items-center gap-4 text-[0.6rem] font-semibold uppercase tracking-[0.22em] text-white transition-colors hover:text-[#d4b28c]"
-          >
-            Descubrir proyectos
-            <span className="grid size-10 place-items-center rounded-full border border-white/20 transition-all duration-500 group-hover:rotate-45 group-hover:border-[#d4b28c]">
-              <ArrowDownRight size={16} />
-            </span>
-          </Link>
-        </div>
+        <LandingHero />
 
         <div className="relative min-h-[54vh] overflow-hidden bg-[#d8c7b3] lg:min-h-screen">
           <Image
@@ -77,7 +59,7 @@ export default function Home() {
 
       <section className="bg-[#0a0a0a] py-28 md:py-44">
         <div className="container-reypa">
-          <div className="grid gap-12 lg:grid-cols-[.65fr_1.35fr]">
+          <FadeIn inView className="grid gap-12 lg:grid-cols-[.65fr_1.35fr]">
             <div>
               <span className="eyebrow">Nuestro manifiesto</span>
               <p className="mt-8 max-w-xs text-sm font-light leading-7 text-white/42">
@@ -85,73 +67,91 @@ export default function Home() {
                 precisión y una relación honesta con quien la habita.
               </p>
             </div>
-            <h2 className="heading-section text-balance text-white/95">
+            <RevealHeading className="heading-section text-balance text-white/95" as="h2">
               La confianza también
-              <span className="font-editorial block italic text-[#d4b28c]">se diseña.</span>
-            </h2>
-          </div>
+            </RevealHeading>
+          </FadeIn>
+          <p className="font-editorial mt-2 text-right text-3xl italic text-[#d4b28c] md:text-5xl lg:-mt-10 lg:pl-[35%]">
+            se diseña.
+          </p>
 
-          <div className="mt-20 grid auto-rows-[minmax(13rem,auto)] gap-3 md:grid-cols-12">
-            <article className="luxury-card group min-h-[26rem] rounded-2xl md:col-span-7 md:row-span-2">
-              <Image
-                src="/foto/DISEÑOS/493945530_1260234636103048_7833668012152188885_n.jpg"
-                alt="Diseño interior contemporáneo de REYPA"
-                fill
-                sizes="(max-width: 768px) 100vw, 58vw"
-                className="object-cover opacity-70 transition-all duration-700 group-hover:scale-105 group-hover:opacity-90"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
-              <div className="absolute inset-x-0 bottom-0 p-7 md:p-10">
-                <span className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">01 · Espacios con propósito</span>
-                <h3 className="font-editorial mt-4 max-w-lg text-3xl leading-tight md:text-5xl">Cada línea responde a una forma de vivir.</h3>
-              </div>
-            </article>
+          <Stagger className="mt-20 grid auto-rows-[minmax(13rem,auto)] gap-3 md:grid-cols-12" delay={0.05} inView>
+            <FadeInItem className="md:col-span-7 md:row-span-2">
+              <HoverLift3D className="h-full">
+                <article className="luxury-card group relative min-h-[26rem] overflow-hidden rounded-2xl">
+                  <Image
+                    src="/foto/DISEÑOS/493945530_1260234636103048_7833668012152188885_n.jpg"
+                    alt="Diseño interior contemporáneo de REYPA"
+                    fill
+                    sizes="(max-width: 768px) 100vw, 58vw"
+                    className="object-cover opacity-70 transition-all duration-700 group-hover:scale-105 group-hover:opacity-90"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/10 to-transparent" />
+                  <div className="absolute inset-x-0 bottom-0 p-7 md:p-10">
+                    <span className="text-[0.58rem] uppercase tracking-[0.25em] text-[#d4b28c]">01 · Espacios con propósito</span>
+                    <h3 className="font-editorial mt-4 max-w-lg text-3xl leading-tight md:text-5xl">Cada línea responde a una forma de vivir.</h3>
+                  </div>
+                </article>
+              </HoverLift3D>
+            </FadeInItem>
 
             {values.slice(0, 2).map(({ icon: Icon, number, title, text }) => (
-              <article key={title} className="luxury-card rounded-2xl p-7 md:col-span-5 md:p-9">
-                <div className="flex items-start justify-between">
-                  <Icon size={25} strokeWidth={1.25} className="text-[#d4b28c]" />
-                  <span className="text-[0.58rem] tracking-[0.2em] text-white/25">{number}</span>
-                </div>
-                <div className="mt-12">
-                  <h3 className="text-2xl font-light tracking-[-0.03em]">{title}</h3>
-                  <p className="mt-3 max-w-sm text-sm font-light leading-6 text-white/45">{text}</p>
-                </div>
-              </article>
+              <FadeInItem key={title} className="md:col-span-5">
+                <HoverLift3D className="h-full">
+                  <article className="luxury-card h-full rounded-2xl p-7 md:p-9">
+                    <div className="flex items-start justify-between">
+                      <Icon size={25} strokeWidth={1.25} className="text-[#d4b28c]" />
+                      <span className="text-[0.58rem] tracking-[0.2em] text-white/25">{number}</span>
+                    </div>
+                    <div className="mt-12">
+                      <h3 className="text-2xl font-light tracking-[-0.03em]">{title}</h3>
+                      <p className="mt-3 max-w-sm text-sm font-light leading-6 text-white/45">{text}</p>
+                    </div>
+                  </article>
+                </HoverLift3D>
+              </FadeInItem>
             ))}
 
-            <article className="luxury-card group relative min-h-64 overflow-hidden rounded-2xl md:col-span-5">
-              <video
-                src="/video/GENERA_UN_LOGO_METALICO_TIPO_B (online-video-cutter.com).mp4"
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="auto"
-                className="absolute inset-0 size-full object-cover transition-transform duration-1000 group-hover:scale-[1.025]"
-                aria-label="Animación del logotipo metálico de REYPA"
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/15" />
-              <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-7 md:p-9">
-                <div>
-                  <p className="text-[0.55rem] uppercase tracking-[0.24em] text-[#d4b28c]">
-                    Identidad REYPA
-                  </p>
-                  <p className="font-editorial mt-2 text-2xl italic text-white">
-                    Diseño que deja huella.
-                  </p>
-                </div>
-                <span className="text-[0.54rem] tracking-[0.2em] text-white/70">03</span>
-              </div>
-            </article>
+            <FadeInItem className="md:col-span-5">
+              <HoverLift3D className="h-full">
+                <article className="luxury-card group relative min-h-64 overflow-hidden rounded-2xl">
+                  <video
+                    src="/video/GENERA_UN_LOGO_METALICO_TIPO_B (online-video-cutter.com).mp4"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    preload="auto"
+                    className="absolute inset-0 size-full object-cover transition-transform duration-1000 group-hover:scale-[1.025]"
+                    aria-label="Animación del logotipo metálico de REYPA"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-black/15" />
+                  <div className="absolute inset-x-0 bottom-0 flex items-end justify-between p-7 md:p-9">
+                    <div>
+                      <p className="text-[0.55rem] uppercase tracking-[0.24em] text-[#d4b28c]">
+                        Identidad REYPA
+                      </p>
+                      <p className="font-editorial mt-2 text-2xl italic text-white">
+                        Diseño que deja huella.
+                      </p>
+                    </div>
+                    <span className="text-[0.54rem] tracking-[0.2em] text-white/70">03</span>
+                  </div>
+                </article>
+              </HoverLift3D>
+            </FadeInItem>
 
-            <article className="luxury-card grid-lines flex min-h-64 flex-col justify-end rounded-2xl p-7 md:col-span-7 md:p-9">
-              <span className="mb-5 inline-block h-px w-16 bg-[#d4b28c]" />
-              <p className="max-w-2xl text-xl font-light leading-relaxed text-white/72 md:text-2xl">
-                “La claridad no es un reporte al final. Es la manera en que construimos desde el primer día.”
-              </p>
-            </article>
-          </div>
+            <FadeInItem className="md:col-span-7">
+              <HoverLift3D className="h-full">
+                <article className="luxury-card grid-lines flex min-h-64 h-full flex-col justify-end rounded-2xl p-7 md:p-9">
+                  <span className="mb-5 inline-block h-px w-16 bg-[#d4b28c]" />
+                  <p className="max-w-2xl text-xl font-light leading-relaxed text-white/72 md:text-2xl">
+                    “La claridad no es un reporte al final. Es la manera en que construimos desde el primer día.”
+                  </p>
+                </article>
+              </HoverLift3D>
+            </FadeInItem>
+          </Stagger>
         </div>
       </section>
 
@@ -252,7 +252,7 @@ export default function Home() {
 
       <section className="noise border-y border-white/10 bg-[#121212] py-28 md:py-44">
         <div className="container-reypa relative z-10 grid gap-16 lg:grid-cols-[.9fr_1.1fr] lg:items-stretch">
-          <div className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
+          <FadeIn inView className="flex min-h-0 flex-col justify-between gap-10 lg:py-2">
             <div>
               <span className="eyebrow">Portal privado</span>
               <h2 className="heading-section mt-10 text-balance">
@@ -302,9 +302,11 @@ export default function Home() {
             >
               Explorar experiencia
             </ArrowLink>
-          </div>
+          </FadeIn>
 
-          <PortalPreviewCard />
+          <FadeIn inView delay={0.12}>
+            <PortalPreviewCard />
+          </FadeIn>
         </div>
       </section>
 
