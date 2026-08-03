@@ -25,6 +25,7 @@ export default function DesignCarousel() {
   const startScrollRef = useRef(0);
   const positionRef = useRef(0);
   const targetRef = useRef(0);
+  const pointerIdRef = useRef<number | null>(null);
 
   const loopWidth = useCallback(() => {
     const track = trackRef.current;
@@ -74,10 +75,18 @@ export default function DesignCarousel() {
 
   const stopDragging = (event: React.PointerEvent<HTMLDivElement>) => {
     if (!draggingRef.current) return;
+    if (pointerIdRef.current !== null && event.pointerId !== pointerIdRef.current) return;
+
     draggingRef.current = false;
+    pointerIdRef.current = null;
     positionRef.current = event.currentTarget.scrollLeft;
     targetRef.current = event.currentTarget.scrollLeft;
-    event.currentTarget.releasePointerCapture?.(event.pointerId);
+
+    try {
+      event.currentTarget.releasePointerCapture(event.pointerId);
+    } catch {
+      /* already released */
+    }
   };
 
   const move = (direction: number) => {
@@ -120,21 +129,29 @@ export default function DesignCarousel() {
 
       <div
         ref={trackRef}
-        className="flex cursor-grab select-none gap-4 overflow-x-hidden pl-[max(1rem,calc((100vw-86rem)/2))] active:cursor-grabbing"
-        style={{ touchAction: "pan-x pan-y" }}
+        className="flex cursor-grab touch-pan-y select-none gap-4 overflow-x-auto pl-[max(1rem,calc((100vw-86rem)/2))] active:cursor-grabbing [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
         onPointerDown={(event) => {
+          if (event.button !== 0 && event.pointerType === "mouse") return;
           draggingRef.current = true;
+          pointerIdRef.current = event.pointerId;
           startXRef.current = event.clientX;
           startScrollRef.current = event.currentTarget.scrollLeft;
           event.currentTarget.setPointerCapture(event.pointerId);
         }}
         onPointerMove={(event) => {
-          if (!draggingRef.current) return;
-          event.currentTarget.scrollLeft =
+          if (!draggingRef.current || pointerIdRef.current !== event.pointerId) return;
+          event.preventDefault();
+          const next =
             startScrollRef.current - (event.clientX - startXRef.current) * 1.25;
+          event.currentTarget.scrollLeft = next;
+          positionRef.current = next;
+          targetRef.current = next;
         }}
         onPointerUp={stopDragging}
         onPointerCancel={stopDragging}
+        onPointerLeave={(event) => {
+          if (draggingRef.current && event.pointerType === "mouse") stopDragging(event);
+        }}
         aria-label="Galería horizontal de diseños REYPA"
       >
         {[...designs, ...designs].map(([file, title], index) => (
@@ -154,8 +171,8 @@ export default function DesignCarousel() {
               sizes="(max-width: 640px) 78vw, 480px"
               className="pointer-events-none object-cover transition-transform duration-1000 group-hover:scale-[1.04]"
             />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
-            <div className="absolute inset-x-0 bottom-0 p-6">
+            <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 bottom-0 p-6">
               <span className="text-[0.52rem] uppercase tracking-[0.23em] text-[#d4b28c]">
                 Diseño · {String((index % designs.length) + 1).padStart(2, "0")}
               </span>
